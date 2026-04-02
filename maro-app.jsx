@@ -232,6 +232,9 @@ JSON만 출력: {"gifts":[{"name":"상품명","price":"가격대","reason":"2문
             <div style={{background:`${P}06`,border:`1px dashed ${P}25`,borderRadius:12,padding:"12px 16px",marginTop:16}}>
               <div style={{fontSize:12,color:"#6a5a4a",lineHeight:1.7}}>💡 <strong>TIP</strong> — 선물과 함께 짧은 손편지를 곁들이면 마음이 더 잘 전달돼요.{intent&&` "${intent}" 이 마음을 직접 적어보는 건 어떨까요?`}</div>
             </div>
+            <div style={{background:"rgba(0,0,0,.03)",border:"1px solid rgba(0,0,0,.07)",borderRadius:10,padding:"10px 14px",marginTop:10}}>
+              <div style={{fontSize:11,color:"#a09585",lineHeight:1.7}}>📢 위 상품 링크는 <strong>쿠팡 파트너스</strong> 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+            </div>
 
             <div style={{marginTop:22,display:"flex",gap:10}}>
               <Btn onClick={restart} style={{flex:1,background:"rgba(255,255,255,.75)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:13,fontSize:13,color:"#5a4a3a",fontWeight:600,cursor:"pointer"}}>처음부터 다시</Btn>
