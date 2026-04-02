@@ -50,7 +50,12 @@ function gfb(o,b){return FB[`${o}|${b}`]||FD[b]||FD.b2;}
 
 // ── Utils ──
 function parsePrice(s){if(!s)return null;const n=s.match(/[\d.]+/g);if(!n)return null;const m=s.includes("만")?10000:1;return n.length>=2?{min:Math.round(n[0]*m),max:Math.round(n[1]*m)}:{min:Math.round(n[0]*m*.7),max:Math.round(n[0]*m*1.3)};}
-function mkUrl(kw,pr){const b=`https://www.coupang.com/np/search?component=&q=${encodeURIComponent(kw)}`;const p=parsePrice(pr);return p?`${b}&minPrice=${p.min}&maxPrice=${p.max}`:b;}
+function mkUrl(kw,pr){
+  const PARTNER_ID="AF3339921";
+  const b=`https://www.coupang.com/np/search?component=&q=${encodeURIComponent(kw)}&channel=user&affiliate=${PARTNER_ID}`;
+  const p=parsePrice(pr);
+  return p?`${b}&minPrice=${p.min}&maxPrice=${p.max}`:b;
+}
 
 // ── Components ──
 function Btn({onClick,children,style={},scale=0.94,ms=220}){
