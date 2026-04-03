@@ -337,6 +337,57 @@ footer{
   .nav-tag{display:none}
   .footer-top{flex-direction:column;gap:20px}
   .steps::before{display:none}
+  .tools-grid{grid-template-columns:1fr}
+  .flow-steps{flex-wrap:wrap;gap:8px;justify-content:center}
+  .flow-arrow{display:none}
+}
+
+/* ── TOOLS ── */
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:880px;margin:0 auto}
+.tool-card{
+  background:var(--white);border:1px solid var(--cream3);border-radius:20px;
+  padding:28px 22px;text-align:center;position:relative;
+  transition:all .25s;display:block;
+}
+.tool-card:hover{transform:translateY(-6px);box-shadow:0 14px 40px rgba(196,117,110,.12);border-color:var(--terra3)}
+.tool-badge{
+  position:absolute;top:14px;right:14px;
+  background:linear-gradient(135deg,var(--terra),var(--terra2));
+  color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;
+  padding:3px 10px;border-radius:20px;
+}
+.tool-icon{font-size:36px;margin-bottom:14px}
+.tool-title{font-family:'Gowun Batang',serif;font-size:16px;font-weight:700;color:var(--brown);margin-bottom:8px}
+.tool-desc{font-size:12px;color:var(--brown3);line-height:1.65;margin-bottom:14px}
+.tool-cta{
+  display:inline-block;font-size:12px;font-weight:600;color:var(--terra);
+  border:1px solid var(--terra3);border-radius:20px;padding:6px 18px;
+  transition:all .2s;
+}
+.tool-card:hover .tool-cta{background:var(--terra);color:#fff}
+
+.tools-flow{
+  background:var(--white);border:1px solid var(--cream3);border-radius:20px;
+  padding:28px 24px;max-width:700px;margin:36px auto 0;
+}
+.flow-label{
+  text-align:center;font-size:12px;font-weight:600;color:var(--terra);
+  letter-spacing:2px;margin-bottom:20px;
+}
+.flow-steps{display:flex;align-items:center;justify-content:center;gap:12px}
+.flow-step{
+  text-align:center;padding:12px 16px;border-radius:14px;
+  background:var(--cream);border:1px solid var(--cream3);
+  font-size:11px;color:var(--brown2);line-height:1.5;min-width:80px;
+}
+.flow-step span{font-size:22px;display:block;margin-bottom:6px}
+.flow-step.active{background:linear-gradient(135deg,rgba(196,117,110,.08),rgba(196,117,110,.14));border-color:var(--terra3);font-weight:600}
+.flow-arrow{color:var(--brown4);font-size:16px;font-weight:300}
+
+@media(max-width:680px){
+  .tools-grid{grid-template-columns:1fr}
+  .flow-steps{flex-wrap:wrap;gap:8px;justify-content:center}
+  .flow-arrow{display:none}
 }
 </style>
 </head>
@@ -542,6 +593,49 @@ footer{
   </div>
 </section>
 
+<!-- TOOLS -->
+<section class="sec" style="padding-bottom:40px">
+  <div class="sec-inner">
+    <p class="sec-label reveal">확장 서비스</p>
+    <h2 class="sec-title reveal">선물의 <em>A to Z</em>, 마로 하나로</h2>
+    <div class="tools-grid">
+      <a href="/message.html" class="tool-card reveal r1" style="text-decoration:none">
+        <div class="tool-badge">NEW</div>
+        <div class="tool-icon">✍️</div>
+        <div class="tool-title">선물 메시지 생성기</div>
+        <div class="tool-desc">관계와 상황에 딱 맞는 카드 문구를 AI가 3가지 만들어드려요</div>
+        <div class="tool-cta">문구 만들기 →</div>
+      </a>
+      <a href="/vote.html" class="tool-card reveal r2" style="text-decoration:none">
+        <div class="tool-badge">NEW</div>
+        <div class="tool-icon">🗳️</div>
+        <div class="tool-title">단체 선물 투표</div>
+        <div class="tool-desc">후보 등록 → 링크 공유 → 팀원 투표 → 결과 확인까지</div>
+        <div class="tool-cta">투표 만들기 →</div>
+      </a>
+      <a href="/calc.html" class="tool-card reveal r3" style="text-decoration:none">
+        <div class="tool-badge">NEW</div>
+        <div class="tool-icon">💰</div>
+        <div class="tool-title">선물비 정산 계산기</div>
+        <div class="tool-desc">1/N 계산하고 토스·카카오페이 송금 링크까지 한 번에</div>
+        <div class="tool-cta">정산하기 →</div>
+      </a>
+    </div>
+    <div class="tools-flow reveal" style="margin-top:36px">
+      <div class="flow-label">마로의 선물 풀 코스</div>
+      <div class="flow-steps">
+        <div class="flow-step"><span>🗳️</span><div>투표로<br>선물 결정</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step active"><span>🎁</span><div>AI 추천으로<br>상품 확정</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span>💰</span><div>정산<br>계산기</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span>✍️</span><div>카드 문구<br>생성</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- QUOTE -->
 <section class="quote-sec">
   <div class="quote-inner">
@@ -604,7 +698,7 @@ footer{
       <div class="footer-links">
         <a href="/terms.html">이용약관</a>
         <a href="/privacy.html">개인정보처리방침</a>
-        <a href="mailto:maro.gift.ai@gmail.com">문의하기</a>
+        <a href="mailto:tax.lsj93@gmail.com">문의하기</a>
       </div>
     </div>
     <div class="footer-div"></div>

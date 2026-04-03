@@ -325,7 +325,7 @@ function App(){
                         </div>
                       </div>
                       <a href={url} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginTop:12,padding:"9px 14px",background:`${P}06`,border:`1px solid ${P}18`,borderRadius:10,textDecoration:"none",fontSize:13,color:TX2,fontWeight:600,transition:"all .15s"}}>
-                        🔍 상품 예시 보기 <span style={{fontSize:11,color:TX3,fontWeight:400}}>쿠팡</span><span style={{fontSize:12,marginLeft:"auto",color:P}}>→</span>
+                        🛒 쿠팡 최저가 보기 <span style={{fontSize:12,marginLeft:"auto",color:P}}>→</span>
                       </a>
                     </div>
                   );
@@ -334,6 +334,22 @@ function App(){
               <div style={{background:`${P}06`,border:`1px dashed ${P}25`,borderRadius:12,padding:"12px 16px",marginTop:16}}>
                 <div style={{fontSize:12,color:"#6a5a4a",lineHeight:1.7}}>💡 <strong>TIP</strong> — 선물과 함께 짧은 손편지를 곁들이면 마음이 더 잘 전달돼요.{intent&&` "${intent}" 이 마음을 직접 적어보는 건 어떨까요?`}</div>
               </div>
+
+              {/* 쿠팡 추천 상품 위젯 */}
+              <div style={{marginTop:18}}>
+                <div style={{fontSize:13,fontWeight:600,color:TX2,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>
+                  <span>🛒</span> 이런 상품은 어때요?
+                </div>
+                <div style={{borderRadius:14,overflow:"hidden",border:"1px solid #ebe4dc",background:"#fff"}}>
+                  <iframe
+                    src="https://ads-partners.coupang.com/widgets.html?id=977609&template=carousel&trackingCode=AF3339921&subId=maro&width=680&height=280&tsource="
+                    style={{width:"100%",maxWidth:680,height:280,border:"none",display:"block"}}
+                    scrolling="no"
+                    referrerPolicy="unsafe-url"
+                  ></iframe>
+                </div>
+              </div>
+
               <div style={{background:"rgba(0,0,0,.03)",border:"1px solid rgba(0,0,0,.07)",borderRadius:10,padding:"10px 14px",marginTop:10}}>
                 <div style={{fontSize:11,color:TX3,lineHeight:1.7}}>📢 위 상품 링크는 <strong>쿠팡 파트너스</strong> 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
               </div>

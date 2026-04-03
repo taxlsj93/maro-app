@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>단체 선물 투표 — 마로</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(160deg,#faf8f4,#f5f0e8,#f0ebe0);min-height:100vh;color:#2d2420}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-20px) rotate(360deg);opacity:0}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const {useState,useEffect} = React;
+const P="#c4756e",P2="#a85e58",AF="AF3339921";
+
+function App(){
+  // Check URL for shared vote
+  const params=new URLSearchParams(window.location.search);
+  const shared=params.get("gifts");
+  const sharedTitle=params.get("title");
+  const isVoteMode=!!shared;
+
+  const[mode,setMode]=useState(isVoteMode?"vote":"create");
+  const[title,setTitle]=useState(sharedTitle||"");
+  const[gifts,setGifts]=useState(isVoteMode?JSON.parse(decodeURIComponent(shared)):[{name:"",price:""},{name:"",price:""}]);
+  const[votes,setVotes]=useState({});
+  const[voted,setVoted]=useState(false);
+  const[linkCopied,setLinkCopied]=useState(false);
+  const[shareLink,setShareLink]=useState("");
+
+  const updateGift=(i,field,val)=>{const g=[...gifts];g[i]={...g[i],[field]:val};setGifts(g);};
+  const addGift=()=>{if(gifts.length<5)setGifts([...gifts,{name:"",price:""}]);};
+  const removeGift=(i)=>{if(gifts.length>2)setGifts(gifts.filter((_,j)=>j!==i));};
+
+  const createVote=()=>{
+    const valid=gifts.filter(g=>g.name.trim());
+    if(valid.length<2||!title.trim())return;
+    const encoded=encodeURIComponent(JSON.stringify(valid));
+    const link=`${window.location.origin}/vote.html?title=${encodeURIComponent(title)}&gifts=${encoded}`;
+    setShareLink(link);
+    setMode("share");
+  };
+
+  const castVote=(name)=>{setVotes({...votes,[name]:(votes[name]||0)+1});setVoted(true);};
+
+  const copyLink=()=>{navigator.clipboard?.writeText(shareLink);setLinkCopied(true);setTimeout(()=>setLinkCopied(false),2000);};
+
+  const winner=Object.entries(votes).sort((a,b)=>b[1]-a[1])[0];
+  const totalVotes=Object.values(votes).reduce((a,b)=>a+b,0);
+
+  const s={input:{width:"100%",padding:"12px 16px",border:"1.5px solid #e6dfd4",borderRadius:12,fontSize:14,color:"#2d2420",background:"#fff",outline:"none"}};
+
+  return(
+    <div style={{maxWidth:460,margin:"0 auto",padding:"20px 20px 40px",minHeight:"100vh"}}>
+      <div style={{textAlign:"center",padding:"24px 0 20px"}}>
+        <a href="/" style={{textDecoration:"none",display:"inline-flex",alignItems:"center",gap:8,marginBottom:12}}>
+          <div style={{width:28,height:28,borderRadius:8,background:`linear-gradient(135deg,${P},${P2})`,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:13}}>♥</span></div>
+          <span style={{fontSize:18,fontWeight:700,color:"#2d2420"}}>마로</span>
+        </a>
+        <h1 style={{fontFamily:"'Gowun Batang',serif",fontSize:22,fontWeight:700,marginBottom:6}}>단체 선물 투표</h1>
+        <p style={{fontSize:13,color:"#9a8a7a"}}>선물 후보를 등록하고 링크를 공유하면 팀원들이 투표해요</p>
+      </div>
+
+      {/* CREATE MODE */}
+      {mode==="create"&&(
+        <div>
+          <div style={{marginBottom:16}}>
+            <label style={{fontSize:12,fontWeight:600,color:"#5a4a3a",marginBottom:4,display:"block"}}>투표 제목 *</label>
+            <input value={title} onChange={e=>setTitle(e.target.value)} placeholder="예) 팀장님 생일 선물 뭐가 좋을까?" style={s.input}/>
+          </div>
+
+          <label style={{fontSize:12,fontWeight:600,color:"#5a4a3a",marginBottom:8,display:"block"}}>선물 후보 (2~5개) *</label>
+          {gifts.map((g,i)=>(
+            <div key={i} style={{display:"flex",gap:8,marginBottom:8,animation:`up .3s ease ${i*.05}s both`}}>
+              <input value={g.name} onChange={e=>updateGift(i,"name",e.target.value)} placeholder={`후보 ${i+1} 상품명`} style={{...s.input,flex:2}}/>
+              <input value={g.price} onChange={e=>updateGift(i,"price",e.target.value)} placeholder="가격" style={{...s.input,flex:1}}/>
+              {gifts.length>2&&<button onClick={()=>removeGift(i)} style={{width:40,background:"none",border:"1.5px solid #e6dfd4",borderRadius:10,fontSize:16,cursor:"pointer",color:"#ccc"}}>×</button>}
+            </div>
+          ))}
+          {gifts.length<5&&<button onClick={addGift} style={{width:"100%",padding:10,background:"rgba(255,255,255,.6)",border:"1.5px dashed #e6dfd4",borderRadius:12,fontSize:13,color:"#9a8a7a",cursor:"pointer",marginBottom:20}}>+ 후보 추가</button>}
+
+          <button onClick={createVote} disabled={gifts.filter(g=>g.name.trim()).length<2||!title.trim()} style={{width:"100%",padding:15,background:(gifts.filter(g=>g.name.trim()).length<2||!title.trim())?"#ccc":`linear-gradient(135deg,${P},${P2})`,color:"#fff",border:"none",borderRadius:14,fontSize:15,fontWeight:600,cursor:"pointer",boxShadow:`0 6px 24px ${P}30`}}>투표 링크 만들기 🗳️</button>
+        </div>
+      )}
+
+      {/* SHARE MODE */}
+      {mode==="share"&&(
+        <div style={{textAlign:"center",padding:"20px 0"}}>
+          <div style={{fontSize:48,marginBottom:16}}>🗳️</div>
+          <h2 style={{fontSize:18,fontWeight:600,marginBottom:8}}>투표가 만들어졌어요!</h2>
+          <p style={{fontSize:13,color:"#9a8a7a",marginBottom:20}}>아래 링크를 팀원들에게 공유하세요</p>
+
+          <div style={{background:"#fff",border:"1.5px solid #e6dfd4",borderRadius:12,padding:14,marginBottom:16,wordBreak:"break-all",fontSize:12,color:"#5a4a3a",textAlign:"left",maxHeight:80,overflow:"auto"}}>{shareLink}</div>
+
+          <button onClick={copyLink} style={{width:"100%",padding:14,background:`linear-gradient(135deg,${P},${P2})`,color:"#fff",border:"none",borderRadius:14,fontSize:15,fontWeight:600,cursor:"pointer",marginBottom:8}}>
+            {linkCopied?"✅ 복사됨!":"📋 링크 복사하기"}
+          </button>
+          <button onClick={()=>{setMode("vote");setVoted(false);}} style={{width:"100%",padding:12,background:"rgba(255,255,255,.7)",border:"1.5px solid #e6dfd4",borderRadius:12,fontSize:13,color:"#5a4a3a",fontWeight:600,cursor:"pointer"}}>직접 투표하기</button>
+        </div>
+      )}
+
+      {/* VOTE MODE */}
+      {mode==="vote"&&!voted&&(
+        <div>
+          <div style={{background:`${P}08`,border:`1px solid ${P}18`,borderRadius:14,padding:16,marginBottom:20,textAlign:"center"}}>
+            <div style={{fontSize:15,fontWeight:600,color:"#2d2420"}}>{title||"선물 투표"}</div>
+          </div>
+          <p style={{fontSize:13,color:"#9a8a7a",marginBottom:16,textAlign:"center"}}>마음에 드는 선물에 투표하세요!</p>
+          {gifts.map((g,i)=>(
+            <button key={i} onClick={()=>castVote(g.name)} style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,.85)",border:"1.5px solid #ebe4dc",borderRadius:14,padding:"16px 18px",marginBottom:10,cursor:"pointer",transition:"all .15s",animation:`up .3s ease ${i*.08}s both`}}
+              onMouseOver={e=>{e.currentTarget.style.borderColor=P;e.currentTarget.style.transform="translateY(-2px)"}}
+              onMouseOut={e=>{e.currentTarget.style.borderColor="#ebe4dc";e.currentTarget.style.transform="translateY(0)"}}>
+              <div style={{textAlign:"left"}}>
+                <div style={{fontSize:15,fontWeight:600,color:"#2d2420"}}>{g.name}</div>
+                {g.price&&<div style={{fontSize:12,color:P,fontWeight:600,marginTop:2}}>{g.price}</div>}
+              </div>
+              <span style={{fontSize:20}}>👆</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* RESULTS */}
+      {voted&&(
+        <div>
+          <div style={{textAlign:"center",marginBottom:20}}>
+            <div style={{fontSize:48,marginBottom:8}}>🎉</div>
+            <h2 style={{fontSize:18,fontWeight:600}}>투표 완료!</h2>
+            <p style={{fontSize:13,color:"#9a8a7a"}}>현재까지 {totalVotes}표</p>
+          </div>
+          {gifts.map((g,i)=>{
+            const v=votes[g.name]||0;
+            const pct=totalVotes>0?Math.round(v/totalVotes*100):0;
+            const isWin=winner&&winner[0]===g.name;
+            return(
+              <div key={i} style={{background:isWin?"rgba(255,255,255,.95)":"rgba(255,255,255,.8)",border:isWin?`2px solid ${P}`:"1.5px solid #ebe4dc",borderRadius:14,padding:16,marginBottom:10,position:"relative",animation:`up .3s ease ${i*.08}s both`}}>
+                {isWin&&<div style={{position:"absolute",top:10,right:12,background:P,color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>1위 🏆</div>}
+                <div style={{fontSize:15,fontWeight:600,color:"#2d2420",marginBottom:4}}>{g.name}</div>
+                {g.price&&<div style={{fontSize:12,color:P,fontWeight:600,marginBottom:8}}>{g.price}</div>}
+                <div style={{height:8,background:"#f0ebe0",borderRadius:4,overflow:"hidden",marginBottom:4}}>
+                  <div style={{height:"100%",width:`${pct}%`,background:`linear-gradient(90deg,${P},${P2})`,borderRadius:4,transition:"width .5s ease"}}/>
+                </div>
+                <div style={{fontSize:12,color:"#9a8a7a"}}>{v}표 ({pct}%)</div>
+              </div>
+            );
+          })}
+          <div style={{display:"flex",gap:8,marginTop:16}}>
+            <a href="/app" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,padding:13,background:`linear-gradient(135deg,${P},${P2})`,color:"#fff",border:"none",borderRadius:12,fontSize:13,fontWeight:600,textDecoration:"none"}}>🎁 마로에서 구매하기</a>
+            <a href="/calc.html" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,padding:13,background:"rgba(255,255,255,.7)",border:"1.5px solid #e6dfd4",borderRadius:12,fontSize:13,color:"#5a4a3a",fontWeight:600,textDecoration:"none"}}>💰 정산하기</a>
+          </div>
+        </div>
+      )}
+
+      <div style={{textAlign:"center",marginTop:32,fontSize:10,color:"#c8b8a8"}}>© 2025 마로 · 마음을 새기는 선물</div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
