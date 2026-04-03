@@ -389,6 +389,41 @@ footer{
   .flow-steps{flex-wrap:wrap;gap:8px;justify-content:center}
   .flow-arrow{display:none}
 }
+
+/* ── DAILY BANNER ── */
+.daily-banner{
+  margin:76px 5% 0;max-width:880px;margin-left:auto;margin-right:auto;
+  background:linear-gradient(135deg,rgba(196,117,110,.06),rgba(196,117,110,.12));
+  border:1px solid rgba(196,117,110,.2);border-radius:20px;
+  padding:22px 28px;display:none;position:relative;overflow:hidden;
+  animation:fadeUp .6s ease both;
+}
+.daily-banner.show{display:flex;align-items:center;gap:20px}
+.daily-banner-icon{font-size:40px;flex-shrink:0;animation:fl 3s ease-in-out infinite}
+.daily-banner-body{flex:1;min-width:0}
+.daily-banner-date{font-size:11px;color:var(--terra);font-weight:600;letter-spacing:1px;margin-bottom:4px}
+.daily-banner-title{font-family:'Gowun Batang',serif;font-size:18px;font-weight:700;color:var(--brown);line-height:1.4;margin-bottom:6px}
+.daily-banner-desc{font-size:13px;color:var(--brown2);line-height:1.6;margin-bottom:10px}
+.daily-banner-gifts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.daily-gift-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,.7);border:1px solid rgba(196,117,110,.2);
+  border-radius:20px;padding:4px 12px;font-size:12px;color:var(--brown2);
+}
+.daily-banner-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--terra);color:#fff;border:none;border-radius:50px;
+  padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;
+  text-decoration:none;transition:all .2s;
+  font-family:'Noto Sans KR',sans-serif;
+}
+.daily-banner-cta:hover{background:var(--terra2);transform:translateY(-1px)}
+.daily-banner-loading{font-size:13px;color:var(--brown3);padding:8px 0}
+.daily-banner-dot{display:inline-block;animation:pulse 1.5s infinite}
+@media(max-width:680px){
+  .daily-banner{flex-direction:column;text-align:center;padding:20px;margin-top:72px}
+  .daily-banner-gifts{justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -405,6 +440,18 @@ footer{
 </nav>
 
 <!-- HERO -->
+<!-- DAILY BANNER (AI powered) -->
+<div class="daily-banner" id="dailyBanner">
+  <div class="daily-banner-icon" id="dailyIcon">🎁</div>
+  <div class="daily-banner-body">
+    <div class="daily-banner-date" id="dailyDate"></div>
+    <div class="daily-banner-title" id="dailyTitle">오늘의 선물 추천을 불러오고 있어요<span class="daily-banner-dot">...</span></div>
+    <div class="daily-banner-desc" id="dailyDesc"></div>
+    <div class="daily-banner-gifts" id="dailyGifts"></div>
+    <a href="/app" class="daily-banner-cta" id="dailyCta" style="display:none">마로에서 추천받기 →</a>
+  </div>
+</div>
+
 <section class="hero">
   <div class="hero-bg"></div>
   <span class="fl">🎁</span>
@@ -721,6 +768,98 @@ window.addEventListener('scroll',()=>{
   document.getElementById('nav').style.boxShadow =
     window.scrollY > 40 ? '0 4px 24px rgba(45,32,24,.07)' : 'none';
 });
+
+// ── Daily Banner (AI) ──
+(async function(){
+  const HOLIDAYS=[
+    {m:1,d:14,name:"다이어리데이",icon:"📔",desc:"새해 다이어리를 선물하는 날"},
+    {m:2,d:14,name:"발렌타인데이",icon:"🍫",desc:"사랑하는 사람에게 초콜릿을 전하는 날"},
+    {m:3,d:3,name:"삼겹살데이",icon:"🥩",desc:"맛있는 고기를 함께 나누는 날"},
+    {m:3,d:14,name:"화이트데이",icon:"🍬",desc:"사탕과 함께 마음을 전하는 날"},
+    {m:4,d:14,name:"블랙데이",icon:"🍜",desc:"짜장면으로 위로하는 날"},
+    {m:5,d:5,name:"어린이날",icon:"🧸",desc:"아이들에게 특별한 하루를 선물하는 날"},
+    {m:5,d:8,name:"어버이날",icon:"🌹",desc:"부모님께 감사의 마음을 전하는 날"},
+    {m:5,d:15,name:"스승의날",icon:"🎓",desc:"선생님께 감사를 표현하는 날"},
+    {m:6,d:14,name:"키스데이",icon:"💋",desc:"연인과 사랑을 확인하는 날"},
+    {m:7,d:14,name:"실버데이",icon:"💍",desc:"연인에게 은 액세서리를 선물하는 날"},
+    {m:8,d:14,name:"그린데이",icon:"🌿",desc:"자연 속에서 함께하는 날"},
+    {m:9,d:14,name:"포토데이",icon:"📸",desc:"함께한 순간을 사진으로 남기는 날"},
+    {m:10,d:14,name:"와인데이",icon:"🍷",desc:"와인과 함께 로맨틱한 저녁을 보내는 날"},
+    {m:10,d:31,name:"할로윈",icon:"🎃",desc:"재미있는 선물로 분위기를 띄우는 날"},
+    {m:11,d:11,name:"빼빼로데이",icon:"🍫",desc:"빼빼로와 마음을 나누는 날"},
+    {m:11,d:14,name:"무비데이",icon:"🎬",desc:"영화와 함께하는 데이트를 선물하는 날"},
+    {m:12,d:14,name:"허그데이",icon:"🤗",desc:"따뜻한 포옹과 선물을 나누는 날"},
+    {m:12,d:25,name:"크리스마스",icon:"🎄",desc:"소중한 사람들과 선물을 나누는 날"},
+  ];
+
+  const today=new Date();
+  const tm=today.getMonth()+1, td=today.getDate();
+
+  // Find today's or nearest upcoming holiday (within 7 days)
+  let holiday=HOLIDAYS.find(h=>h.m===tm&&h.d===td);
+  let isToday=!!holiday;
+  if(!holiday){
+    for(let i=1;i<=7;i++){
+      const future=new Date(today);future.setDate(today.getDate()+i);
+      const fm=future.getMonth()+1,fd=future.getDate();
+      holiday=HOLIDAYS.find(h=>h.m===fm&&h.d===fd);
+      if(holiday){holiday._daysUntil=i;break;}
+    }
+  }
+
+  const banner=document.getElementById("dailyBanner");
+  if(!holiday){
+    // No nearby holiday - show seasonal recommendation
+    holiday={name:"오늘",icon:"✨",desc:"특별한 이유 없이 전하는 마음이 가장 감동이에요",m:tm,d:td};
+  }
+
+  banner.classList.add("show");
+  document.getElementById("dailyIcon").textContent=holiday.icon;
+
+  const dateStr=isToday?`오늘 ${tm}월 ${td}일은 ${holiday.name}이에요`
+    :holiday._daysUntil?`${holiday._daysUntil}일 뒤 ${holiday.m}월 ${holiday.d}일은 ${holiday.name}이에요`
+    :`오늘 ${tm}월 ${td}일`;
+  document.getElementById("dailyDate").textContent=dateStr;
+
+  // AI recommendation
+  try{
+    const prompt=`오늘은 ${tm}월 ${td}일이고 ${holiday.name}${isToday?"이에요":"이 다가오고 있어요"}.
+${holiday.desc}
+
+이 날에 어울리는 선물 아이디어 3가지를 추천해주세요.
+각 선물은 상품명과 이모지만 간단히.
+그리고 이 날에 대한 한 줄 감성 멘트도 작성해주세요.
+
+JSON만 출력: {"title":"감성 한 줄 멘트","gifts":[{"name":"상품명","emoji":"이모지"},{"name":"상품명","emoji":"이모지"},{"name":"상품명","emoji":"이모지"}]}`;
+
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,messages:[{role:"user",content:prompt}]})
+    });
+    const data=await res.json();
+    const text=data.content?.[0]?.text||"";
+    const match=text.match(/\{[\s\S]*\}/);
+    if(match){
+      const r=JSON.parse(match[0]);
+      document.getElementById("dailyTitle").textContent=r.title||holiday.desc;
+      document.getElementById("dailyDesc").textContent=holiday.desc;
+      const giftsEl=document.getElementById("dailyGifts");
+      giftsEl.innerHTML="";
+      (r.gifts||[]).forEach(g=>{
+        const chip=document.createElement("div");
+        chip.className="daily-gift-chip";
+        chip.textContent=`${g.emoji} ${g.name}`;
+        giftsEl.appendChild(chip);
+      });
+      document.getElementById("dailyCta").style.display="inline-flex";
+    }
+  }catch(e){
+    // Fallback
+    document.getElementById("dailyTitle").textContent=holiday.desc;
+    document.getElementById("dailyDesc").textContent=`${holiday.name}에 어울리는 선물을 마로가 추천해드려요`;
+    document.getElementById("dailyCta").style.display="inline-flex";
+  }
+})();
 </script>
 </body>
 </html>
