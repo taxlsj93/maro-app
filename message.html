@@ -2,143 +2,383 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>선물 메시지 생성기 — 마로</title>
-<meta property="og:title" content="마로 — AI 선물 메시지 생성기">
-<meta property="og:description" content="관계와 상황에 딱 맞는 선물 카드 문구를 AI가 만들어드려요">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>마음 카드 — 마로</title>
+<meta name="description" content="선물에 마음을 더하세요. 마로 메시지 카드.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(160deg,#faf8f4,#f5f0e8,#f0ebe0);min-height:100vh;color:#2d2420}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --terra:#c4756e;--terra-dark:#a85e58;--terra-light:#e8ada8;--terra-pale:#fdf5f4;
+  --cream:#faf6f1;--warm-gray:#6b5e57;--text:#3d2f2a;--text-light:#8a7a73;
+  --card-bg:#fff;--shadow:0 2px 16px rgba(164,94,88,.10);
+}
+html{font-size:16px}
+body{
+  font-family:'Gowun Batang',serif;background:var(--cream);color:var(--text);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+
+.maro-header{text-align:center;padding:40px 20px 0}
+.maro-logo{font-size:.85rem;letter-spacing:6px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:4px}
+.maro-tagline{font-size:.72rem;color:var(--text-light);letter-spacing:2px}
+
+.container{max-width:480px;margin:0 auto;padding:24px 16px 40px}
+
+.section-title{
+  font-size:1.25rem;font-weight:700;text-align:center;
+  margin-bottom:6px;line-height:1.5;
+}
+.section-sub{
+  font-size:.82rem;color:var(--text-light);text-align:center;
+  margin-bottom:28px;line-height:1.6;
+}
+
+/* Theme selector */
+.theme-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+  margin-bottom:28px;
+}
+.theme-btn{
+  aspect-ratio:1;border-radius:14px;border:2.5px solid transparent;
+  cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;
+  transition:all .2s;font-family:'Gowun Batang',serif;
+}
+.theme-btn:hover{transform:scale(1.05)}
+.theme-btn.active{border-color:var(--terra);transform:scale(1.05)}
+.theme-emoji{font-size:1.6rem}
+.theme-label{font-size:.6rem;color:var(--text-light);font-weight:700}
+
+/* Form */
+.form-group{margin-bottom:16px}
+.form-label{
+  font-size:.78rem;font-weight:700;color:var(--warm-gray);
+  margin-bottom:6px;display:block;
+}
+.form-input{
+  width:100%;padding:14px 16px;border:1.5px solid #e0d5cf;border-radius:12px;
+  font-family:'Gowun Batang',serif;font-size:.88rem;color:var(--text);
+  background:var(--card-bg);outline:none;transition:border .2s;
+}
+.form-input:focus{border-color:var(--terra)}
+.form-input::placeholder{color:#c4b8b0}
+textarea.form-input{resize:vertical;min-height:120px;line-height:1.8}
+
+.char-count{
+  text-align:right;font-size:.68rem;color:var(--text-light);margin-top:4px;
+}
+
+/* Card preview */
+.preview-wrap{
+  margin:28px 0;perspective:600px;
+}
+.card-preview{
+  background:var(--card-bg);border-radius:20px;padding:36px 28px;
+  box-shadow:0 8px 32px rgba(164,94,88,.12);text-align:center;
+  min-height:280px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  transition:all .4s ease;
+}
+
+.card-deco{
+  position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;
+  opacity:.08;
+}
+.card-pattern{
+  width:100%;height:100%;
+  background-image:
+    radial-gradient(circle at 20% 30%, var(--terra) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, var(--terra) 1px, transparent 1px),
+    radial-gradient(circle at 50% 10%, var(--terra) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 10% 80%, var(--terra) 1px, transparent 1px),
+    radial-gradient(circle at 90% 20%, var(--terra) 1px, transparent 1px);
+  background-size:100% 100%;
+}
+
+.card-theme-icon{font-size:2.8rem;margin-bottom:16px;position:relative}
+.card-to{
+  font-size:.72rem;color:var(--terra);letter-spacing:2px;
+  font-weight:700;margin-bottom:12px;position:relative;
+}
+.card-message{
+  font-size:1rem;line-height:2;color:var(--text);
+  white-space:pre-wrap;word-break:keep-all;
+  position:relative;max-width:280px;
+}
+.card-from{
+  font-size:.78rem;color:var(--text-light);margin-top:20px;
+  position:relative;
+}
+.card-brand{
+  position:absolute;bottom:12px;right:16px;
+  font-size:.55rem;color:var(--terra-light);letter-spacing:3px;
+  font-weight:700;
+}
+
+/* Actions */
+.action-row{display:flex;gap:10px;margin-top:24px}
+.action-btn{
+  flex:1;padding:14px;border-radius:12px;border:1.5px solid var(--terra-light);
+  background:none;color:var(--terra);font-family:'Gowun Batang',serif;
+  font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;
+}
+.action-btn:hover{background:var(--terra-pale)}
+.action-btn.primary{background:var(--terra);color:#fff;border-color:var(--terra)}
+.action-btn.primary:hover{background:var(--terra-dark)}
+
+/* Saved toast */
+.toast{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--text);color:#fff;padding:12px 24px;border-radius:12px;
+  font-size:.82rem;font-family:'Gowun Batang',serif;
+  box-shadow:0 4px 16px rgba(0,0,0,.2);transition:transform .3s ease;
+  z-index:999;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+.maro-footer{
+  text-align:center;padding:24px 20px 36px;
+  border-top:1px solid rgba(196,117,110,.12);
+}
+.maro-footer a{
+  color:var(--terra);text-decoration:none;font-size:.78rem;
+  font-weight:700;letter-spacing:2px;
+}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel" data-presets="react">
-const {useState} = React;
-const P="#c4756e",P2="#a85e58";
 
-const RELS=["연인","배우자","친구","부모님","직장 동료/상사","선생님","친척","시댁/처가"];
-const OCCS=["생일","기념일","감사","축하","결혼","출산","집들이","병문안","사과","명절","그냥"];
-const TONES=["따뜻하고 진심 어린","유머러스하고 가벼운","격식 있고 정중한","감성적이고 시적인"];
+<header class="maro-header">
+  <div class="maro-logo">MARO</div>
+  <div class="maro-tagline">마음을 새기는 선물</div>
+</header>
 
-function App(){
-  const[rel,setRel]=useState("");
-  const[occ,setOcc]=useState("");
-  const[tone,setTone]=useState("");
-  const[name,setName]=useState("");
-  const[extra,setExtra]=useState("");
-  const[msgs,setMsgs]=useState([]);
-  const[loading,setLoading]=useState(false);
-  const[copied,setCopied]=useState(-1);
+<div class="container">
+  <h2 class="section-title">마음을 새겨보세요</h2>
+  <p class="section-sub">선물과 함께 전할<br>나만의 메시지 카드</p>
 
-  const generate=async()=>{
-    if(!rel||!occ)return;
-    setLoading(true);setMsgs([]);
-    const prompt=`당신은 한국어 선물 카드 문구 작가입니다.
-관계: ${rel}, 상황: ${occ}, 톤: ${tone||"따뜻하고 진심 어린"}
-${name?`받는 사람 이름: ${name}`:""}
-${extra?`추가 정보: ${extra}`:""}
+  <!-- Theme -->
+  <div class="theme-grid" id="themeGrid"></div>
 
-규칙:
-1. 선물 카드에 쓸 수 있는 문구 3가지를 만들어주세요
-2. 각 문구는 2~4문장, 자연스러운 한국어
-3. 관계와 상황에 맞는 적절한 존댓말/반말 사용
-4. 진부하지 않고 진심이 느껴지는 문구
+  <!-- Form -->
+  <div class="form-group">
+    <label class="form-label">받는 사람</label>
+    <input class="form-input" id="toName" placeholder="예: 지은이에게" maxlength="20" oninput="updatePreview()">
+  </div>
 
-JSON만 출력: {"messages":["문구1","문구2","문구3"]}`;
-    try{
-      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,messages:[{role:"user",content:prompt}]})});
-      const d=await r.json();const t=d.content?.[0]?.text||"";const m=t.match(/\{[\s\S]*\}/);
-      if(m){const p=JSON.parse(m[0]);setMsgs(p.messages||[]);}
-    }catch(e){setMsgs(["마음을 담아 전하는 선물, 늘 고마운 당신에게.","함께한 시간이 소중해서, 이 마음을 선물에 담았어요.","당신이 있어 제 하루가 더 빛나요. 항상 감사합니다."]);}
-    setLoading(false);
-  };
+  <div class="form-group">
+    <label class="form-label">메시지</label>
+    <textarea class="form-input" id="msgBody" placeholder="전하고 싶은 마음을 적어주세요" maxlength="200" oninput="updatePreview()"></textarea>
+    <div class="char-count"><span id="charCount">0</span>/200</div>
+  </div>
 
-  const copy=(i)=>{navigator.clipboard?.writeText(msgs[i]);setCopied(i);setTimeout(()=>setCopied(-1),2000);};
+  <div class="form-group">
+    <label class="form-label">보내는 사람</label>
+    <input class="form-input" id="fromName" placeholder="예: 수현 올림" maxlength="20" oninput="updatePreview()">
+  </div>
 
-  const s={select:{width:"100%",padding:"12px 16px",border:"1.5px solid #e6dfd4",borderRadius:12,fontSize:14,color:"#2d2420",background:"#fff",outline:"none",appearance:"none",cursor:"pointer"},
-    input:{width:"100%",padding:"12px 16px",border:"1.5px solid #e6dfd4",borderRadius:12,fontSize:14,color:"#2d2420",background:"#fff",outline:"none"}};
-
-  return(
-    <div style={{maxWidth:460,margin:"0 auto",padding:"20px 20px 40px",minHeight:"100vh"}}>
-      <div style={{textAlign:"center",padding:"24px 0 20px"}}>
-        <a href="/" style={{textDecoration:"none",display:"inline-flex",alignItems:"center",gap:8,marginBottom:12}}>
-          <div style={{width:28,height:28,borderRadius:8,background:`linear-gradient(135deg,${P},${P2})`,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:13}}>♥</span></div>
-          <span style={{fontSize:18,fontWeight:700,color:"#2d2420"}}>마로</span>
-        </a>
-        <h1 style={{fontFamily:"'Gowun Batang',serif",fontSize:22,fontWeight:700,color:"#2d2420",marginBottom:6}}>선물 메시지 생성기</h1>
-        <p style={{fontSize:13,color:"#9a8a7a"}}>AI가 관계와 상황에 딱 맞는 카드 문구를 만들어드려요</p>
-      </div>
-
-      <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:20}}>
-        <div>
-          <label style={{fontSize:12,fontWeight:600,color:"#5a4a3a",marginBottom:4,display:"block"}}>누구에게? *</label>
-          <select value={rel} onChange={e=>setRel(e.target.value)} style={s.select}>
-            <option value="">관계를 선택하세요</option>
-            {RELS.map(r=><option key={r} value={r}>{r}</option>)}
-          </select>
-        </div>
-        <div>
-          <label style={{fontSize:12,fontWeight:600,color:"#5a4a3a",marginBottom:4,display:"block"}}>어떤 상황? *</label>
-          <select value={occ} onChange={e=>setOcc(e.target.value)} style={s.select}>
-            <option value="">상황을 선택하세요</option>
-            {OCCS.map(o=><option key={o} value={o}>{o}</option>)}
-          </select>
-        </div>
-        <div>
-          <label style={{fontSize:12,fontWeight:600,color:"#5a4a3a",marginBottom:4,display:"block"}}>문구 톤</label>
-          <select value={tone} onChange={e=>setTone(e.target.value)} style={s.select}>
-            <option value="">기본 (따뜻한 톤)</option>
-            {TONES.map(t=><option key={t} value={t}>{t}</option>)}
-          </select>
-        </div>
-        <div>
-          <label style={{fontSize:12,fontWeight:600,color:"#5a4a3a",marginBottom:4,display:"block"}}>받는 사람 이름 (선택)</label>
-          <input value={name} onChange={e=>setName(e.target.value)} placeholder="예) 민수, 엄마" style={s.input}/>
-        </div>
-        <div>
-          <label style={{fontSize:12,fontWeight:600,color:"#5a4a3a",marginBottom:4,display:"block"}}>추가로 전하고 싶은 말 (선택)</label>
-          <input value={extra} onChange={e=>setExtra(e.target.value)} placeholder="예) 항상 야근하느라 고생 많아" style={s.input}/>
-        </div>
-      </div>
-
-      <button onClick={generate} disabled={!rel||!occ||loading} style={{width:"100%",padding:15,background:(!rel||!occ)?"#ccc":`linear-gradient(135deg,${P},${P2})`,color:"#fff",border:"none",borderRadius:14,fontSize:15,fontWeight:600,cursor:(!rel||!occ)?"not-allowed":"pointer",boxShadow:(!rel||!occ)?"none":`0 6px 24px ${P}30`}}>
-        {loading?"문구를 만들고 있어요... ✍️":"카드 문구 만들기 ✨"}
-      </button>
-
-      {loading&&<div style={{textAlign:"center",padding:"40px 0"}}><div style={{width:40,height:40,margin:"0 auto 16px",border:`3px solid #e6dfd4`,borderTop:`3px solid ${P}`,borderRadius:"50%",animation:"spin 1s linear infinite"}}/><p style={{fontSize:13,color:"#9a8a7a"}}>AI가 마음을 담은 문구를 작성하고 있어요</p></div>}
-
-      {msgs.length>0&&(
-        <div style={{marginTop:24}}>
-          <div style={{fontSize:11,letterSpacing:2,color:P,fontWeight:700,marginBottom:12}}>AI 생성 완료</div>
-          {msgs.map((m,i)=>(
-            <div key={i} style={{background:"rgba(255,255,255,.9)",border:i===0?`2px solid ${P}`:"1.5px solid #ebe4dc",borderRadius:16,padding:18,marginBottom:12,position:"relative",animation:`up .3s ease ${i*.1}s both`}}>
-              {i===0&&<div style={{position:"absolute",top:10,right:12,background:P,color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>BEST</div>}
-              <div style={{fontFamily:"'Gowun Batang',serif",fontSize:15,color:"#2d2420",lineHeight:1.8,marginBottom:12,whiteSpace:"pre-wrap"}}>{m}</div>
-              <button onClick={()=>copy(i)} style={{display:"flex",alignItems:"center",gap:6,background:copied===i?`${P}15`:"rgba(0,0,0,.04)",border:`1px solid ${copied===i?P:"#e6dfd4"}`,borderRadius:8,padding:"7px 14px",fontSize:12,color:copied===i?P:"#5a4a3a",fontWeight:600,cursor:"pointer"}}>
-                {copied===i?"✅ 복사됨!":"📋 문구 복사하기"}
-              </button>
-            </div>
-          ))}
-          <button onClick={generate} style={{width:"100%",padding:12,background:"rgba(255,255,255,.7)",border:`1.5px solid #e6dfd4`,borderRadius:12,fontSize:13,color:"#5a4a3a",fontWeight:600,cursor:"pointer",marginTop:4}}>🔄 다른 문구 만들기</button>
-        </div>
-      )}
-
-      <div style={{textAlign:"center",marginTop:32}}>
-        <a href="/app" style={{display:"inline-flex",alignItems:"center",gap:6,background:`${P}08`,border:`1px solid ${P}20`,borderRadius:10,padding:"10px 20px",textDecoration:"none",fontSize:13,color:P,fontWeight:600}}>🎁 선물도 추천받기 →</a>
-      </div>
-
-      <div style={{textAlign:"center",marginTop:24,fontSize:10,color:"#c8b8a8"}}>© 2025 마로 · 마음을 새기는 선물</div>
+  <!-- Preview -->
+  <div class="preview-wrap">
+    <div class="card-preview" id="cardPreview">
+      <div class="card-deco"><div class="card-pattern"></div></div>
+      <div class="card-theme-icon" id="previewIcon">💝</div>
+      <div class="card-to" id="previewTo">받는 사람에게</div>
+      <div class="card-message" id="previewMsg">여기에 메시지가 보여요</div>
+      <div class="card-from" id="previewFrom">보내는 사람</div>
+      <div class="card-brand">MARO</div>
     </div>
-  );
+  </div>
+
+  <!-- Actions -->
+  <div class="action-row">
+    <button class="action-btn" onclick="saveAsImage()">📷 이미지 저장</button>
+    <button class="action-btn primary" onclick="shareCard()">💌 카드 공유</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer class="maro-footer">
+  <a href="index.html">MARO</a>
+</footer>
+
+<script>
+// ── 테마 ──
+const THEMES = [
+  { id:'love', emoji:'💝', label:'사랑', bg:'#fff0ef', accent:'#c4756e' },
+  { id:'thanks', emoji:'🙏', label:'감사', bg:'#f5f0e8', accent:'#b8956a' },
+  { id:'cheer', emoji:'🌟', label:'응원', bg:'#fef9e7', accent:'#d4a843' },
+  { id:'congrats', emoji:'🎊', label:'축하', bg:'#f0f4e8', accent:'#7a9e6b' },
+  { id:'comfort', emoji:'🫂', label:'위로', bg:'#eef0f8', accent:'#7b8ab8' },
+  { id:'miss', emoji:'🌙', label:'그리움', bg:'#f3eef8', accent:'#9b7bb8' },
+  { id:'bday', emoji:'🎂', label:'생일', bg:'#fff3e8', accent:'#d48a5a' },
+  { id:'daily', emoji:'☺️', label:'일상', bg:'#f0f5f0', accent:'#6b9e78' },
+];
+
+let currentTheme = THEMES[0];
+
+// 테마 그리드 렌더
+const grid = document.getElementById('themeGrid');
+THEMES.forEach((t, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'theme-btn' + (i === 0 ? ' active' : '');
+  btn.style.background = t.bg;
+  btn.innerHTML = `<span class="theme-emoji">${t.emoji}</span><span class="theme-label">${t.label}</span>`;
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTheme = t;
+    updatePreview();
+  });
+  grid.appendChild(btn);
+});
+
+// ── 프리뷰 업데이트 ──
+function updatePreview() {
+  const to = document.getElementById('toName').value.trim();
+  const msg = document.getElementById('msgBody').value;
+  const from = document.getElementById('fromName').value.trim();
+
+  document.getElementById('previewIcon').textContent = currentTheme.emoji;
+  document.getElementById('previewTo').textContent = to || '받는 사람에게';
+  document.getElementById('previewMsg').textContent = msg || '여기에 메시지가 보여요';
+  document.getElementById('previewFrom').textContent = from || '보내는 사람';
+  document.getElementById('charCount').textContent = msg.length;
+
+  const card = document.getElementById('cardPreview');
+  card.style.background = currentTheme.bg;
+  card.querySelector('.card-to').style.color = currentTheme.accent;
+  card.querySelector('.card-brand').style.color = currentTheme.accent + '80';
 }
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
+// ── 이미지 저장 (canvas) ──
+function saveAsImage() {
+  const card = document.getElementById('cardPreview');
+  const to = document.getElementById('previewTo').textContent;
+  const msg = document.getElementById('previewMsg').textContent;
+  const from = document.getElementById('previewFrom').textContent;
+
+  const canvas = document.createElement('canvas');
+  const scale = 2;
+  canvas.width = 640 * scale;
+  canvas.height = 480 * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+
+  // 배경
+  ctx.fillStyle = currentTheme.bg;
+  roundRect(ctx, 0, 0, 640, 480, 24);
+  ctx.fill();
+
+  // 데코
+  ctx.globalAlpha = 0.06;
+  ctx.fillStyle = currentTheme.accent;
+  for (let i = 0; i < 20; i++) {
+    ctx.beginPath();
+    ctx.arc(Math.random()*640, Math.random()*480, Math.random()*3+1, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // 아이콘
+  ctx.font = '48px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(currentTheme.emoji, 320, 120);
+
+  // TO
+  ctx.font = '700 13px "Gowun Batang", serif';
+  ctx.fillStyle = currentTheme.accent;
+  ctx.fillText(to, 320, 165);
+
+  // 메시지
+  ctx.font = '18px "Gowun Batang", serif';
+  ctx.fillStyle = '#3d2f2a';
+  wrapText(ctx, msg, 320, 210, 480, 32);
+
+  // FROM
+  ctx.font = '14px "Gowun Batang", serif';
+  ctx.fillStyle = '#8a7a73';
+  ctx.fillText(from, 320, 420);
+
+  // MARO
+  ctx.font = '700 10px "Gowun Batang", serif';
+  ctx.fillStyle = currentTheme.accent + '60';
+  ctx.textAlign = 'right';
+  ctx.fillText('MARO', 620, 465);
+
+  // 다운로드
+  canvas.toBlob(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'maro-card.png';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('카드가 저장되었어요 📷');
+  });
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH) {
+  const lines = text.split('\n');
+  let dy = y;
+  lines.forEach(line => {
+    const chars = line.split('');
+    let current = '';
+    chars.forEach(ch => {
+      if (ctx.measureText(current + ch).width > maxW) {
+        ctx.fillText(current, x, dy);
+        current = ch;
+        dy += lineH;
+      } else {
+        current += ch;
+      }
+    });
+    ctx.fillText(current, x, dy);
+    dy += lineH;
+  });
+}
+
+// ── 공유 ──
+function shareCard() {
+  const to = document.getElementById('toName').value.trim() || '소중한 사람';
+  const msg = document.getElementById('msgBody').value.trim();
+  if (!msg) { showToast('메시지를 입력해주세요'); return; }
+
+  const text = `💌 ${to}에게 보내는 마음\n\n${msg}\n\n— 마로에서 마음을 새기다`;
+
+  if (navigator.share) {
+    navigator.share({ title: '마로 메시지 카드', text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('메시지가 복사되었어요 ✨');
+    });
+  }
+}
+
+// ── 토스트 ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
 </script>
 </body>
 </html>

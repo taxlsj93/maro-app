@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>오늘의 추천 — 마로</title>
+<meta name="description" content="마로가 오늘 추천하는 선물. 마음을 새기는 선물.">
+<meta property="og:title" content="오늘의 추천 — 마로">
+<meta property="og:description" content="오늘, 이 선물은 어떨까요?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --terra:#c4756e;--terra-dark:#a85e58;--terra-light:#e8ada8;--terra-pale:#fdf5f4;
+  --cream:#faf6f1;--warm-gray:#6b5e57;--text:#3d2f2a;--text-light:#8a7a73;
+  --card-bg:#fff;--shadow:0 2px 16px rgba(164,94,88,.10);
+}
+html{font-size:16px}
+body{
+  font-family:'Gowun Batang',serif;background:var(--cream);color:var(--text);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+
+/* Header */
+.maro-header{
+  text-align:center;padding:40px 20px 0;
+}
+.maro-logo{
+  font-size:.85rem;letter-spacing:6px;text-transform:uppercase;color:var(--terra);
+  font-weight:700;margin-bottom:4px;
+}
+.maro-tagline{font-size:.72rem;color:var(--text-light);letter-spacing:2px}
+
+/* Hero */
+.hero{
+  text-align:center;padding:36px 20px 20px;
+}
+.hero-date{
+  display:inline-block;font-size:.7rem;color:var(--terra);
+  border:1px solid var(--terra-light);border-radius:20px;
+  padding:4px 16px;margin-bottom:16px;letter-spacing:1px;
+}
+.hero h1{
+  font-size:1.6rem;font-weight:700;line-height:1.5;margin-bottom:8px;
+  color:var(--text);
+}
+.hero h1 em{font-style:normal;color:var(--terra)}
+.hero-sub{font-size:.85rem;color:var(--text-light);line-height:1.6}
+
+/* Cards */
+.picks{padding:12px 16px 40px;max-width:480px;margin:0 auto}
+.pick-card{
+  background:var(--card-bg);border-radius:16px;overflow:hidden;
+  box-shadow:var(--shadow);margin-bottom:20px;
+  transition:transform .25s ease,box-shadow .25s ease;
+  animation:cardIn .6s ease both;
+}
+.pick-card:nth-child(1){animation-delay:.1s}
+.pick-card:nth-child(2){animation-delay:.25s}
+.pick-card:nth-child(3){animation-delay:.4s}
+.pick-card:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(164,94,88,.15)}
+
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.pick-rank{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--terra);color:#fff;
+  font-size:.68rem;font-weight:700;letter-spacing:1px;
+  padding:6px 14px;border-radius:0 0 12px 0;
+}
+.pick-img-wrap{
+  width:100%;aspect-ratio:5/3;background:var(--terra-pale);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  position:relative;
+}
+.pick-img-wrap .emoji-placeholder{font-size:3.5rem}
+.pick-img-wrap img{width:100%;height:100%;object-fit:cover}
+
+.pick-body{padding:20px}
+.pick-occasion{
+  font-size:.68rem;color:var(--terra);font-weight:700;
+  letter-spacing:1px;margin-bottom:6px;
+}
+.pick-name{font-size:1.05rem;font-weight:700;line-height:1.5;margin-bottom:6px}
+.pick-reason{
+  font-size:.82rem;color:var(--text-light);line-height:1.7;
+  margin-bottom:14px;
+  border-left:2px solid var(--terra-light);padding-left:12px;
+}
+.pick-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+}
+.pick-price{font-size:1.1rem;font-weight:700;color:var(--terra-dark)}
+.pick-tags{display:flex;gap:4px;flex-wrap:wrap}
+.pick-tag{
+  font-size:.62rem;background:var(--terra-pale);color:var(--terra);
+  padding:3px 8px;border-radius:10px;
+}
+.pick-cta{
+  display:block;width:100%;text-align:center;
+  background:var(--terra);color:#fff;font-family:'Gowun Batang',serif;
+  font-size:.88rem;font-weight:700;padding:14px;
+  border:none;border-radius:12px;cursor:pointer;
+  text-decoration:none;letter-spacing:1px;
+  transition:background .2s;
+}
+.pick-cta:hover{background:var(--terra-dark)}
+
+/* Refresh hint */
+.refresh-hint{
+  text-align:center;padding:0 20px 40px;
+  font-size:.75rem;color:var(--text-light);line-height:1.7;
+}
+.refresh-hint span{color:var(--terra)}
+
+/* Footer */
+.maro-footer{
+  text-align:center;padding:24px 20px 36px;
+  border-top:1px solid rgba(196,117,110,.12);
+}
+.maro-footer a{
+  color:var(--terra);text-decoration:none;font-size:.78rem;font-weight:700;
+  letter-spacing:2px;
+}
+.footer-sub{font-size:.68rem;color:var(--text-light);margin-top:6px}
+
+@media(max-width:380px){
+  .hero h1{font-size:1.35rem}
+  .pick-body{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<header class="maro-header">
+  <div class="maro-logo">MARO</div>
+  <div class="maro-tagline">마음을 새기는 선물</div>
+</header>
+
+<section class="hero">
+  <div class="hero-date" id="todayDate"></div>
+  <h1>오늘, <em>이 마음</em>은<br>어떨까요?</h1>
+  <p class="hero-sub">마로가 오늘의 관계와 계절에 맞춰<br>정성스럽게 골라봤어요</p>
+</section>
+
+<section class="picks" id="picksList"></section>
+
+<div class="refresh-hint">
+  매일 자정, 새로운 추천이 업데이트돼요<br>
+  <span>내일도 마로를 찾아주세요 ☺</span>
+</div>
+
+<footer class="maro-footer">
+  <a href="index.html">MARO</a>
+  <div class="footer-sub">이 페이지는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+</footer>
+
+<script>
+// ── 선물 DB (날짜별 로테이션) ──
+const GIFT_POOL = [
+  // 세트 0
+  [
+    {
+      rank: "오늘의 첫 번째",
+      occasion: "연인에게 · 기념일",
+      name: "조말론 우드 세이지 앤 씨 솔트 코롱 50ml",
+      reason: "향수는 만날 때마다 떠오르는 기억이 돼요. 자연스러운 향이라 부담 없이 매일 쓸 수 있어요.",
+      price: "89,000원대",
+      tags: ["#기념일", "#연인", "#센스있는"],
+      emoji: "🌿",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 두 번째",
+      occasion: "친구에게 · 생일",
+      name: "일리 프란시스 Y3.3 캡슐 커피머신",
+      reason: "매일 아침 나를 떠올리며 커피 한 잔. 실용적이면서도 감성이 있는 선물이에요.",
+      price: "79,000원대",
+      tags: ["#생일", "#친구", "#실용적"],
+      emoji: "☕",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 세 번째",
+      occasion: "부모님께 · 감사",
+      name: "마켓컬리 프리미엄 과일 선물세트",
+      reason: "건강을 챙기는 마음이 담긴 과일 선물. 정성이 느껴지면서도 부담스럽지 않아요.",
+      price: "45,000원대",
+      tags: ["#부모님", "#감사", "#건강"],
+      emoji: "🍇",
+      link: "https://link.coupang.com/a/cmGMcs"
+    }
+  ],
+  // 세트 1
+  [
+    {
+      rank: "오늘의 첫 번째",
+      occasion: "연인에게 · 일상",
+      name: "이솝 레저렉션 핸드크림 듀오 세트",
+      reason: "거창하지 않지만 '너를 생각해'라는 메시지가 담긴 선물. 매일 쓸 때마다 떠올려요.",
+      price: "52,000원대",
+      tags: ["#일상", "#연인", "#감성"],
+      emoji: "🧴",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 두 번째",
+      occasion: "직장 동료에게 · 축하",
+      name: "몰스킨 클래식 노트북 라지 하드커버",
+      reason: "승진이나 이직을 축하하는 의미. 새로운 시작에 어울리는 격조 있는 선물이에요.",
+      price: "32,000원대",
+      tags: ["#축하", "#동료", "#격식"],
+      emoji: "📓",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 세 번째",
+      occasion: "은사님께 · 감사",
+      name: "TWG 티 컬렉션 선물 세트",
+      reason: "고급스러운 차 한 잔의 여유를 드리는 선물. 감사의 마음을 품격 있게 전해요.",
+      price: "58,000원대",
+      tags: ["#감사", "#선생님", "#품격"],
+      emoji: "🍵",
+      link: "https://link.coupang.com/a/cmGMcs"
+    }
+  ],
+  // 세트 2
+  [
+    {
+      rank: "오늘의 첫 번째",
+      occasion: "친구에게 · 위로",
+      name: "록시땅 쉐어버터 핸드크림 트리오 세트",
+      reason: "힘든 시간을 보내는 친구에게. 작지만 '네 곁에 있어'라는 마음을 전해요.",
+      price: "28,000원대",
+      tags: ["#위로", "#친구", "#따뜻한"],
+      emoji: "🤲",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 두 번째",
+      occasion: "연인에게 · 깜짝",
+      name: "마샬 엠버튼 II 블루투스 스피커",
+      reason: "아무 이유 없이 주는 선물이 가장 감동적이에요. 함께 음악 들으며 추억을 쌓아요.",
+      price: "129,000원대",
+      tags: ["#깜짝", "#연인", "#특별한"],
+      emoji: "🔊",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 세 번째",
+      occasion: "가족에게 · 건강",
+      name: "정관장 홍삼정 에브리타임 밸런스",
+      reason: "건강을 챙기는 가장 한국적인 마음 표현. 부모님도, 형제도 부담 없이 받아요.",
+      price: "35,000원대",
+      tags: ["#건강", "#가족", "#정성"],
+      emoji: "🎁",
+      link: "https://link.coupang.com/a/cmGMcs"
+    }
+  ],
+  // 세트 3
+  [
+    {
+      rank: "오늘의 첫 번째",
+      occasion: "배우자에게 · 고마움",
+      name: "르 라보 상탈 33 오드 퍼퓸 50ml",
+      reason: "옆에 있어줘서 고맙다는 한마디 대신, 특별한 향으로 마음을 전해보세요.",
+      price: "195,000원대",
+      tags: ["#고마움", "#배우자", "#럭셔리"],
+      emoji: "✨",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 두 번째",
+      occasion: "친구에게 · 축하",
+      name: "와인 앤 모어 프리미엄 와인 선물세트",
+      reason: "결혼, 승진, 합격… 축하의 자리에 함께 나누는 한 잔. 기쁨이 배가 돼요.",
+      price: "55,000원대",
+      tags: ["#축하", "#친구", "#함께"],
+      emoji: "🍷",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 세 번째",
+      occasion: "시댁·처가에 · 명절",
+      name: "설화수 자음생 크림 세트",
+      reason: "격식을 갖추면서도 진심이 느껴지는 선물. 조심스러운 관계에서 실수하지 않아요.",
+      price: "89,000원대",
+      tags: ["#명절", "#시댁", "#격식"],
+      emoji: "🌸",
+      link: "https://link.coupang.com/a/cmGMcs"
+    }
+  ],
+  // 세트 4
+  [
+    {
+      rank: "오늘의 첫 번째",
+      occasion: "연인에게 · 100일",
+      name: "판도라 시그니처 하트 팔찌",
+      reason: "100일의 무게를 담기에 딱 좋은 선물. 매일 손목에서 두 사람의 이야기를 해요.",
+      price: "79,000원대",
+      tags: ["#100일", "#연인", "#의미있는"],
+      emoji: "💝",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 두 번째",
+      occasion: "부모님께 · 어버이날",
+      name: "다이슨 에어랩 멀티 스타일러",
+      reason: "엄마의 일상에 작은 사치를. '엄마도 자기 자신을 위해 쓰세요'라는 마음이에요.",
+      price: "499,000원대",
+      tags: ["#어버이날", "#엄마", "#특별한"],
+      emoji: "💐",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 세 번째",
+      occasion: "동료에게 · 퇴사",
+      name: "파커 소네트 만년필 스틸 GT",
+      reason: "새로운 챕터를 응원하는 마음. 만년필은 '앞으로의 이야기를 써내려가세요'라는 뜻이에요.",
+      price: "120,000원대",
+      tags: ["#퇴사", "#동료", "#응원"],
+      emoji: "🖋️",
+      link: "https://link.coupang.com/a/cmGMcs"
+    }
+  ],
+  // 세트 5
+  [
+    {
+      rank: "오늘의 첫 번째",
+      occasion: "친구에게 · 집들이",
+      name: "딥티크 베 캔들 190g",
+      reason: "새 공간을 따뜻하게 채워주는 향기. 집들이 선물로 센스와 격을 모두 갖췄어요.",
+      price: "65,000원대",
+      tags: ["#집들이", "#친구", "#센스"],
+      emoji: "🕯️",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 두 번째",
+      occasion: "연인에게 · 크리스마스",
+      name: "애플 에어팟 프로 2",
+      reason: "매일 쓰는 물건이라 줄 때마다 떠올려요. 실용 + 감성, 두 마리 토끼를 잡아요.",
+      price: "309,000원대",
+      tags: ["#크리스마스", "#연인", "#실용"],
+      emoji: "🎧",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 세 번째",
+      occasion: "선생님께 · 스승의날",
+      name: "스타벅스 e-Gift Card 5만원권",
+      reason: "부담 없이 감사를 전하는 가장 깔끔한 방법. 선생님이 직접 원하는 걸 고를 수 있어요.",
+      price: "50,000원",
+      tags: ["#스승의날", "#선생님", "#깔끔한"],
+      emoji: "☕",
+      link: "https://link.coupang.com/a/cmGMcs"
+    }
+  ],
+  // 세트 6
+  [
+    {
+      rank: "오늘의 첫 번째",
+      occasion: "배우자에게 · 결혼기념일",
+      name: "티파니 T 스마일 펜던트 목걸이",
+      reason: "결혼기념일은 처음의 설렘을 되살리는 날. 매일 목에 걸고 다니는 우리의 약속이에요.",
+      price: "350,000원대",
+      tags: ["#기념일", "#배우자", "#럭셔리"],
+      emoji: "💎",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 두 번째",
+      occasion: "친구에게 · 응원",
+      name: "키엘 울트라 훼이셜 크림 세트",
+      reason: "시험 준비, 취준… 지친 친구에게. '화이팅' 대신 실질적인 응원을 보내세요.",
+      price: "42,000원대",
+      tags: ["#응원", "#친구", "#실용적"],
+      emoji: "💪",
+      link: "https://link.coupang.com/a/cmGMcs"
+    },
+    {
+      rank: "오늘의 세 번째",
+      occasion: "조부모님께 · 안부",
+      name: "곰표 프리미엄 견과류 선물세트",
+      reason: "자주 찾아뵙지 못하는 미안함을 담아. 건강한 간식으로 마음을 전하세요.",
+      price: "25,000원대",
+      tags: ["#안부", "#조부모", "#건강"],
+      emoji: "🥜",
+      link: "https://link.coupang.com/a/cmGMcs"
+    }
+  ]
+];
+
+// ── 날짜 기반 세트 선택 ──
+function getTodaySet(){
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((now - start) / 86400000);
+  return GIFT_POOL[dayOfYear % GIFT_POOL.length];
+}
+
+function formatDate(){
+  const d = new Date();
+  const days = ['일','월','화','수','목','금','토'];
+  return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 ${days[d.getDay()]}요일`;
+}
+
+// ── 렌더 ──
+document.getElementById('todayDate').textContent = formatDate();
+
+const picks = getTodaySet();
+const container = document.getElementById('picksList');
+
+picks.forEach((g, i) => {
+  const card = document.createElement('div');
+  card.className = 'pick-card';
+  card.innerHTML = `
+    <div class="pick-rank">${g.rank}</div>
+    <div class="pick-img-wrap">
+      <span class="emoji-placeholder">${g.emoji}</span>
+    </div>
+    <div class="pick-body">
+      <div class="pick-occasion">${g.occasion}</div>
+      <div class="pick-name">${g.name}</div>
+      <div class="pick-reason">${g.reason}</div>
+      <div class="pick-meta">
+        <span class="pick-price">${g.price}</span>
+        <div class="pick-tags">${g.tags.map(t=>`<span class="pick-tag">${t}</span>`).join('')}</div>
+      </div>
+      <a href="${g.link}" target="_blank" rel="noopener" class="pick-cta">쿠팡에서 보기 →</a>
+    </div>
+  `;
+  container.appendChild(card);
+});
+</script>
+</body>
+</html>
