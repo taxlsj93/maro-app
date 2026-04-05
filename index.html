@@ -26,293 +26,104 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--brown);overflow-x:hidden}
-
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 5%;height:64px;
-  background:rgba(250,246,238,.92);backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(196,117,110,.12);
-  transition:box-shadow .3s;
-}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px;background:rgba(250,246,238,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(196,117,110,.12);transition:box-shadow .3s}
 .nav-brand{display:flex;align-items:center;gap:10px}
-.nav-logo-mark{
-  width:32px;height:32px;border-radius:10px;
-  background:linear-gradient(135deg,var(--terra),var(--terra2));
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;color:#fff;font-weight:700;
-  font-family:'Gowun Batang',serif;
-}
+.nav-logo-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--terra),var(--terra2));display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:700;font-family:'Gowun Batang',serif}
 .nav-name{font-family:'Gowun Batang',serif;font-size:18px;font-weight:700;color:var(--terra2)}
 .nav-tag{font-size:10px;color:var(--brown3);letter-spacing:1.5px;margin-left:2px;display:none}
-.nav-cta{
-  background:var(--terra);color:#fff;border:none;
-  padding:9px 22px;border-radius:50px;font-size:13px;
-  font-family:'Noto Sans KR',sans-serif;cursor:pointer;
-  text-decoration:none;font-weight:500;
-  transition:all .2s;display:inline-block;
-}
+.nav-cta{background:var(--terra);color:#fff;border:none;padding:9px 22px;border-radius:50px;font-size:13px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;text-decoration:none;font-weight:500;transition:all .2s;display:inline-block}
 .nav-cta:hover{background:var(--terra2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(196,117,110,.32)}
-
-/* ── HERO ── */
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:100px 5% 80px;text-align:center;
-  position:relative;overflow:hidden;
-}
-.hero-bg{
-  position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 65% 55% at 15% 25%,rgba(196,117,110,.07) 0%,transparent 65%),
-    radial-gradient(ellipse 55% 60% at 85% 75%,rgba(212,165,122,.08) 0%,transparent 65%);
-}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 5% 80px;text-align:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 65% 55% at 15% 25%,rgba(196,117,110,.07) 0%,transparent 65%),radial-gradient(ellipse 55% 60% at 85% 75%,rgba(212,165,122,.08) 0%,transparent 65%)}
 .hero-thread{position:absolute;inset:0;pointer-events:none}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  border:1px solid rgba(196,117,110,.25);border-radius:50px;
-  padding:6px 18px;font-size:11px;color:var(--brown3);
-  letter-spacing:2px;margin-bottom:36px;
-  background:rgba(255,255,255,.5);backdrop-filter:blur(8px);
-  animation:fadeUp .7s ease both;
-}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(196,117,110,.25);border-radius:50px;padding:6px 18px;font-size:11px;color:var(--brown3);letter-spacing:2px;margin-bottom:36px;background:rgba(255,255,255,.5);backdrop-filter:blur(8px);animation:fadeUp .7s ease both}
 .hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--terra);flex-shrink:0}
-.hero-h1{
-  font-family:'Gowun Batang',serif;
-  font-size:clamp(38px,7vw,76px);
-  line-height:1.18;font-weight:700;
-  color:var(--brown);margin-bottom:12px;
-  animation:fadeUp .7s ease .08s both;
-}
+.hero-h1{font-family:'Gowun Batang',serif;font-size:clamp(38px,7vw,76px);line-height:1.18;font-weight:700;color:var(--brown);margin-bottom:12px;animation:fadeUp .7s ease .08s both}
 .hero-h1 em{color:var(--terra);font-style:normal}
-.hero-h2{
-  font-family:'Gowun Batang',serif;
-  font-size:clamp(18px,3vw,30px);
-  color:var(--brown2);font-weight:400;
-  margin-bottom:28px;
-  animation:fadeUp .7s ease .14s both;
-}
-.hero-desc{
-  font-size:15px;color:var(--brown3);line-height:1.9;
-  max-width:460px;margin:0 auto 52px;font-weight:300;
-  animation:fadeUp .7s ease .2s both;
-}
+.hero-h2{font-family:'Gowun Batang',serif;font-size:clamp(18px,3vw,30px);color:var(--brown2);font-weight:400;margin-bottom:28px;animation:fadeUp .7s ease .14s both}
+.hero-desc{font-size:15px;color:var(--brown3);line-height:1.9;max-width:460px;margin:0 auto 52px;font-weight:300;animation:fadeUp .7s ease .2s both}
 .hero-desc strong{color:var(--brown2);font-weight:500}
 .hero-actions{display:flex;flex-direction:column;align-items:center;gap:12px;animation:fadeUp .7s ease .26s both}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--terra);color:#fff;border:none;
-  padding:17px 44px;border-radius:50px;
-  font-family:'Gowun Batang',serif;font-size:16px;
-  cursor:pointer;text-decoration:none;
-  transition:all .25s;
-  box-shadow:0 6px 28px rgba(196,117,110,.28);
-}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--terra);color:#fff;border:none;padding:17px 44px;border-radius:50px;font-family:'Gowun Batang',serif;font-size:16px;cursor:pointer;text-decoration:none;transition:all .25s;box-shadow:0 6px 28px rgba(196,117,110,.28)}
 .btn-primary:hover{background:var(--terra2);transform:translateY(-2px);box-shadow:0 10px 36px rgba(196,117,110,.36)}
 .hero-note{font-size:12px;color:var(--brown4);font-weight:300;letter-spacing:.5px}
-
-/* 떠다니는 오브젝트 */
 .fl{position:absolute;opacity:.1;user-select:none;pointer-events:none;font-size:28px;animation:fl 7s ease-in-out infinite}
 .fl:nth-child(1){top:14%;left:7%;animation-delay:0s;font-size:24px}
 .fl:nth-child(2){top:22%;right:9%;animation-delay:2s;font-size:32px}
 .fl:nth-child(3){bottom:28%;left:5%;animation-delay:4s;font-size:20px}
 .fl:nth-child(4){bottom:18%;right:7%;animation-delay:6s;font-size:26px}
-
-/* ── DIVIDER ── */
 .sec-div{display:flex;justify-content:center;padding:16px 0}
 .sec-div-line{width:1px;height:56px;background:linear-gradient(to bottom,var(--cream3),transparent)}
-
-/* ── SECTIONS COMMON ── */
 .sec{padding:90px 5%}
 .sec-inner{max-width:880px;margin:0 auto}
-.sec-label{
-  font-size:10px;letter-spacing:3px;color:var(--terra);
-  font-weight:600;text-align:center;margin-bottom:14px;
-  text-transform:uppercase;
-}
-.sec-title{
-  font-family:'Gowun Batang',serif;
-  font-size:clamp(24px,4vw,40px);
-  text-align:center;line-height:1.5;
-  margin-bottom:56px;color:var(--brown);
-}
+.sec-label{font-size:10px;letter-spacing:3px;color:var(--terra);font-weight:600;text-align:center;margin-bottom:14px;text-transform:uppercase}
+.sec-title{font-family:'Gowun Batang',serif;font-size:clamp(24px,4vw,40px);text-align:center;line-height:1.5;margin-bottom:56px;color:var(--brown)}
 .sec-title em{color:var(--terra);font-style:normal}
-
-/* ── PROBLEM ── */
 .problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.prob-card{
-  background:var(--white);border:1px solid var(--cream3);
-  border-radius:20px;padding:28px 24px;
-  transition:all .25s;position:relative;overflow:hidden;
-}
-.prob-card::after{
-  content:'';position:absolute;
-  left:0;top:0;bottom:0;width:3px;
-  border-radius:20px 0 0 20px;
-  background:linear-gradient(to bottom,var(--terra),var(--terra3));
-  opacity:0;transition:opacity .25s;
-}
+.prob-card{background:var(--white);border:1px solid var(--cream3);border-radius:20px;padding:28px 24px;transition:all .25s;position:relative;overflow:hidden}
+.prob-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:20px 0 0 20px;background:linear-gradient(to bottom,var(--terra),var(--terra3));opacity:0;transition:opacity .25s}
 .prob-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(45,32,24,.07)}
 .prob-card:hover::after{opacity:1}
 .prob-num{font-size:10px;letter-spacing:2px;color:var(--brown4);margin-bottom:12px;font-weight:400}
-.prob-q{
-  font-family:'Gowun Batang',serif;font-size:17px;
-  color:var(--brown);line-height:1.55;margin-bottom:10px;
-}
+.prob-q{font-family:'Gowun Batang',serif;font-size:17px;color:var(--brown);line-height:1.55;margin-bottom:10px}
 .prob-a{font-size:13px;color:var(--brown3);line-height:1.75;font-weight:300}
-
-/* ── VS ── */
 .vs-sec{background:var(--cream2);padding:90px 5%}
 .vs-grid{display:grid;grid-template-columns:1fr 56px 1fr;gap:16px;align-items:start;max-width:800px;margin:56px auto 0}
 .vs-col{background:var(--white);border:1px solid var(--cream3);border-radius:20px;padding:30px 26px}
 .vs-col.highlight{border:2px solid var(--terra);position:relative}
-.vs-col.highlight::before{
-  content:'마로';position:absolute;top:-13px;left:50%;transform:translateX(-50%);
-  background:var(--terra);color:#fff;font-size:11px;
-  font-family:'Gowun Batang',serif;padding:4px 16px;border-radius:20px;
-}
+.vs-col.highlight::before{content:'마로';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--terra);color:#fff;font-size:11px;font-family:'Gowun Batang',serif;padding:4px 16px;border-radius:20px}
 .vs-col-label{font-size:10px;letter-spacing:2px;color:var(--brown4);margin-bottom:20px;font-weight:400}
 .vs-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px;font-size:13px;color:var(--brown2);line-height:1.55}
-.vs-ic{
-  width:20px;height:20px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;flex-shrink:0;margin-top:1px;
-}
+.vs-ic{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
 .vs-ic.no{background:rgba(0,0,0,.06);color:var(--brown3)}
 .vs-ic.yes{background:rgba(196,117,110,.12);color:var(--terra)}
 .vs-mid{display:flex;align-items:center;justify-content:center}
-.vs-vs{
-  width:46px;height:46px;border-radius:50%;
-  background:var(--cream2);border:1px solid var(--cream3);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Gowun Batang',serif;font-size:13px;color:var(--brown3);
-}
-
-/* ── HOW ── */
+.vs-vs{width:46px;height:46px;border-radius:50%;background:var(--cream2);border:1px solid var(--cream3);display:flex;align-items:center;justify-content:center;font-family:'Gowun Batang',serif;font-size:13px;color:var(--brown3)}
 .steps{display:flex;flex-direction:column;gap:0;position:relative;max-width:640px;margin:56px auto 0}
-.steps::before{
-  content:'';position:absolute;left:27px;top:44px;bottom:44px;
-  width:1px;background:linear-gradient(to bottom,var(--terra),var(--terra3),var(--cream3));
-}
+.steps::before{content:'';position:absolute;left:27px;top:44px;bottom:44px;width:1px;background:linear-gradient(to bottom,var(--terra),var(--terra3),var(--cream3))}
 .step-row{display:flex;gap:28px;align-items:flex-start;padding:26px 0;position:relative}
-.step-n{
-  width:54px;height:54px;border-radius:50%;flex-shrink:0;
-  background:var(--white);border:2px solid var(--terra);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Gowun Batang',serif;font-size:18px;color:var(--terra);
-  font-weight:700;position:relative;z-index:1;
-  box-shadow:0 0 0 5px var(--cream);
-}
+.step-n{width:54px;height:54px;border-radius:50%;flex-shrink:0;background:var(--white);border:2px solid var(--terra);display:flex;align-items:center;justify-content:center;font-family:'Gowun Batang',serif;font-size:18px;color:var(--terra);font-weight:700;position:relative;z-index:1;box-shadow:0 0 0 5px var(--cream)}
 .step-done .step-n{background:linear-gradient(135deg,var(--terra),var(--terra2));color:#fff;border-color:var(--terra2)}
 .step-body{flex:1;padding-top:10px}
 .step-title{font-family:'Gowun Batang',serif;font-size:19px;color:var(--brown);margin-bottom:6px}
 .step-desc{font-size:13px;color:var(--brown3);line-height:1.75;font-weight:300}
-.step-tag{
-  display:inline-block;margin-top:8px;
-  background:rgba(196,117,110,.1);color:var(--terra);
-  border-radius:20px;padding:3px 12px;font-size:11px;font-weight:500;
-}
-
-/* ── SITUATIONS ── */
+.step-tag{display:inline-block;margin-top:8px;background:rgba(196,117,110,.1);color:var(--terra);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:500}
 .sit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:48px}
-.sit{
-  background:var(--white);border:1px solid var(--cream3);
-  border-radius:16px;padding:20px 10px;text-align:center;
-  transition:all .2s;cursor:default;
-}
+.sit{background:var(--white);border:1px solid var(--cream3);border-radius:16px;padding:20px 10px;text-align:center;transition:all .2s;cursor:default}
 .sit:hover{border-color:var(--terra);background:rgba(196,117,110,.04);transform:translateY(-3px)}
 .sit-em{font-size:26px;display:block;margin-bottom:8px}
 .sit-lb{font-size:12px;color:var(--brown2);font-weight:400}
-
-/* ── FEATURES ── */
 .feat-sec{background:var(--cream2);padding:90px 5%}
 .feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;max-width:880px;margin:0 auto}
-.feat-card{
-  background:var(--white);border:1px solid var(--cream3);
-  border-radius:20px;padding:30px 24px;transition:all .25s;
-}
+.feat-card{background:var(--white);border:1px solid var(--cream3);border-radius:20px;padding:30px 24px;transition:all .25s}
 .feat-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(45,32,24,.07)}
-.feat-icon{
-  width:48px;height:48px;border-radius:14px;
-  background:rgba(196,117,110,.1);
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;margin-bottom:18px;
-}
+.feat-icon{width:48px;height:48px;border-radius:14px;background:rgba(196,117,110,.1);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px}
 .feat-title{font-family:'Gowun Batang',serif;font-size:17px;color:var(--brown);margin-bottom:10px}
 .feat-desc{font-size:13px;color:var(--brown3);line-height:1.8;font-weight:300}
-
-/* ── QUOTE ── */
-.quote-sec{
-  background:var(--brown);padding:90px 5%;
-  position:relative;overflow:hidden;
-}
-.quote-sec::before{
-  content:'';position:absolute;
-  top:-80px;right:-80px;width:320px;height:320px;
-  border-radius:50%;
-  background:rgba(196,117,110,.07);
-  pointer-events:none;
-}
+.quote-sec{background:var(--brown);padding:90px 5%;position:relative;overflow:hidden}
+.quote-sec::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:rgba(196,117,110,.07);pointer-events:none}
 .quote-inner{max-width:680px;margin:0 auto;text-align:center}
 .quote-sec .sec-label{color:var(--terra3)}
 .quote-mark{font-size:48px;color:var(--terra);opacity:.4;line-height:1;margin-bottom:12px;font-family:'Gowun Batang',serif}
-.quote-text{
-  font-family:'Gowun Batang',serif;
-  font-size:clamp(20px,3.2vw,32px);
-  color:rgba(250,246,238,.9);line-height:1.65;
-  margin-bottom:32px;font-weight:400;
-}
+.quote-text{font-family:'Gowun Batang',serif;font-size:clamp(20px,3.2vw,32px);color:rgba(250,246,238,.9);line-height:1.65;margin-bottom:32px;font-weight:400}
 .quote-text em{color:var(--terra3);font-style:normal}
 .review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
-.review{
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:16px;padding:22px 18px;text-align:left;
-}
+.review{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:22px 18px;text-align:left}
 .review-stars{color:var(--terra3);font-size:13px;margin-bottom:10px}
 .review-text{font-size:13px;color:rgba(250,246,238,.72);line-height:1.8;margin-bottom:14px;font-weight:300}
 .review-meta{font-size:10px;color:rgba(250,246,238,.35);letter-spacing:1px}
-
-/* ── CTA ── */
-.cta-sec{
-  padding:110px 5%;text-align:center;
-  background:var(--cream);position:relative;overflow:hidden;
-}
-.cta-sec::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(196,117,110,.06) 0%,transparent 70%);
-}
-.cta-h{
-  font-family:'Gowun Batang',serif;
-  font-size:clamp(26px,5vw,50px);
-  line-height:1.4;margin-bottom:18px;color:var(--brown);
-}
+.cta-sec{padding:110px 5%;text-align:center;background:var(--cream);position:relative;overflow:hidden}
+.cta-sec::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(196,117,110,.06) 0%,transparent 70%)}
+.cta-h{font-family:'Gowun Batang',serif;font-size:clamp(26px,5vw,50px);line-height:1.4;margin-bottom:18px;color:var(--brown)}
 .cta-h em{color:var(--terra);font-style:normal}
 .cta-desc{font-size:15px;color:var(--brown3);margin-bottom:48px;line-height:1.9;font-weight:300}
-.cta-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  border:1px solid rgba(196,117,110,.25);border-radius:50px;
-  padding:5px 16px;font-size:11px;color:var(--brown3);
-  letter-spacing:1.5px;margin-bottom:24px;
-  background:rgba(255,255,255,.6);
-}
+.cta-badge{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(196,117,110,.25);border-radius:50px;padding:5px 16px;font-size:11px;color:var(--brown3);letter-spacing:1.5px;margin-bottom:24px;background:rgba(255,255,255,.6)}
 .cta-note{font-size:12px;color:var(--brown4);margin-top:18px;font-weight:300}
-
-/* ── FOOTER ── */
-footer{
-  background:var(--brown);color:rgba(250,246,238,.45);
-  padding:48px 5% 32px;
-}
+footer{background:var(--brown);color:rgba(250,246,238,.45);padding:48px 5% 32px}
 .footer-inner{max-width:880px;margin:0 auto}
 .footer-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px}
 .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.footer-logo-mark{
-  width:30px;height:30px;border-radius:9px;
-  background:linear-gradient(135deg,var(--terra),var(--terra2));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Gowun Batang',serif;font-size:13px;color:#fff;font-weight:700;
-}
+.footer-logo-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--terra),var(--terra2));display:flex;align-items:center;justify-content:center;font-family:'Gowun Batang',serif;font-size:13px;color:#fff;font-weight:700}
 .footer-name{font-family:'Gowun Batang',serif;font-size:17px;color:rgba(250,246,238,.8)}
 .footer-tagline{font-size:11px;color:rgba(250,246,238,.3);letter-spacing:1.5px;margin-top:2px}
 .footer-links{display:flex;gap:20px}
@@ -320,15 +131,11 @@ footer{
 .footer-links a:hover{color:rgba(250,246,238,.7)}
 .footer-div{height:1px;background:rgba(250,246,238,.07);margin-bottom:24px}
 .footer-copy{font-size:11px;color:rgba(250,246,238,.22)}
-
-/* ── ANIMATIONS ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fl{0%,100%{transform:translateY(0)rotate(0deg)}33%{transform:translateY(-12px)rotate(4deg)}66%{transform:translateY(-5px)rotate(-2deg)}}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
 .reveal.on{opacity:1;transform:translateY(0)}
 .r1{transition-delay:.08s}.r2{transition-delay:.16s}.r3{transition-delay:.24s}
-
-/* ── RESPONSIVE ── */
 @media(max-width:720px){
   .problem-grid,.feat-grid,.review-grid{grid-template-columns:1fr}
   .vs-grid{grid-template-columns:1fr}
@@ -341,63 +148,28 @@ footer{
   .flow-steps{flex-wrap:wrap;gap:8px;justify-content:center}
   .flow-arrow{display:none}
 }
-
-/* ── TOOLS ── */
 .tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:880px;margin:0 auto}
-.tool-card{
-  background:var(--white);border:1px solid var(--cream3);border-radius:20px;
-  padding:28px 22px;text-align:center;position:relative;
-  transition:all .25s;display:block;
-}
+.tool-card{background:var(--white);border:1px solid var(--cream3);border-radius:20px;padding:28px 22px;text-align:center;position:relative;transition:all .25s;display:block}
 .tool-card:hover{transform:translateY(-6px);box-shadow:0 14px 40px rgba(196,117,110,.12);border-color:var(--terra3)}
-.tool-badge{
-  position:absolute;top:14px;right:14px;
-  background:linear-gradient(135deg,var(--terra),var(--terra2));
-  color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;
-  padding:3px 10px;border-radius:20px;
-}
+.tool-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,var(--terra),var(--terra2));color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:20px}
 .tool-icon{font-size:36px;margin-bottom:14px}
 .tool-title{font-family:'Gowun Batang',serif;font-size:16px;font-weight:700;color:var(--brown);margin-bottom:8px}
 .tool-desc{font-size:12px;color:var(--brown3);line-height:1.65;margin-bottom:14px}
-.tool-cta{
-  display:inline-block;font-size:12px;font-weight:600;color:var(--terra);
-  border:1px solid var(--terra3);border-radius:20px;padding:6px 18px;
-  transition:all .2s;
-}
+.tool-cta{display:inline-block;font-size:12px;font-weight:600;color:var(--terra);border:1px solid var(--terra3);border-radius:20px;padding:6px 18px;transition:all .2s}
 .tool-card:hover .tool-cta{background:var(--terra);color:#fff}
-
-.tools-flow{
-  background:var(--white);border:1px solid var(--cream3);border-radius:20px;
-  padding:28px 24px;max-width:700px;margin:36px auto 0;
-}
-.flow-label{
-  text-align:center;font-size:12px;font-weight:600;color:var(--terra);
-  letter-spacing:2px;margin-bottom:20px;
-}
+.tools-flow{background:var(--white);border:1px solid var(--cream3);border-radius:20px;padding:28px 24px;max-width:700px;margin:36px auto 0}
+.flow-label{text-align:center;font-size:12px;font-weight:600;color:var(--terra);letter-spacing:2px;margin-bottom:20px}
 .flow-steps{display:flex;align-items:center;justify-content:center;gap:12px}
-.flow-step{
-  text-align:center;padding:12px 16px;border-radius:14px;
-  background:var(--cream);border:1px solid var(--cream3);
-  font-size:11px;color:var(--brown2);line-height:1.5;min-width:80px;
-}
+.flow-step{text-align:center;padding:12px 16px;border-radius:14px;background:var(--cream);border:1px solid var(--cream3);font-size:11px;color:var(--brown2);line-height:1.5;min-width:80px}
 .flow-step span{font-size:22px;display:block;margin-bottom:6px}
 .flow-step.active{background:linear-gradient(135deg,rgba(196,117,110,.08),rgba(196,117,110,.14));border-color:var(--terra3);font-weight:600}
 .flow-arrow{color:var(--brown4);font-size:16px;font-weight:300}
-
 @media(max-width:680px){
   .tools-grid{grid-template-columns:1fr}
   .flow-steps{flex-wrap:wrap;gap:8px;justify-content:center}
   .flow-arrow{display:none}
 }
-
-/* ── DAILY BANNER ── */
-.daily-banner{
-  margin:76px 5% 0;max-width:880px;margin-left:auto;margin-right:auto;
-  background:linear-gradient(135deg,rgba(196,117,110,.06),rgba(196,117,110,.12));
-  border:1px solid rgba(196,117,110,.2);border-radius:20px;
-  padding:22px 28px;display:none;position:relative;overflow:hidden;
-  animation:fadeUp .6s ease both;
-}
+.daily-banner{margin:76px 5% 0;max-width:880px;margin-left:auto;margin-right:auto;background:linear-gradient(135deg,rgba(196,117,110,.06),rgba(196,117,110,.12));border:1px solid rgba(196,117,110,.2);border-radius:20px;padding:22px 28px;display:none;position:relative;overflow:hidden;animation:fadeUp .6s ease both}
 .daily-banner.show{display:flex;align-items:center;gap:20px}
 .daily-banner-icon{font-size:40px;flex-shrink:0;animation:fl 3s ease-in-out infinite}
 .daily-banner-body{flex:1;min-width:0}
@@ -405,18 +177,8 @@ footer{
 .daily-banner-title{font-family:'Gowun Batang',serif;font-size:18px;font-weight:700;color:var(--brown);line-height:1.4;margin-bottom:6px}
 .daily-banner-desc{font-size:13px;color:var(--brown2);line-height:1.6;margin-bottom:10px}
 .daily-banner-gifts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.daily-gift-chip{
-  display:inline-flex;align-items:center;gap:4px;
-  background:rgba(255,255,255,.7);border:1px solid rgba(196,117,110,.2);
-  border-radius:20px;padding:4px 12px;font-size:12px;color:var(--brown2);
-}
-.daily-banner-cta{
-  display:inline-flex;align-items:center;gap:6px;
-  background:var(--terra);color:#fff;border:none;border-radius:50px;
-  padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;
-  text-decoration:none;transition:all .2s;
-  font-family:'Noto Sans KR',sans-serif;
-}
+.daily-gift-chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.7);border:1px solid rgba(196,117,110,.2);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--brown2)}
+.daily-banner-cta{display:inline-flex;align-items:center;gap:6px;background:var(--terra);color:#fff;border:none;border-radius:50px;padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;font-family:'Noto Sans KR',sans-serif}
 .daily-banner-cta:hover{background:var(--terra2);transform:translateY(-1px)}
 .daily-banner-loading{font-size:13px;color:var(--brown3);padding:8px 0}
 .daily-banner-dot{display:inline-block;animation:pulse 1.5s infinite}
@@ -428,19 +190,14 @@ footer{
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="nav">
   <div class="nav-brand">
     <div class="nav-logo-mark">마</div>
-    <div>
-      <div class="nav-name">마로</div>
-    </div>
+    <div><div class="nav-name">마로</div></div>
   </div>
   <a href="/app" class="nav-cta">선물 추천받기 →</a>
 </nav>
 
-<!-- HERO -->
-<!-- DAILY BANNER (AI powered) -->
 <div class="daily-banner" id="dailyBanner">
   <div class="daily-banner-icon" id="dailyIcon">🎁</div>
   <div class="daily-banner-body">
@@ -448,35 +205,17 @@ footer{
     <div class="daily-banner-title" id="dailyTitle">오늘의 선물 추천을 불러오고 있어요<span class="daily-banner-dot">...</span></div>
     <div class="daily-banner-desc" id="dailyDesc"></div>
     <div class="daily-banner-gifts" id="dailyGifts"></div>
-    <a href="/app" class="daily-banner-cta" id="dailyCta" style="display:none">마로에서 추천받기 →</a>
+    <a href="/today-pick.html" class="daily-banner-cta" id="dailyCta" style="display:none">오늘의 추천 보기 →</a>
   </div>
 </div>
 
 <section class="hero">
   <div class="hero-bg"></div>
-  <span class="fl">🎁</span>
-  <span class="fl">💌</span>
-  <span class="fl">🌿</span>
-  <span class="fl">✨</span>
-
-  <div class="hero-eyebrow">
-    <span class="hero-eyebrow-dot"></span>
-    AI 기반 관계 중심 선물 추천
-  </div>
-
-  <h1 class="hero-h1">
-    어떤 <em>선물</em>을 줄지보다,<br>
-    어떤 <em>마음</em>을 전할지부터
-  </h1>
-
+  <span class="fl">🎁</span><span class="fl">💌</span><span class="fl">🌿</span><span class="fl">✨</span>
+  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>AI 기반 관계 중심 선물 추천</div>
+  <h1 class="hero-h1">어떤 <em>선물</em>을 줄지보다,<br>어떤 <em>마음</em>을 전할지부터</h1>
   <p class="hero-h2">마로가 알려드릴게요</p>
-
-  <p class="hero-desc">
-    사람들이 선물 앞에서 막히는 건 상품을 몰라서가 아니에요.<br>
-    <strong>이 관계에서 어떤 선물이 맞는지</strong> 몰라서예요.<br>
-    마로는 전하고자 하는 마음을 분석해서 딱 맞는 선물을 찾아줘요.
-  </p>
-
+  <p class="hero-desc">사람들이 선물 앞에서 막히는 건 상품을 몰라서가 아니에요.<br><strong>이 관계에서 어떤 선물이 맞는지</strong> 몰라서예요.<br>마로는 전하고자 하는 마음을 분석해서 딱 맞는 선물을 찾아줘요.</p>
   <div class="hero-actions">
     <a href="/app" class="btn-primary">지금 바로 시작하기 →</a>
     <p class="hero-note">약 30초 · 완전 무료 · 로그인 불필요</p>
@@ -485,43 +224,23 @@ footer{
 
 <div class="sec-div"><div class="sec-div-line"></div></div>
 
-<!-- PROBLEM -->
 <section class="sec">
   <div class="sec-inner">
     <p class="sec-label reveal">선물 고민의 진짜 이유</p>
     <h2 class="sec-title reveal">사실 이런 고민 아니었나요</h2>
-
     <div class="problem-grid">
-      <div class="prob-card reveal r1">
-        <div class="prob-num">고민 01</div>
-        <div class="prob-q">"너무 가벼워 보이면<br>어쩌지?"</div>
-        <div class="prob-a">마음은 크게 담고 싶은데, 선물이 그 무게를 못 따라갈 것 같은 불안함.</div>
-      </div>
-      <div class="prob-card reveal r2">
-        <div class="prob-num">고민 02</div>
-        <div class="prob-q">"너무 부담스럽게<br>느끼면 어쩌지?"</div>
-        <div class="prob-a">잘 보이려다 오히려 관계가 어색해질 수도 있다는 두려움.</div>
-      </div>
-      <div class="prob-card reveal r1">
-        <div class="prob-num">고민 03</div>
-        <div class="prob-q">"이 관계에서 이게<br>맞는 행동일까?"</div>
-        <div class="prob-a">선물보다, 지금 이 관계에서 어떻게 행동해야 할지 기준이 없는 막막함.</div>
-      </div>
-      <div class="prob-card reveal r2">
-        <div class="prob-num">고민 04</div>
-        <div class="prob-q">"내 마음이 제대로<br>전달될까?"</div>
-        <div class="prob-a">고생해서 고른 선물이 엉뚱하게 읽혀버릴까 봐 걱정되는 마음.</div>
-      </div>
+      <div class="prob-card reveal r1"><div class="prob-num">고민 01</div><div class="prob-q">"너무 가벼워 보이면<br>어쩌지?"</div><div class="prob-a">마음은 크게 담고 싶은데, 선물이 그 무게를 못 따라갈 것 같은 불안함.</div></div>
+      <div class="prob-card reveal r2"><div class="prob-num">고민 02</div><div class="prob-q">"너무 부담스럽게<br>느끼면 어쩌지?"</div><div class="prob-a">잘 보이려다 오히려 관계가 어색해질 수도 있다는 두려움.</div></div>
+      <div class="prob-card reveal r1"><div class="prob-num">고민 03</div><div class="prob-q">"이 관계에서 이게<br>맞는 행동일까?"</div><div class="prob-a">선물보다, 지금 이 관계에서 어떻게 행동해야 할지 기준이 없는 막막함.</div></div>
+      <div class="prob-card reveal r2"><div class="prob-num">고민 04</div><div class="prob-q">"내 마음이 제대로<br>전달될까?"</div><div class="prob-a">고생해서 고른 선물이 엉뚱하게 읽혀버릴까 봐 걱정되는 마음.</div></div>
     </div>
   </div>
 </section>
 
-<!-- VS -->
 <section class="vs-sec">
   <div class="sec-inner">
     <p class="sec-label reveal">기존 서비스와 다른 점</p>
     <h2 class="sec-title reveal">마로는 <em>시작점이 달라요</em></h2>
-
     <div class="vs-grid">
       <div class="vs-col reveal">
         <div class="vs-col-label">기존 추천 서비스</div>
@@ -544,58 +263,20 @@ footer{
   </div>
 </section>
 
-<!-- HOW -->
 <section class="sec">
   <div class="sec-inner">
     <p class="sec-label reveal">사용 방법</p>
     <h2 class="sec-title reveal">30초면 완료돼요</h2>
-
     <div class="steps">
-      <div class="step-row step-done reveal">
-        <div class="step-n">1</div>
-        <div class="step-body">
-          <div class="step-title">누구에게, 어떤 관계인지</div>
-          <div class="step-desc">연인·친구·가족·직장 등 관계 유형과 깊이를 선택해요. 썸 단계와 3년 연인은 선물이 달라야 해요.</div>
-          <span class="step-tag">8가지 관계 유형</span>
-        </div>
-      </div>
-      <div class="step-row step-done reveal">
-        <div class="step-n">2</div>
-        <div class="step-body">
-          <div class="step-title">어떤 상황인지</div>
-          <div class="step-desc">생일, 출산, 감사, 사과, 집들이 등 11가지 상황 중 선택해요. 상황이 선물의 성격을 결정해요.</div>
-          <span class="step-tag">11가지 상황</span>
-        </div>
-      </div>
-      <div class="step-row step-done reveal">
-        <div class="step-n">3</div>
-        <div class="step-body">
-          <div class="step-title">예산과 취향</div>
-          <div class="step-desc">예산을 고르고, 받는 사람의 취향 태그를 선택해요. 카페 좋아하는 친구에겐 다른 선물이 맞아요.</div>
-          <span class="step-tag">예산 5단계 + 취향 20종</span>
-        </div>
-      </div>
-      <div class="step-row reveal">
-        <div class="step-n">4</div>
-        <div class="step-body">
-          <div class="step-title">전하고 싶은 마음 (선택)</div>
-          <div class="step-desc">한 문장으로 마음을 적으면 AI가 그 감정까지 분석해요. 없으면 건너뛰어도 돼요.</div>
-          <span class="step-tag">AI 감정 분석</span>
-        </div>
-      </div>
-      <div class="step-row reveal">
-        <div class="step-n">✨</div>
-        <div class="step-body">
-          <div class="step-title">딱 맞는 선물 Top 3 + 이유 + 링크</div>
-          <div class="step-desc">AI가 추천한 선물 3가지와 "왜 이 선물인지" 설명, 쿠팡 가격 필터 링크까지 한 번에.</div>
-          <span class="step-tag">추천 이유 포함</span>
-        </div>
-      </div>
+      <div class="step-row step-done reveal"><div class="step-n">1</div><div class="step-body"><div class="step-title">누구에게, 어떤 관계인지</div><div class="step-desc">연인·친구·가족·직장 등 관계 유형과 깊이를 선택해요. 썸 단계와 3년 연인은 선물이 달라야 해요.</div><span class="step-tag">8가지 관계 유형</span></div></div>
+      <div class="step-row step-done reveal"><div class="step-n">2</div><div class="step-body"><div class="step-title">어떤 상황인지</div><div class="step-desc">생일, 출산, 감사, 사과, 집들이 등 11가지 상황 중 선택해요. 상황이 선물의 성격을 결정해요.</div><span class="step-tag">11가지 상황</span></div></div>
+      <div class="step-row step-done reveal"><div class="step-n">3</div><div class="step-body"><div class="step-title">예산과 취향</div><div class="step-desc">예산을 고르고, 받는 사람의 취향 태그를 선택해요. 카페 좋아하는 친구에겐 다른 선물이 맞아요.</div><span class="step-tag">예산 5단계 + 취향 20종</span></div></div>
+      <div class="step-row reveal"><div class="step-n">4</div><div class="step-body"><div class="step-title">전하고 싶은 마음 (선택)</div><div class="step-desc">한 문장으로 마음을 적으면 AI가 그 감정까지 분석해요. 없으면 건너뛰어도 돼요.</div><span class="step-tag">AI 감정 분석</span></div></div>
+      <div class="step-row reveal"><div class="step-n">✨</div><div class="step-body"><div class="step-title">딱 맞는 선물 Top 3 + 이유 + 링크</div><div class="step-desc">AI가 추천한 선물 3가지와 "왜 이 선물인지" 설명, 쿠팡 가격 필터 링크까지 한 번에.</div><span class="step-tag">추천 이유 포함</span></div></div>
     </div>
   </div>
 </section>
 
-<!-- SITUATIONS -->
 <section class="sec" style="padding-top:0">
   <div class="sec-inner">
     <p class="sec-label reveal">지원 상황</p>
@@ -617,56 +298,24 @@ footer{
   </div>
 </section>
 
-<!-- FEATURES -->
 <section class="feat-sec">
   <p class="sec-label reveal">핵심 가치</p>
   <h2 class="sec-title reveal">마로가 드리는 세 가지</h2>
   <div class="feat-grid">
-    <div class="feat-card reveal r1">
-      <div class="feat-icon">🧠</div>
-      <div class="feat-title">결정 피로 감소</div>
-      <div class="feat-desc">검색·비교·고민 없이 AI가 Top 3로 압축해드려요. 30초면 끝나요.</div>
-    </div>
-    <div class="feat-card reveal r2">
-      <div class="feat-icon">🛡️</div>
-      <div class="feat-title">관계 실수 방지</div>
-      <div class="feat-desc">너무 가볍거나 무거운 선물, 상황에 안 맞는 선물의 실수를 예방해요.</div>
-    </div>
-    <div class="feat-card reveal r3">
-      <div class="feat-icon">💌</div>
-      <div class="feat-title">감정 전달 최적화</div>
-      <div class="feat-desc">단순 상품 목록이 아닌 "왜 이 선물인지" 이유를 함께 알려드려요.</div>
-    </div>
+    <div class="feat-card reveal r1"><div class="feat-icon">🧠</div><div class="feat-title">결정 피로 감소</div><div class="feat-desc">검색·비교·고민 없이 AI가 Top 3로 압축해드려요. 30초면 끝나요.</div></div>
+    <div class="feat-card reveal r2"><div class="feat-icon">🛡️</div><div class="feat-title">관계 실수 방지</div><div class="feat-desc">너무 가볍거나 무거운 선물, 상황에 안 맞는 선물의 실수를 예방해요.</div></div>
+    <div class="feat-card reveal r3"><div class="feat-icon">💌</div><div class="feat-title">감정 전달 최적화</div><div class="feat-desc">단순 상품 목록이 아닌 "왜 이 선물인지" 이유를 함께 알려드려요.</div></div>
   </div>
 </section>
 
-<!-- TOOLS -->
 <section class="sec" style="padding-bottom:40px">
   <div class="sec-inner">
     <p class="sec-label reveal">확장 서비스</p>
     <h2 class="sec-title reveal">선물의 <em>A to Z</em>, 마로 하나로</h2>
     <div class="tools-grid">
-      <a href="/message.html" class="tool-card reveal r1" style="text-decoration:none">
-        <div class="tool-badge">NEW</div>
-        <div class="tool-icon">✍️</div>
-        <div class="tool-title">선물 메시지 생성기</div>
-        <div class="tool-desc">관계와 상황에 딱 맞는 카드 문구를 AI가 3가지 만들어드려요</div>
-        <div class="tool-cta">문구 만들기 →</div>
-      </a>
-      <a href="/vote.html" class="tool-card reveal r2" style="text-decoration:none">
-        <div class="tool-badge">NEW</div>
-        <div class="tool-icon">🗳️</div>
-        <div class="tool-title">단체 선물 투표</div>
-        <div class="tool-desc">후보 등록 → 링크 공유 → 팀원 투표 → 결과 확인까지</div>
-        <div class="tool-cta">투표 만들기 →</div>
-      </a>
-      <a href="/calc.html" class="tool-card reveal r3" style="text-decoration:none">
-        <div class="tool-badge">NEW</div>
-        <div class="tool-icon">💰</div>
-        <div class="tool-title">선물비 정산 계산기</div>
-        <div class="tool-desc">1/N 계산하고 토스·카카오페이 송금 링크까지 한 번에</div>
-        <div class="tool-cta">정산하기 →</div>
-      </a>
+      <a href="/message.html" class="tool-card reveal r1" style="text-decoration:none"><div class="tool-badge">NEW</div><div class="tool-icon">✍️</div><div class="tool-title">선물 메시지 생성기</div><div class="tool-desc">관계와 상황에 딱 맞는 카드 문구를 AI가 3가지 만들어드려요</div><div class="tool-cta">문구 만들기 →</div></a>
+      <a href="/vote.html" class="tool-card reveal r2" style="text-decoration:none"><div class="tool-badge">NEW</div><div class="tool-icon">🗳️</div><div class="tool-title">단체 선물 투표</div><div class="tool-desc">후보 등록 → 링크 공유 → 팀원 투표 → 결과 확인까지</div><div class="tool-cta">투표 만들기 →</div></a>
+      <a href="/calc.html" class="tool-card reveal r3" style="text-decoration:none"><div class="tool-badge">NEW</div><div class="tool-icon">💰</div><div class="tool-title">선물비 정산 계산기</div><div class="tool-desc">1/N 계산하고 토스·카카오페이 송금 링크까지 한 번에</div><div class="tool-cta">정산하기 →</div></a>
     </div>
     <div class="tools-flow reveal" style="margin-top:36px">
       <div class="flow-label">마로의 선물 풀 코스</div>
@@ -683,63 +332,32 @@ footer{
   </div>
 </section>
 
-<!-- QUOTE -->
 <section class="quote-sec">
   <div class="quote-inner">
     <p class="sec-label reveal">마로의 철학</p>
     <div class="quote-mark reveal">"</div>
-    <div class="quote-text reveal">
-      선물은 상품이 아니에요.<br>
-      관계에서 <em>어떤 행동을 해야 할지</em>에 대한<br>
-      답이에요.
-    </div>
+    <div class="quote-text reveal">선물은 상품이 아니에요.<br>관계에서 <em>어떤 행동을 해야 할지</em>에 대한<br>답이에요.</div>
     <div class="review-grid">
-      <div class="review reveal r1">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">"연인 선물 고민할 때마다 스트레스였는데, 왜 이 선물인지 이유까지 알려주니까 자신 있게 선택할 수 있었어요."</div>
-        <div class="review-meta">20대 직장인 · 기념일 선물</div>
-      </div>
-      <div class="review reveal r2">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">"출산 선물 뭘 줄지 몰랐는데 아기용품부터 산모 케어까지 상황에 딱 맞는 걸 추천해줬어요."</div>
-        <div class="review-meta">30대 · 친구 출산 선물</div>
-      </div>
-      <div class="review reveal r3">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">"상사에게 감사 선물 고를 때 부담스럽지 않으면서도 성의 있어 보이는 걸 딱 찾아줬어요."</div>
-        <div class="review-meta">직장인 · 상사 감사 선물</div>
-      </div>
+      <div class="review reveal r1"><div class="review-stars">★★★★★</div><div class="review-text">"연인 선물 고민할 때마다 스트레스였는데, 왜 이 선물인지 이유까지 알려주니까 자신 있게 선택할 수 있었어요."</div><div class="review-meta">20대 직장인 · 기념일 선물</div></div>
+      <div class="review reveal r2"><div class="review-stars">★★★★★</div><div class="review-text">"출산 선물 뭘 줄지 몰랐는데 아기용품부터 산모 케어까지 상황에 딱 맞는 걸 추천해줬어요."</div><div class="review-meta">30대 · 친구 출산 선물</div></div>
+      <div class="review reveal r3"><div class="review-stars">★★★★★</div><div class="review-text">"상사에게 감사 선물 고를 때 부담스럽지 않으면서도 성의 있어 보이는 걸 딱 찾아줬어요."</div><div class="review-meta">직장인 · 상사 감사 선물</div></div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta-sec" id="app">
-  <div class="cta-badge reveal">
-    <span style="width:5px;height:5px;border-radius:50%;background:var(--terra);display:inline-block"></span>
-    마로와 함께
-  </div>
-  <h2 class="cta-h reveal">
-    다음 선물 고민,<br>
-    <em>마로</em>에게 맡겨보세요
-  </h2>
-  <p class="cta-desc reveal">
-    무슨 선물을 살지 검색하기 전에,<br>
-    어떤 마음을 전하고 싶은지부터 정리해드릴게요.
-  </p>
+  <div class="cta-badge reveal"><span style="width:5px;height:5px;border-radius:50%;background:var(--terra);display:inline-block"></span>마로와 함께</div>
+  <h2 class="cta-h reveal">다음 선물 고민,<br><em>마로</em>에게 맡겨보세요</h2>
+  <p class="cta-desc reveal">무슨 선물을 살지 검색하기 전에,<br>어떤 마음을 전하고 싶은지부터 정리해드릴게요.</p>
   <a href="/app" class="btn-primary reveal">마로 시작하기 ✨</a>
   <p class="cta-note reveal">완전 무료 · 30초 · 로그인 불필요</p>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <div class="footer-brand">
-          <div class="footer-logo-mark">마</div>
-          <div class="footer-name">마로</div>
-        </div>
+        <div class="footer-brand"><div class="footer-logo-mark">마</div><div class="footer-name">마로</div></div>
         <div class="footer-tagline">마음을 새기는 선물 · MARO</div>
       </div>
       <div class="footer-links">
@@ -749,27 +367,22 @@ footer{
       </div>
     </div>
     <div class="footer-div"></div>
-    <div style="font-size:11px;color:var(--brown4);line-height:1.7;text-align:center;margin-bottom:12px;padding:0 20px">
-      이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
-    </div>
+    <div style="font-size:11px;color:var(--brown4);line-height:1.7;text-align:center;margin-bottom:12px;padding:0 20px">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
     <div class="footer-copy">© 2025 마로 · 관계 중심 AI 선물 추천</div>
   </div>
 </footer>
 
 <script>
-// Scroll reveal
 const obs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
 },{threshold:.1,rootMargin:'0px 0px -32px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// Nav shadow on scroll
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').style.boxShadow =
     window.scrollY > 40 ? '0 4px 24px rgba(45,32,24,.07)' : 'none';
 });
 
-// ── Daily Banner (AI) ──
 (async function(){
   const HOLIDAYS=[
     {m:1,d:14,name:"다이어리데이",icon:"📔",desc:"새해 다이어리를 선물하는 날"},
@@ -795,7 +408,6 @@ window.addEventListener('scroll',()=>{
   const today=new Date();
   const tm=today.getMonth()+1, td=today.getDate();
 
-  // Find today's or nearest upcoming holiday (within 7 days)
   let holiday=HOLIDAYS.find(h=>h.m===tm&&h.d===td);
   let isToday=!!holiday;
   if(!holiday){
@@ -809,7 +421,6 @@ window.addEventListener('scroll',()=>{
 
   const banner=document.getElementById("dailyBanner");
   if(!holiday){
-    // No nearby holiday - show seasonal recommendation
     holiday={name:"오늘",icon:"✨",desc:"특별한 이유 없이 전하는 마음이 가장 감동이에요",m:tm,d:td};
   }
 
@@ -821,7 +432,6 @@ window.addEventListener('scroll',()=>{
     :`오늘 ${tm}월 ${td}일`;
   document.getElementById("dailyDate").textContent=dateStr;
 
-  // AI recommendation
   try{
     const prompt=`오늘은 ${tm}월 ${td}일이고 ${holiday.name}${isToday?"이에요":"이 다가오고 있어요"}.
 ${holiday.desc}
@@ -854,7 +464,6 @@ JSON만 출력: {"title":"감성 한 줄 멘트","gifts":[{"name":"상품명","e
       document.getElementById("dailyCta").style.display="inline-flex";
     }
   }catch(e){
-    // Fallback
     document.getElementById("dailyTitle").textContent=holiday.desc;
     document.getElementById("dailyDesc").textContent=`${holiday.name}에 어울리는 선물을 마로가 추천해드려요`;
     document.getElementById("dailyCta").style.display="inline-flex";
