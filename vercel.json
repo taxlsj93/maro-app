@@ -1,8 +1,1 @@
-{
-  "rewrites": [
-    { "source": "/app", "destination": "/app.html" },
-    { "source": "/message", "destination": "/message.html" },
-    { "source": "/vote", "destination": "/vote.html" },
-    { "source": "/calc", "destination": "/calc.html" }
-  ]
-}
+{"buildCommand":"","outputDirectory":".","routes":[{"src":"/app","dest":"/app.html"},{"src":"/today","dest":"/today-pick.html"},{"src":"(.*)","dest":"/index.html"}]}
