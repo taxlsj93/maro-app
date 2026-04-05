@@ -35,6 +35,59 @@ const VIS={"핸드크림":{bg:"#fce4ec",ac:"#e8a0a0",ic:"🧴"},"로션":{bg:"#f
 const VD={bg:"#f7f0eb",ac:"#c4756e",ic:"🎁"};
 function gv(n){const k=Object.keys(VIS).find(k=>n.includes(k));return k?VIS[k]:VD;}
 
+// ── Category representative images (Unsplash free) ──
+const IMG={
+  "핸드크림":"photo-1556228578-0d85b1a4d571","로션":"photo-1556228578-0d85b1a4d571",
+  "향수":"photo-1541643600914-78b084683601","퍼퓸":"photo-1541643600914-78b084683601","코롱":"photo-1541643600914-78b084683601",
+  "디퓨저":"photo-1602928321679-560bb453f190","인센스":"photo-1602928321679-560bb453f190",
+  "캔들":"photo-1603006905003-be475563bc59","양초":"photo-1603006905003-be475563bc59",
+  "지갑":"photo-1627123424574-724758594e93","카드홀더":"photo-1627123424574-724758594e93",
+  "이어폰":"photo-1590658268037-6bf12f032f55","헤드폰":"photo-1505740420928-5e560c06d30e","에어팟":"photo-1590658268037-6bf12f032f55",
+  "스피커":"photo-1608043152269-423dbba4e7e1","블루투스":"photo-1608043152269-423dbba4e7e1",
+  "가방":"photo-1584917865442-de89df76afd3","백팩":"photo-1553062407-98eeb64c6a62",
+  "시계":"photo-1524592094714-0f0654e20314","워치":"photo-1524592094714-0f0654e20314","스마트워치":"photo-1546868871-af0de0ae72be",
+  "커피":"photo-1509042239860-f550ce710b93","커피머신":"photo-1495474472287-4d71bcdd2085","드립":"photo-1495474472287-4d71bcdd2085",
+  "와인":"photo-1510812431401-41d2bd2722f3","샴페인":"photo-1510812431401-41d2bd2722f3",
+  "꽃":"photo-1487530811176-3780de880c2d","꽃다발":"photo-1487530811176-3780de880c2d","꽃바구니":"photo-1487530811176-3780de880c2d",
+  "케이크":"photo-1578985545062-69928b1d9587","디저트":"photo-1551024601-bec78aea704b",
+  "초콜릿":"photo-1549007994-cb92caebd54b","간식":"photo-1549007994-cb92caebd54b",
+  "차":"photo-1556679343-c7306c1976bc","티백":"photo-1556679343-c7306c1976bc","허브티":"photo-1556679343-c7306c1976bc",
+  "수건":"photo-1583845112203-29329902332e","타올":"photo-1583845112203-29329902332e",
+  "화분":"photo-1459411552884-841db9b3cc2a","식물":"photo-1459411552884-841db9b3cc2a",
+  "무드등":"photo-1513506003901-1e6a229e2d15","조명":"photo-1513506003901-1e6a229e2d15",
+  "텀블러":"photo-1602143407151-7111542de6e8","보온":"photo-1602143407151-7111542de6e8",
+  "견과":"photo-1608797178974-15b35a64ede9","견과류":"photo-1608797178974-15b35a64ede9",
+  "과일":"photo-1619566636858-adf3ef46400b","과일세트":"photo-1619566636858-adf3ef46400b",
+  "홍삼":"photo-1563822249510-04678c3ae8d2","건강":"photo-1563822249510-04678c3ae8d2","비타민":"photo-1563822249510-04678c3ae8d2",
+  "한우":"photo-1603048297172-c92544798d5a","갈비":"photo-1603048297172-c92544798d5a",
+  "올리브":"photo-1474979266404-7eaacbcd87c5","꿀":"photo-1587049352846-4a222e784d38",
+  "아기":"photo-1519689680058-324335c77eba","턱받이":"photo-1519689680058-324335c77eba","기저귀":"photo-1519689680058-324335c77eba",
+  "유모차":"photo-1591261731048-dd1fcc658e06","카시트":"photo-1591261731048-dd1fcc658e06",
+  "침구":"photo-1631049307264-da0ec9d70304","이불":"photo-1631049307264-da0ec9d70304","파자마":"photo-1631049307264-da0ec9d70304",
+  "청소기":"photo-1558618666-fcd25c85f82e","로봇청소기":"photo-1558618666-fcd25c85f82e",
+  "냄비":"photo-1556909114-f6e7ad7d3136","팬":"photo-1556909114-f6e7ad7d3136","식기":"photo-1556909114-f6e7ad7d3136",
+  "만년필":"photo-1585336261022-680e295ce3fe","볼펜":"photo-1585336261022-680e295ce3fe","펜":"photo-1585336261022-680e295ce3fe",
+  "노트":"photo-1531346878377-a5be20888e57","다이어리":"photo-1531346878377-a5be20888e57",
+  "팔찌":"photo-1573408301185-9146fe634ad0","반지":"photo-1605100804763-247f67b3557e","목걸이":"photo-1599643478518-a784e5dc4c8f","주얼리":"photo-1599643478518-a784e5dc4c8f",
+  "액자":"photo-1513519245088-0e12902e35ca","포토":"photo-1513519245088-0e12902e35ca",
+  "쿠션":"photo-1584100936595-c0c02b55d2c7","담요":"photo-1584100936595-c0c02b55d2c7",
+  "에코백":"photo-1597484662317-9bd7bdda2907",
+  "립밤":"photo-1586495777744-4413f21062fa","립":"photo-1586495777744-4413f21062fa",
+  "입욕제":"photo-1570172619644-dfd03ed5d881","바디":"photo-1570172619644-dfd03ed5d881",
+  "스카프":"photo-1601924921557-45e8e0220532",
+  "카메라":"photo-1516035069371-29a1b244cc32",
+  "전자책":"photo-1544716278-ca5e3f4abd8c",
+  "기프트카드":"photo-1556742049-0cfed4f6a45d","기프티콘":"photo-1556742049-0cfed4f6a45d",
+  "호텔":"photo-1566073771259-6a8506099945","스파":"photo-1544161515-4ab6ce6db874",
+  "레스토랑":"photo-1414235077428-338989a2e8c0","식사권":"photo-1414235077428-338989a2e8c0",
+  "명품":"photo-1600003014755-ba31aa59c4b6","럭셔리":"photo-1600003014755-ba31aa59c4b6",
+  "공기청정기":"photo-1585771724684-38269d6639fd",
+};
+function gimg(n){
+  const k=Object.keys(IMG).find(k=>n.includes(k));
+  return k?`https://images.unsplash.com/${IMG[k]}?w=140&h=140&fit=crop&auto=format&q=80`:null;
+}
+
 // ── Shuffle utility ──
 function shuffle(arr){
   const a=[...arr];
@@ -335,7 +388,20 @@ function Btn({onClick,children,style={},scale=0.94,ms=220}){
   {ok&&<div style={{position:"absolute",top:7,right:7,width:22,height:22,borderRadius:"50%",background:"linear-gradient(135deg,#c4756e,#a85e58)",display:"flex",alignItems:"center",justifyContent:"center",animation:"pop .18s cubic-bezier(.34,1.56,.64,1)",boxShadow:"0 2px 8px rgba(168,94,88,.35)"}}><span style={{color:"#fff",fontSize:12,fontWeight:800}}>✓</span></div>}
   </button>);
 }
-function Thumb({name,sz=68}){const v=gv(name);return(<div style={{width:sz,height:sz,borderRadius:14,flexShrink:0,background:`linear-gradient(145deg,${v.bg},${v.bg}dd)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:Math.round(sz*.42),boxShadow:`0 3px 12px ${v.ac}18`,border:`1.5px solid ${v.ac}25`,position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:"-18%",right:"-18%",width:"48%",height:"48%",borderRadius:"50%",background:`${v.ac}0d`}}/><span style={{position:"relative",zIndex:1}}>{v.ic}</span></div>);}
+function Thumb({name,sz=68}){
+  const v=gv(name);
+  const imgUrl=gimg(name);
+  const[ok,setOk]=useState(true);
+  return(
+    <div style={{width:sz,height:sz,borderRadius:14,flexShrink:0,background:`linear-gradient(145deg,${v.bg},${v.bg}dd)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:Math.round(sz*.42),boxShadow:`0 3px 12px ${v.ac}18`,border:`1.5px solid ${v.ac}25`,position:"relative",overflow:"hidden"}}>
+      {imgUrl&&ok?(
+        <img src={imgUrl} alt={name} onError={()=>setOk(false)} style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}}/>
+      ):(
+        <><div style={{position:"absolute",top:"-18%",right:"-18%",width:"48%",height:"48%",borderRadius:"50%",background:`${v.ac}0d`}}/><span style={{position:"relative",zIndex:1}}>{v.ic}</span></>
+      )}
+    </div>
+  );
+}
 function SH({n,title,sub,onBack}){return(<div style={{marginBottom:20}}>{onBack&&<button onClick={onBack} style={{display:"inline-flex",alignItems:"center",gap:4,background:"none",border:"none",cursor:"pointer",fontSize:13,color:"#a09080",padding:"4px 0",marginBottom:10}} onPointerDown={e=>e.currentTarget.style.color="#6b5040"} onPointerUp={e=>e.currentTarget.style.color="#a09080"}><span style={{fontSize:16}}>←</span> 이전으로</button>}<div style={{fontSize:11,color:"#c4756e",fontWeight:700,letterSpacing:2,marginBottom:6}}>STEP {n}</div><h2 style={{fontSize:19,fontWeight:600,color:"#2d2420",margin:"0 0 5px",lineHeight:1.4}}>{title}</h2><p style={{fontSize:13,color:"#9a8a7a",margin:0}}>{sub}</p></div>);}
 
 // ── App ──
