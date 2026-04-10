@@ -6,32 +6,39 @@
 <title>마음 카드 — 마로</title>
 <meta name="description" content="선물에 마음을 더하세요. 마로 메시지 카드.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --terra:#c4756e;--terra-dark:#a85e58;--terra-light:#e8ada8;--terra-pale:#fdf5f4;
-  --cream:#faf6f1;--warm-gray:#6b5e57;--text:#3d2f2a;--text-light:#8a7a73;
-  --card-bg:#fff;--shadow:0 2px 16px rgba(164,94,88,.10);
+  --cream-1:#faf6ee;--cream-2:#f5ede3;--cream-3:#faf6f1;
+  --warm-gray:#6b5e57;--text:#2d2018;--text-light:#5a4a3a;--text-muted:#8a7a73;
+  --card-bg:rgba(255,255,255,.65);--shadow:0 2px 16px rgba(164,94,88,.10);
 }
 html{font-size:16px}
 body{
-  font-family:'Gowun Batang',serif;background:var(--cream);color:var(--text);
-  min-height:100vh;-webkit-font-smoothing:antialiased;
+  font-family:'Noto Sans KR',sans-serif;
+  background:linear-gradient(160deg, var(--cream-1) 0%, var(--cream-2) 50%, var(--cream-3) 100%);
+  color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;
 }
 
-.maro-header{text-align:center;padding:40px 20px 0}
-.maro-logo{font-size:.85rem;letter-spacing:6px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:4px}
-.maro-tagline{font-size:.72rem;color:var(--text-light);letter-spacing:2px}
+.maro-header{text-align:center;padding:44px 20px 0}
+.maro-logo{
+  font-family:'Gowun Batang',serif;font-size:.9rem;letter-spacing:6px;
+  text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:6px;
+}
+.maro-tagline{font-family:'Gowun Batang',serif;font-size:.72rem;color:var(--text-muted);letter-spacing:2px}
 
 .container{max-width:480px;margin:0 auto;padding:24px 16px 40px}
 
 .section-title{
+  font-family:'Gowun Batang',serif;
   font-size:1.25rem;font-weight:700;text-align:center;
   margin-bottom:6px;line-height:1.5;
 }
 .section-sub{
-  font-size:.82rem;color:var(--text-light);text-align:center;
+  font-size:.82rem;color:var(--text-muted);text-align:center;
   margin-bottom:28px;line-height:1.6;
 }
 
@@ -41,33 +48,36 @@ body{
   margin-bottom:28px;
 }
 .theme-btn{
-  aspect-ratio:1;border-radius:14px;border:2.5px solid transparent;
+  aspect-ratio:1;border-radius:16px;border:2.5px solid transparent;
   cursor:pointer;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:4px;
-  transition:all .2s;font-family:'Gowun Batang',serif;
+  transition:all .25s ease;font-family:'Noto Sans KR',sans-serif;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  box-shadow:0 2px 8px rgba(164,94,88,.06);
 }
-.theme-btn:hover{transform:scale(1.05)}
-.theme-btn.active{border-color:var(--terra);transform:scale(1.05)}
+.theme-btn:hover{transform:scale(1.06);box-shadow:0 4px 14px rgba(164,94,88,.12)}
+.theme-btn.active{border-color:var(--terra);transform:scale(1.06);box-shadow:0 4px 14px rgba(196,117,110,.18)}
 .theme-emoji{font-size:1.6rem}
-.theme-label{font-size:.6rem;color:var(--text-light);font-weight:700}
+.theme-label{font-size:.6rem;color:var(--text-light);font-weight:500}
 
 /* Form */
 .form-group{margin-bottom:16px}
 .form-label{
-  font-size:.78rem;font-weight:700;color:var(--warm-gray);
+  font-size:.78rem;font-weight:500;color:var(--warm-gray);
   margin-bottom:6px;display:block;
 }
 .form-input{
-  width:100%;padding:14px 16px;border:1.5px solid #e0d5cf;border-radius:12px;
+  width:100%;padding:14px 16px;border:1.5px solid #e0d5cf;border-radius:14px;
   font-family:'Gowun Batang',serif;font-size:.88rem;color:var(--text);
-  background:var(--card-bg);outline:none;transition:border .2s;
+  background:rgba(255,255,255,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  outline:none;transition:all .25s ease;
 }
-.form-input:focus{border-color:var(--terra)}
+.form-input:focus{border-color:var(--terra);box-shadow:0 0 0 3px rgba(196,117,110,.1)}
 .form-input::placeholder{color:#c4b8b0}
 textarea.form-input{resize:vertical;min-height:120px;line-height:1.8}
 
 .char-count{
-  text-align:right;font-size:.68rem;color:var(--text-light);margin-top:4px;
+  text-align:right;font-size:.68rem;color:var(--text-muted);margin-top:4px;
 }
 
 /* Card preview */
@@ -75,12 +85,14 @@ textarea.form-input{resize:vertical;min-height:120px;line-height:1.8}
   margin:28px 0;perspective:600px;
 }
 .card-preview{
-  background:var(--card-bg);border-radius:20px;padding:36px 28px;
+  background:rgba(255,255,255,.65);border-radius:20px;padding:36px 28px;
   box-shadow:0 8px 32px rgba(164,94,88,.12);text-align:center;
   min-height:280px;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   position:relative;overflow:hidden;
   transition:all .4s ease;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.4);
 }
 
 .card-deco{
@@ -100,16 +112,19 @@ textarea.form-input{resize:vertical;min-height:120px;line-height:1.8}
 
 .card-theme-icon{font-size:2.8rem;margin-bottom:16px;position:relative}
 .card-to{
+  font-family:'Noto Sans KR',sans-serif;
   font-size:.72rem;color:var(--terra);letter-spacing:2px;
-  font-weight:700;margin-bottom:12px;position:relative;
+  font-weight:500;margin-bottom:12px;position:relative;
 }
 .card-message{
+  font-family:'Gowun Batang',serif;
   font-size:1rem;line-height:2;color:var(--text);
   white-space:pre-wrap;word-break:keep-all;
   position:relative;max-width:280px;
 }
 .card-from{
-  font-size:.78rem;color:var(--text-light);margin-top:20px;
+  font-family:'Gowun Batang',serif;
+  font-size:.78rem;color:var(--text-muted);margin-top:20px;
   position:relative;
 }
 .card-brand{
@@ -121,21 +136,23 @@ textarea.form-input{resize:vertical;min-height:120px;line-height:1.8}
 /* Actions */
 .action-row{display:flex;gap:10px;margin-top:24px}
 .action-btn{
-  flex:1;padding:14px;border-radius:12px;border:1.5px solid var(--terra-light);
-  background:none;color:var(--terra);font-family:'Gowun Batang',serif;
-  font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;
+  flex:1;padding:14px;border-radius:14px;border:1.5px solid var(--terra-light);
+  background:rgba(255,255,255,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  color:var(--terra);font-family:'Noto Sans KR',sans-serif;
+  font-size:.82rem;font-weight:500;cursor:pointer;transition:all .25s ease;
 }
-.action-btn:hover{background:var(--terra-pale)}
-.action-btn.primary{background:var(--terra);color:#fff;border-color:var(--terra)}
-.action-btn.primary:hover{background:var(--terra-dark)}
+.action-btn:hover{background:var(--terra-pale);transform:translateY(-1px);box-shadow:0 4px 12px rgba(196,117,110,.12)}
+.action-btn:active{transform:translateY(0)}
+.action-btn.primary{background:var(--terra);color:#fff;border-color:var(--terra);box-shadow:0 4px 16px rgba(196,117,110,.25)}
+.action-btn.primary:hover{background:var(--terra-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(196,117,110,.3)}
 
 /* Saved toast */
 .toast{
   position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);
-  background:var(--text);color:#fff;padding:12px 24px;border-radius:12px;
-  font-size:.82rem;font-family:'Gowun Batang',serif;
-  box-shadow:0 4px 16px rgba(0,0,0,.2);transition:transform .3s ease;
-  z-index:999;
+  background:var(--text);color:#fff;padding:12px 24px;border-radius:14px;
+  font-size:.82rem;font-family:'Noto Sans KR',sans-serif;
+  box-shadow:0 4px 16px rgba(0,0,0,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .3s ease;z-index:999;
 }
 .toast.show{transform:translateX(-50%) translateY(0)}
 
@@ -144,9 +161,11 @@ textarea.form-input{resize:vertical;min-height:120px;line-height:1.8}
   border-top:1px solid rgba(196,117,110,.12);
 }
 .maro-footer a{
+  font-family:'Gowun Batang',serif;
   color:var(--terra);text-decoration:none;font-size:.78rem;
-  font-weight:700;letter-spacing:2px;
+  font-weight:700;letter-spacing:2px;transition:opacity .2s;
 }
+.maro-footer a:hover{opacity:.7}
 </style>
 </head>
 <body>
