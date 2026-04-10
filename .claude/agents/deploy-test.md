@@ -47,3 +47,48 @@ You are the MARO deployment specialist. Your job is to handle git operations and
 - force push 금지 (`--force` 사용 불가)
 - `main` 브랜치에 직접 커밋 (이 프로젝트의 워크플로우)
 - 민감 정보 (API 키, 토큰) 커밋 여부 확인
+
+## Skill: 배포
+
+### Vercel 설정 규칙
+```json
+{
+  "buildCommand": "",           // 비움 — static hosting
+  "outputDirectory": ".",       // 루트 디렉토리
+  "rewrites": [
+    // 모든 HTML 페이지는 clean URL 리라이트 필수
+    { "source": "/{name}", "destination": "/{name}.html" }
+    // 예외: today-pick.html → /today
+  ]
+}
+```
+
+### Git 커밋 메시지 규칙
+```
+[한국어 작성]
+{변경 요약 1줄}              ← 제목 (50자 이내)
+                              ← 빈 줄
+- {에이전트명}: {상세 내용}   ← 본문 (에이전트별 정리)
+- {에이전트명}: {상세 내용}
+
+Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+```
+
+### vercel.json 리라이트 패턴 (현재 9개)
+```
+/app     → app.html
+/today   → today-pick.html
+/message → message.html
+/calc    → calc.html
+/vote    → vote.html
+/privacy → privacy.html
+/terms   → terms.html
+/blog    → blog.html
+```
+
+### 배포 후 체크리스트
+1. Vercel MCP로 배포 상태 확인
+2. 실패 시 자동 롤백
+3. 주요 페이지 접근 확인: `/`, `/app`, `/today`, `/blog`
+4. OG 태그 미리보기 확인 (소셜 공유)
+5. CHANGELOG.md, SYNC.md, Notion에 기록

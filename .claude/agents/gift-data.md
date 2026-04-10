@@ -34,3 +34,53 @@ You are the MARO gift data specialist. Your job is to manage gift recommendation
 - 가격대는 기존 5단계 체계 유지
 - 쿠팡 affiliate 링크 형식 준수
 - 데이터 일관성 검증: 모든 FB 항목이 VIS에 매핑되어 있는지 확인
+
+## Skill: 선물 데이터
+
+### FB 데이터 구조 (occasion|budget 키)
+```javascript
+// maro-app.jsx 내 FB 객체
+"birthday|b1": [
+  { name: "구체적 상품명", price: "1~2만원", reason: "추천 사유 1문장", sk: "쿠팡검색키워드" },
+  // 최소 6개 아이템 per 조합
+]
+// 키 형식: "{occasion_id}|{budget_id}"
+// occasion: birthday, anniversary, thanks, congrats, wedding, baby, housewarming, recovery, apology, holiday, justbecause
+// budget: b1(~2만), b2(2~5만), b3(5~10만), b4(10~20만), b5(20만+)
+```
+
+### 쿠팡 링크 형식 (통일 규칙)
+```javascript
+// maro-app.jsx (mkUrl 함수)
+`https://www.coupang.com/np/search?component=&q=${encodeURIComponent(keyword)}&channel=user&traid=AF3339921&subid=maro-app`
+
+// today-pick.html (coupangLink 함수)
+`https://www.coupang.com/np/search?component=&q=${q}&channel=user&component=&eventCategory=SRP&traid=AF3339921&subid=maro-today`
+
+// 파라미터: traid=AF3339921 (파트너 ID), subid=maro-{페이지명} (유입 추적)
+```
+
+### AI 프롬프트 템플릿 (압축형, ~180자)
+```
+선물추천 JSON만 출력. 관계:{rel}({depth}) 상황:{occ} 예산:{bud} 마음:"{intent}" 취향:{tags} 계절:{season}
+규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용
+{"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},...(3개)]}
+```
+
+### 기념일 목록 (SPECIAL_PICKS + LUNAR_DATES)
+```
+양력 고정: 발렌타인(2/12~14), 화이트데이(3/12~14), 블랙데이(4/12~14),
+          어버이날(5/6~8), 스승의날(5/13~15), 빼빼로데이(11/9~11), 크리스마스(12/23~25)
+음력 동적: 설날(LUNAR_DATES.newyear), 추석(LUNAR_DATES.chuseok)
+          — getLunarRange()로 당해 양력 변환, 기준일 ±3일
+          — 2025~2040년 룩업 테이블 내장
+```
+
+### TAG_KEYWORDS 매핑 (fallback 태그 반영)
+```
+cafe → 커피,카페,기프트카드,머그,텀블러
+fashion → 패션,가방,지갑,액세서리,명품,시계
+tech → 전자기기,이어폰,에어팟,스피커
+selfcare → 핸드크림,로션,향수,스파,아로마
+// 총 20개 태그, 각 5~10개 키워드
+```
