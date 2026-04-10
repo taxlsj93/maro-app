@@ -1,6 +1,9 @@
 # Changelog
 
 ## 2026-04-11
+- **[ui-brand]** 변경 파일: `vote.html` — 브랜드 스타일 전면 적용 (글래스모피즘, 그라데이션 배경, Noto Sans KR body)
+- **[ui-brand]** 변경 파일: `message.html`, `vote.html` — 모바일 반응형 미디어쿼리 추가 (@media max-width:380px)
+- **[content-seo]** 변경 파일: `privacy.html`, `terms.html` — meta description + OG 태그 추가
 - **[marketing]** 변경 파일: 전체 HTML — GA4 측정 ID `G-S3Y94YY9WP`로 통일
 - **[deploy-test]** 변경 파일: `message.html`, `today-pick.html`, `vote.html` — 푸터 링크 `index.html` → `/` 수정
 - **[gift-data]** 변경 파일: `maro-app.jsx`, `app.html` — 쿠팡 파트너스 파라미터 `affiliate=` → `traid=`+`subid=` 통일

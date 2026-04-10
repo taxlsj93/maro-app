@@ -72,3 +72,13 @@ All styles are inline CSS objects within React components. Design uses a warm cr
 ```
 
 6. 커밋 메시지는 한국어로 작성한다.
+7. 모든 에이전트는 커밋 완료 후 반드시 `SYNC.md`에 아래 형식으로 추가(append)한다 (덮어쓰기 금지):
+
+```markdown
+### [YYYY-MM-DD HH:MM] @에이전트명
+- 커밋: `해시 7자리`
+- 변경: `file1`, `file2`, ...
+- 요약: 작업 내용 한 줄 설명
+```
+
+8. 모든 에이전트는 커밋 완료 후 Notion 마로 대시보드(`page_id: 33edf765-9901-81d1-b54c-d4b1e640c1ed`)의 변경 이력 섹션에 날짜, 에이전트명, 변경 파일, 작업 요약을 추가한다.
