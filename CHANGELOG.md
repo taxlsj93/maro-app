@@ -1,6 +1,11 @@
 # Changelog
 
 ## 2026-04-11
+- **[marketing]** 변경 파일: 전체 HTML — GA4 측정 ID `G-S3Y94YY9WP`로 통일
+- **[deploy-test]** 변경 파일: `message.html`, `today-pick.html`, `vote.html` — 푸터 링크 `index.html` → `/` 수정
+- **[gift-data]** 변경 파일: `maro-app.jsx`, `app.html` — 쿠팡 파트너스 파라미터 `affiliate=` → `traid=`+`subid=` 통일
+- **[content-seo]** 변경 파일: `blog.html`, `vercel.json`, `sitemap.xml` — 블로그 페이지 신규 생성 (5개 글, 카테고리 필터, 상세 보기)
+- **[deploy-test]** 변경 파일: `firestore.rules` — Firestore 보안 규칙 영구 설정 (투표 읽기/생성만 허용, 수정/삭제 차단)
 - **[gift-data]** 변경 파일: `maro-app.jsx` — AI 프롬프트 50% 압축, max_tokens 500, localStorage 캐싱(24h TTL), 태그 반영 fallback 로직
 - **[planner]** 변경 파일: — 프로젝트 현황 분석 및 에이전트별 할일 우선순위 정리
 - **[deploy-test]** 변경 파일: `vercel.json`, `.gitignore` — 5개 리라이트 추가, .gitignore 생성

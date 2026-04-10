@@ -8,6 +8,7 @@
     { "source": "/calc", "destination": "/calc.html" },
     { "source": "/vote", "destination": "/vote.html" },
     { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/terms", "destination": "/terms.html" }
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/blog", "destination": "/blog.html" }
   ]
 }

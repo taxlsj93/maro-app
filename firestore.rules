@@ -1,0 +1,36 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── 투표 (vote) 컬렉션 ──
+    // 누구나 읽기 가능, 생성만 가능 (수정/삭제 불가)
+    match /votes/{voteId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['title', 'options', 'createdAt'])
+                    && request.resource.data.title is string
+                    && request.resource.data.title.size() <= 100
+                    && request.resource.data.options is list
+                    && request.resource.data.options.size() >= 2
+                    && request.resource.data.options.size() <= 10;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ── 투표 응답 (responses) 서브컬렉션 ──
+    // 누구나 읽기/생성 가능, 수정/삭제 불가 (중복 투표 방지는 클라이언트에서)
+    match /votes/{voteId}/responses/{responseId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['optionIndex', 'votedAt'])
+                    && request.resource.data.optionIndex is int
+                    && request.resource.data.optionIndex >= 0;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ── 기타 모든 컬렉션: 기본 차단 ──
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
