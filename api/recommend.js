@@ -34,9 +34,9 @@ export default async function handler(req) {
   }
 
   // API key check
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = (process.env.ANTHROPIC_API_KEY || '').trim();
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'API 설정 오류' }), {
+    return new Response(JSON.stringify({ error: 'API 설정 오류', detail: 'ANTHROPIC_API_KEY 환경변수가 설정되지 않았습니다' }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
@@ -60,27 +60,59 @@ export default async function handler(req) {
 규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용${fm ? ' B급감성 웃긴선물' : ''}
 {"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},...(3개)]}`;
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
+    // 모델 fallback: sonnet-4 → sonnet-4-20250514 → haiku
+    const models = ['claude-sonnet-4-20250514', 'claude-sonnet-4-6-20250620', 'claude-haiku-4-5-20251001'];
+    let data = null;
+    let lastStatus = 0;
+    let lastError = '';
 
-    if (!res.ok) {
-      return new Response(JSON.stringify({ error: '추천 생성 실패' }), {
+    for (const model of models) {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 500,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      });
+
+      lastStatus = res.status;
+
+      if (res.ok) {
+        data = await res.json();
+        break;
+      }
+
+      // 401/403 = 키 문제, 어떤 모델이든 실패하므로 바로 중단
+      if (res.status === 401 || res.status === 403) {
+        const errBody = await res.json().catch(() => ({}));
+        lastError = errBody.error?.message || `인증 실패 (${res.status})`;
+        break;
+      }
+
+      // 404 = 모델 없음, 다음 모델 시도
+      if (res.status === 404) {
+        lastError = `모델 ${model} 사용 불가`;
+        continue;
+      }
+
+      // 기타 에러
+      const errBody = await res.json().catch(() => ({}));
+      lastError = errBody.error?.message || `API 오류 (${res.status})`;
+      break;
+    }
+
+    if (!data) {
+      return new Response(JSON.stringify({ error: '추천 생성 실패', status: lastStatus, detail: lastError }), {
         status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
 
-    const data = await res.json();
     const text = data.content?.[0]?.text || '';
     const match = text.match(/\{[\s\S]*\}/);
     if (!match) throw new Error('JSON parse failed');
