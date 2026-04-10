@@ -57,3 +57,12 @@ Only the `/app` route uses the React/Vite build. Other pages are standalone HTML
 ## Styling
 
 All styles are inline CSS objects within React components. Design uses a warm cream/terra palette (`#c4756e` primary, cream gradients background, brown text shades) with glassmorphic card effects.
+
+## Agent Rules
+
+모든 에이전트는 작업 완료 시 `CHANGELOG.md`에 아래 형식으로 기록한다:
+
+```markdown
+## YYYY-MM-DD
+- **[에이전트명]** 변경 파일: `file1`, `file2` — 작업 요약
+```
