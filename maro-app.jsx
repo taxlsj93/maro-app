@@ -473,36 +473,32 @@ export default function App(){
   // ══════════════════════════════════════
   // ── IMPROVED AI Analysis ──
   // ══════════════════════════════════════
+  // ── localStorage 캐시 헬퍼 ──
+  const CACHE_PREFIX="maro_rec_";
+  const CACHE_TTL=1000*60*60*24; // 24시간
+  function cacheKey(r,d,o,b,t){return CACHE_PREFIX+[r,d,o,b,...[...t].sort()].join("|");}
+  function getCache(key){try{const c=JSON.parse(localStorage.getItem(key));if(c&&Date.now()-c.ts<CACHE_TTL)return c.data;localStorage.removeItem(key);}catch{}return null;}
+  function setCache(key,data){try{localStorage.setItem(key,JSON.stringify({ts:Date.now(),data}));}catch{}}
+
+  // ══════════════════════════════════════
   const analyze=async()=>{
     setLoading(true);go(6);
 
-    const tl=tagLabels.length>0?`\n이 사람 관심사/취향: ${tagLabels.join(", ")}`:"";
+    // 캐시 확인
+    const ck=cacheKey(rel?.id,dep,occ?.id,bud?.id,tags);
+    const cached=getCache(ck);
+    if(cached){setResults(cached);setLoading(false);return;}
+
+    const tl=tagLabels.length>0?` 취향:${tagLabels.join(",")}`:"";
     const fm=tags.includes("funny");
-    // Random seed to force diversity
-    const seed = Math.floor(Math.random() * 10000);
-    const now = new Date();
-    const season = ["봄","봄","여름","여름","가을","가을","겨울","겨울","봄","봄","겨울","겨울"][now.getMonth()];
+    const season=["봄","봄","여름","여름","가을","가을","겨울","겨울","봄","봄","겨울","겨울"][new Date().getMonth()];
 
-    const prompt=`당신은 한국의 관계 문화를 깊이 이해하는 선물 추천 전문가입니다.
-
-관계: ${rel?.label}, 깊이: ${dep||"미지정"}, 상황: ${occ?.label}, 예산: ${bud?.label}
-전하고 싶은 마음: "${intent||"특별한 메시지 없음"}"${tl}
-현재 계절: ${season}, 랜덤시드: ${seed}
-
-핵심 규칙:
-1) ${occ?.label} 상황에 맞는 선물만 추천
-2) ${rel?.label}(${dep||"일반"}) 관계 깊이에 맞는 적절한 무게감
-3) 한국 문화에서 부적절한 선물 제외 (예: 신발, 손수건은 상황에 따라)
-4) searchKeyword는 쿠팡에서 실제로 검색했을 때 결과가 잘 나오는 구체적 키워드
-5) 3개 선물은 서로 카테고리가 달라야 함 (예: 뷰티 + 인테리어 + 식품 등 겹치지 않게)
-6) 매번 다른 조합을 추천하세요. 뻔한 추천(핸드크림, 디퓨저 등) 대신 창의적이고 구체적인 상품명을 사용하세요
-7) price는 "${bud?.label}" 범위 안에서 구체적으로 (예: "35,000원" 또는 "3~5만원")${tagLabels.length>0?`\n8) 관심사(${tagLabels.join(", ")})를 적극 반영해서 취향 저격 선물 추천`:""}${fm?"\n9) 웃긴선물 태그가 있으므로 B급 감성, 병맛, 웃기지만 센스있는 선물을 추천":""}
-
-JSON만 출력 (다른 텍스트 없이):
-{"gifts":[{"name":"구체적 상품명","price":"가격","reason":"왜 이 관계와 상황에 이 선물이 맞는지 2문장","emoji":"이모지","searchKeyword":"쿠팡검색키워드"},{"name":"...","price":"...","reason":"...","emoji":"...","searchKeyword":"..."},{"name":"...","price":"...","reason":"...","emoji":"...","searchKeyword":"..."}]}`;
+    const prompt=`선물추천 JSON만 출력. 관계:${rel?.label}(${dep||"일반"}) 상황:${occ?.label} 예산:${bud?.label} 마음:"${intent||"없음"}"${tl} 계절:${season}
+규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용${fm?" B급감성 웃긴선물":""}
+{"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},...(3개)]}`;
 
     try{
-      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,messages:[{role:"user",content:prompt}]})});
       if(!r.ok)throw 0;
       const d=await r.json();
       const t=d.content?.[0]?.text||"";
@@ -511,6 +507,7 @@ JSON만 출력 (다른 텍스트 없이):
       const p=JSON.parse(m[0]);
       if(!p.gifts?.length)throw 0;
       setResults(p.gifts);
+      setCache(ck,p.gifts);
     }catch{
       setResults(gfb(occ?.id,bud?.id,tags));
     }
