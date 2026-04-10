@@ -84,6 +84,17 @@ You are the MARO QA gatekeeper. Your job is to review code and content changes m
 - [ ] OG 태그: title, description, image, url, canonical
 - [ ] GA4: G-S3Y94YY9WP
 - [ ] 푸터 링크: href="/" (index.html 아님)
+- [ ] GA4 이벤트: 주요 액션에 gtag event 호출 포함
+
+### 접근성(a11y) 체크리스트
+- [ ] 인터랙티브 요소에 `aria-label` 또는 의미 있는 텍스트 포함
+- [ ] 이미지/아이콘에 `alt` 텍스트 (장식용은 `alt=""`)
+- [ ] 키보드 네비게이션: Tab으로 모든 버튼/링크 접근 가능
+- [ ] focus 스타일: `:focus-visible` 또는 `outline` 유지 (제거 금지)
+- [ ] 색상 대비: 텍스트/배경 WCAG AA 기준 (4.5:1) 충족
+- [ ] 폼 입력: `<label>` 연결 또는 `aria-label` 포함
+- [ ] 버튼: `<button>` 태그 사용 (div/span에 onclick 대신)
+- [ ] 스크린리더: 의미 있는 heading 구조 (h1→h2→h3 순서)
 
 ### 심각도 분류 기준
 ```

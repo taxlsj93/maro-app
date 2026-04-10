@@ -294,7 +294,10 @@ function updatePreview() {
 }
 
 // ── 이미지 저장 (canvas) ──
+function ga(e,p={}){try{window.gtag?.('event',e,p)}catch{}}
+
 function saveAsImage() {
+  ga('card_save',{theme:currentTheme.id});
   const card = document.getElementById('cardPreview');
   const to = document.getElementById('previewTo').textContent;
   const msg = document.getElementById('previewMsg').textContent;
@@ -396,6 +399,7 @@ function wrapText(ctx, text, x, y, maxW, lineH) {
 
 // ── 공유 ──
 function shareCard() {
+  ga('card_share',{theme:currentTheme.id});
   const to = document.getElementById('toName').value.trim() || '소중한 사람';
   const msg = document.getElementById('msgBody').value.trim();
   if (!msg) { showToast('메시지를 입력해주세요'); return; }

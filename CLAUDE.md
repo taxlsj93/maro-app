@@ -82,3 +82,12 @@ All styles are inline CSS objects within React components. Design uses a warm cr
 ```
 
 8. 모든 에이전트는 커밋 완료 후 Notion 마로 대시보드(`page_id: 33edf765-9901-81d1-b54c-d4b1e640c1ed`)의 변경 이력 섹션에 날짜, 에이전트명, 변경 파일, 작업 요약을 추가한다.
+9. `@deploy-test`는 배포 후 Vercel MCP를 통해 배포 상태를 확인하고, 실패 시 자동으로 롤백한다.
+
+## 에이전트 역할 경계
+
+- **`@ui-brand`**: HTML/CSS/JS **코드 수정** 전담. 디자인 토큰 적용, 컴포넌트 스타일링, 반응형 구현, 브랜드 일관성 유지.
+- **`@marketing`**: **비주얼 콘텐츠 기획** 전담. 인스타 카드 기획/카피 작성, 캠페인 전략, 해시태그 선정. 코드 수정은 하지 않음.
+- 비주얼 콘텐츠 제작 흐름: `@marketing`(기획/카피) → `@ui-brand`(HTML/CSS 구현) → 결과물 PNG 캡처.
+- **`@backend-api`**: API 프록시, 서버 사이드 로직만 담당. 프론트엔드 코드는 `@gift-data` 또는 `@ui-brand`가 수정.
+- **`@content-seo`**: 블로그 글 작성 + 메타태그 최적화. 블로그 코드 구조(`blog.html`)는 `@ui-brand`가 수정.

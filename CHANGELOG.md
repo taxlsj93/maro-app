@@ -1,6 +1,10 @@
 # Changelog
 
 ## 2026-04-11
+- **[backend-api]** 변경 파일: `api/recommend.js`, `maro-app.jsx` — Edge Function 프록시 구축, API 키 서버 보관, rate limiting, CORS, 프론트엔드 연동
+- **[analytics]** 변경 파일: `maro-app.jsx`, `message.html`, `vote.html`, `today-pick.html` — GA4 커스텀 이벤트 추가 (recommend_start/complete, coupang_click, card_save/share, vote_create/submit)
+- **[planner]** 변경 파일: `CLAUDE.md` — 에이전트 역할 경계 명확화 (@ui-brand vs @marketing)
+- **[qa-review]** 변경 파일: `.claude/agents/qa-review.md` — 접근성 체크리스트 8항목 추가 (ARIA, alt, 키보드, focus, 대비)
 - **[ui-brand]** 변경 파일: `vote.html` — 브랜드 스타일 전면 적용 (글래스모피즘, 그라데이션 배경, Noto Sans KR body)
 - **[ui-brand]** 변경 파일: `message.html`, `vote.html` — 모바일 반응형 미디어쿼리 추가 (@media max-width:380px)
 - **[content-seo]** 변경 파일: `privacy.html`, `terms.html` — meta description + OG 태그 추가

@@ -376,6 +376,9 @@ function removeOption(btn) {
   btn.parentElement.remove();
 }
 
+// ── GA4 이벤트 ──
+function ga(e,p={}){try{window.gtag?.('event',e,p)}catch{}}
+
 // ── 투표 생성 ──
 async function createVote() {
   const title = document.getElementById('voteTitle').value.trim();
@@ -418,6 +421,7 @@ async function createVote() {
     window.history.pushState({}, '', url);
   }
 
+  ga('vote_create',{options:voteData.options.length});
   renderVotePhase(voteData);
   showPhase(2);
 }
@@ -480,6 +484,7 @@ function renderVotePhase(data) {
 // ── 투표 제출 ──
 async function submitVote() {
   if (selectedOption === null) return;
+  ga('vote_submit',{option_index:selectedOption});
 
   if (useFirebase) {
     try {

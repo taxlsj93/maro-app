@@ -480,8 +480,12 @@ export default function App(){
   function getCache(key){try{const c=JSON.parse(localStorage.getItem(key));if(c&&Date.now()-c.ts<CACHE_TTL)return c.data;localStorage.removeItem(key);}catch{}return null;}
   function setCache(key,data){try{localStorage.setItem(key,JSON.stringify({ts:Date.now(),data}));}catch{}}
 
+  // ── GA4 이벤트 헬퍼 ──
+  const ga=(event,params={})=>{try{window.gtag?.('event',event,params)}catch{}};
+
   // ══════════════════════════════════════
   const analyze=async()=>{
+    ga('recommend_start',{relation:rel?.label,occasion:occ?.label,budget:bud?.label,tags:tags.join(',')});
     setLoading(true);go(6);
 
     // 캐시 확인
@@ -489,27 +493,19 @@ export default function App(){
     const cached=getCache(ck);
     if(cached){setResults(cached);setLoading(false);return;}
 
-    const tl=tagLabels.length>0?` 취향:${tagLabels.join(",")}`:"";
-    const fm=tags.includes("funny");
     const season=["봄","봄","여름","여름","가을","가을","겨울","겨울","봄","봄","겨울","겨울"][new Date().getMonth()];
 
-    const prompt=`선물추천 JSON만 출력. 관계:${rel?.label}(${dep||"일반"}) 상황:${occ?.label} 예산:${bud?.label} 마음:"${intent||"없음"}"${tl} 계절:${season}
-규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용${fm?" B급감성 웃긴선물":""}
-{"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},...(3개)]}`;
-
     try{
-      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,messages:[{role:"user",content:prompt}]})});
+      const r=await fetch("/api/recommend",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({relation:rel?.label,depth:dep,occasion:occ?.label,budget:bud?.label,intent,tags,season})});
       if(!r.ok)throw 0;
       const d=await r.json();
-      const t=d.content?.[0]?.text||"";
-      const m=t.match(/\{[\s\S]*\}/);
-      if(!m)throw 0;
-      const p=JSON.parse(m[0]);
-      if(!p.gifts?.length)throw 0;
-      setResults(p.gifts);
-      setCache(ck,p.gifts);
+      if(!d.gifts?.length)throw 0;
+      setResults(d.gifts);
+      setCache(ck,d.gifts);
+      ga('recommend_complete',{source:'ai',count:d.gifts.length});
     }catch{
       setResults(gfb(occ?.id,bud?.id,tags));
+      ga('recommend_complete',{source:'fallback',count:3});
     }
     setLoading(false);
   };
@@ -630,7 +626,7 @@ export default function App(){
             </div>
 
             <div style={{display:"flex",flexDirection:"column",gap:14}}>
-              {results.map((g,i)=>{const sk=g.searchKeyword||g.sk||g.name;const url=mkUrl(sk,g.price);return(
+              {results.map((g,i)=>{const sk=g.searchKeyword||g.sk||g.name;const url=mkUrl(sk,g.price);const onCoupangClick=()=>ga('coupang_click',{product:g.name,price:g.price,rank:i+1,page:'app'});return(
                 <div key={i} style={{background:"rgba(255,255,255,.92)",border:i===0?`2px solid ${P}`:"1.5px solid #ebe4dc",borderRadius:18,padding:18,position:"relative",overflow:"hidden",animation:`up .4s ease ${i*.15}s both`}}>
                   {i===0&&<div style={{position:"absolute",top:12,right:12,background:`linear-gradient(135deg,${P},${P2})`,color:"#fff",fontSize:10,fontWeight:700,padding:"4px 12px",borderRadius:20,letterSpacing:.5}}>BEST</div>}
                   <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
@@ -641,7 +637,7 @@ export default function App(){
                       <div style={{fontSize:13,color:"#5a4a3a",lineHeight:1.7}}>{g.reason}</div>
                     </div>
                   </div>
-                  <a href={url} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginTop:12,padding:"9px 14px",background:`${P}06`,border:`1px solid ${P}18`,borderRadius:10,textDecoration:"none",fontSize:13,color:"#5a4a3a",fontWeight:600}}>
+                  <a href={url} target="_blank" rel="noopener noreferrer" onClick={onCoupangClick} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginTop:12,padding:"9px 14px",background:`${P}06`,border:`1px solid ${P}18`,borderRadius:10,textDecoration:"none",fontSize:13,color:"#5a4a3a",fontWeight:600}}>
                     <span>🔍</span> 상품 예시 보기 <span style={{fontSize:11,color:TX3,fontWeight:400}}>쿠팡</span><span style={{fontSize:12,marginLeft:"auto",color:P}}>→</span>
                   </a>
                 </div>

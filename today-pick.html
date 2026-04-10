@@ -862,7 +862,7 @@ pickItems.forEach((g, i) => {
         <span class="pick-price">${g.price}</span>
         <div class="pick-tags">${g.tags.map(t=>`<span class="pick-tag">${t}</span>`).join('')}</div>
       </div>
-      <a href="${coupangLink(g.name)}" target="_blank" rel="noopener" class="pick-cta">쿠팡에서 보기 →</a>
+      <a href="${coupangLink(g.name)}" target="_blank" rel="noopener" class="pick-cta" onclick="try{gtag('event','coupang_click',{product:'${g.name.replace(/'/g,"\\'")}',page:'today'})}catch(e){}">쿠팡에서 보기 →</a>
     </div>
   `;
   container.appendChild(card);
