@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-04-11
+- **[gift-data]** 변경 파일: `maro-app.jsx` — fallback 추천에 사용자 태그 반영 로직 추가 (TAG_KEYWORDS 매핑, 점수 기반 우선 배치)
 - **[planner]** 변경 파일: — 프로젝트 현황 분석 및 에이전트별 할일 우선순위 정리
 - **[deploy-test]** 변경 파일: `vercel.json`, `.gitignore` — 5개 리라이트 추가, .gitignore 생성
 - **[ui-brand]** 변경 파일: `today-pick.html`, `vote.html` — Noto Sans KR 폰트 추가

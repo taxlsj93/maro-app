@@ -364,10 +364,62 @@ const FD={
   ]
 };
 
-// ── Get fallback: shuffle & pick 3 ──
-function gfb(o,b){
+// ── Tag → keyword mapping for fallback filtering ──
+const TAG_KEYWORDS = {
+  cafe:["커피","카페","기프트카드","기프티콘","드립","머그","텀블러"],
+  fashion:["패션","의류","가방","지갑","백팩","액세서리","명품","시계","워치"],
+  fitness:["운동","건강","비타민","홍삼","스마트워치","프로틴","요가"],
+  travel:["여행","캐리어","백팩","카메라","보조배터리","호텔"],
+  interior:["인테리어","무드등","조명","디퓨저","캔들","화분","쿠션","액자","침구"],
+  tech:["전자기기","이어폰","에어팟","스피커","보조배터리","카메라","태블릿"],
+  pet:["반려동물","강아지","고양이","펫"],
+  book:["독서","책","노트","다이어리","만년필","북엔드"],
+  game:["게임","닌텐도","플레이스테이션","스위치"],
+  music:["음악","스피커","블루투스","이어폰","헤드폰","턴테이블","LP"],
+  cooking:["요리","베이킹","냄비","식기","오일","올리브","레스토랑","식사권"],
+  camping:["캠핑","아웃도어","랜턴","텀블러","담요"],
+  idol:["아이돌","덕질","굿즈","캐릭터","포토","앨범"],
+  selfcare:["셀프케어","힐링","스파","입욕제","핸드크림","로션","에센스","향수","아로마","파자마"],
+  photo:["사진","카메라","폴라로이드","액자","포토","앨범"],
+  alcohol:["와인","샴페인","위스키","맥주","술","잔"],
+  character:["캐릭터","굿즈","피규어","인형"],
+  retro:["레트로","빈티지","LP","턴테이블","필름","폴라로이드"],
+  funny:["웃긴","장난감","병맛","유머","재미"],
+  practical:["실용","청소기","수건","타올","정리","세제","양말"],
+};
+
+// ── Get fallback: tag-aware shuffle & pick 3 ──
+function gfb(o, b, userTags) {
   const pool = FB[`${o}|${b}`] || FD[b] || FD.b2;
-  return shuffle(pool).slice(0, 3);
+  if (!userTags || userTags.length === 0) return shuffle(pool).slice(0, 3);
+
+  // Build keyword set from user tags
+  const kwSet = userTags.flatMap(t => TAG_KEYWORDS[t] || []);
+
+  // Score each item: how many tag keywords appear in name or sk
+  const scored = pool.map(item => {
+    const text = `${item.name} ${item.sk || ""}`.toLowerCase();
+    const score = kwSet.filter(kw => text.includes(kw.toLowerCase())).length;
+    return { ...item, _score: score };
+  });
+
+  // Sort by score desc, then shuffle within same score for variety
+  scored.sort((a, b) => b._score - a._score);
+
+  // Pick: at least 1 tag-matched if available, rest shuffled for diversity
+  const matched = scored.filter(x => x._score > 0);
+  const unmatched = shuffle(scored.filter(x => x._score === 0));
+
+  let picks;
+  if (matched.length >= 3) {
+    picks = shuffle(matched).slice(0, 3);
+  } else if (matched.length > 0) {
+    picks = [...shuffle(matched), ...unmatched].slice(0, 3);
+  } else {
+    picks = shuffle(scored).slice(0, 3);
+  }
+
+  return picks.map(({ _score, ...item }) => item);
 }
 
 // ── Utils ──
@@ -460,7 +512,7 @@ JSON만 출력 (다른 텍스트 없이):
       if(!p.gifts?.length)throw 0;
       setResults(p.gifts);
     }catch{
-      setResults(gfb(occ?.id,bud?.id));
+      setResults(gfb(occ?.id,bud?.id,tags));
     }
     setLoading(false);
   };

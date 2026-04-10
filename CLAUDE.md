@@ -58,11 +58,17 @@ Only the `/app` route uses the React/Vite build. Other pages are standalone HTML
 
 All styles are inline CSS objects within React components. Design uses a warm cream/terra palette (`#c4756e` primary, cream gradients background, brown text shades) with glassmorphic card effects.
 
-## Agent Rules
+## 에이전트 자동 워크플로우
 
-모든 에이전트는 작업 완료 시 `CHANGELOG.md`에 아래 형식으로 기록한다:
+1. 모든 코드 수정 에이전트(`@ui-brand`, `@gift-data`, `@content-seo`)는 작업 완료 후 자동으로 `@qa-review`를 호출한다.
+2. `@qa-review`가 BLOCKER 없이 통과하면 자동으로 `@deploy-test`가 커밋+푸시한다.
+3. `@qa-review`가 BLOCKER를 발견하면 수정한 에이전트가 자동으로 수정 후 재검토 받는다.
+4. `@marketing`과 `@content-seo`가 콘텐츠를 만들면 `@planner`가 브랜드 톤 일관성을 확인한다.
+5. 모든 에이전트는 작업 완료 시 `CHANGELOG.md`에 아래 형식으로 기록한다:
 
 ```markdown
 ## YYYY-MM-DD
 - **[에이전트명]** 변경 파일: `file1`, `file2` — 작업 요약
 ```
+
+6. 커밋 메시지는 한국어로 작성한다.
