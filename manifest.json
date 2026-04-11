@@ -1,0 +1,19 @@
+{
+  "name": "마로 — 마음을 새기는 선물",
+  "short_name": "마로",
+  "description": "관계·상황·마음을 분석해 딱 맞는 선물 Top 3을 추천해드려요",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#FFF8F5",
+  "theme_color": "#c4756e",
+  "icons": [
+    {
+      "src": "/og-image.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "ko",
+  "categories": ["lifestyle", "shopping"]
+}

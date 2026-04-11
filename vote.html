@@ -227,15 +227,25 @@ textarea.form-input{resize:vertical;min-height:80px}
 </header>
 
 <div class="container">
-  <!-- Phase indicator -->
-  <div class="phase-nav">
+  <!-- 준비 중 오버레이 -->
+  <div style="text-align:center;padding:60px 20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:20px;margin-bottom:24px">
+    <div style="font-size:48px;margin-bottom:16px">🗳️</div>
+    <h2 style="font-family:'Gowun Batang',serif;font-size:22px;color:rgba(250,246,238,.9);margin:0 0 8px">단체 선물 투표</h2>
+    <p style="font-size:14px;color:rgba(250,246,238,.5);line-height:1.7;margin:0 0 24px">후보를 등록하고 링크를 공유하면<br>친구들이 투표할 수 있어요</p>
+    <div style="display:inline-block;background:rgba(196,117,110,.15);border:1px solid rgba(196,117,110,.3);border-radius:50px;padding:10px 28px;font-size:14px;color:#e8a09a;font-weight:600">곧 오픈 예정이에요 ✨</div>
+    <p style="font-size:12px;color:rgba(250,246,238,.3);margin-top:16px">현재 개발 중이에요. 조금만 기다려주세요!</p>
+    <a href="/app" style="display:inline-block;margin-top:20px;padding:12px 32px;background:#c4756e;color:#fff;border-radius:50px;text-decoration:none;font-size:14px;font-weight:600">선물 추천받기 →</a>
+  </div>
+
+  <!-- Phase indicator (숨김) -->
+  <div class="phase-nav" style="display:none">
     <div class="phase-dot active" id="dot1"></div>
     <div class="phase-dot" id="dot2"></div>
     <div class="phase-dot" id="dot3"></div>
   </div>
 
-  <!-- Phase 1: Create -->
-  <div id="phaseCreate">
+  <!-- Phase 1: Create (숨김) -->
+  <div id="phaseCreate" style="display:none">
     <h2 class="section-title">함께 골라볼까요?</h2>
     <p class="section-sub">선물 후보를 올리면 친구들이<br>투표할 수 있어요</p>
 

@@ -22,15 +22,15 @@ No test framework or linter is configured.
 
 **Multi-page static site**: Each feature has its own HTML entry point. Vercel rewrites map clean URLs to HTML files:
 - `/` → `index.html` (landing page)
-- `/app` → `app.html` (gift recommendation wizard — mounts `maro-app.jsx` via `main.jsx`)
+- `/app` → `app.html` (gift recommendation wizard)
 - `/today` → `today-pick.html` (daily featured pick)
 - `/message` → `message.html` (shareable message card creator)
 - `/calc` → `calc.html` (gift cost split calculator)
-- `/vote` → `vote.html` (community voting)
+- `/vote` → `vote.html` (community voting — 준비 중)
 
-Only the `/app` route uses the React/Vite build. Other pages are standalone HTML with inline JS/CSS.
+**중요: `/app` 라우트의 실제 프로덕션 코드는 `app.html` 내부 인라인 `<script type="text/babel">`입니다.** `maro-app.jsx`는 Vite 빌드용이지만 프로덕션에서 사용되지 않습니다. **앱 기능 수정 시 반드시 `app.html`을 수정하세요.** maro-app.jsx는 참조/백업용입니다.
 
-## Key Data Structures (in maro-app.jsx)
+## Key Data Structures (in app.html)
 
 - **RELATIONS** — 8 relationship types with depth variations
 - **OCCASIONS** — 11 gift-giving occasions

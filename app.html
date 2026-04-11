@@ -12,6 +12,7 @@
 <meta property="og:url" content="https://maro.ai.kr/app">
 <link rel="canonical" href="https://maro.ai.kr/app">
 <meta name="theme-color" content="#c4756e">
+<link rel="manifest" href="/manifest.json">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Y94YY9WP"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3Y94YY9WP');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +26,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(160deg,#fa
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 </style>
 </head>
 <body>
@@ -159,6 +161,206 @@ const FB={
     {name:"로봇청소기",price:"15~20만원",reason:"신혼생활을 편리하게 만들어줘요.",sk:"로봇청소기",cat:"tech",g:"n"},
     {name:"프리미엄 커피머신",price:"15~20만원",reason:"매일 아침 둘만의 카페를 만들어줘요.",sk:"커피머신",cat:"home",g:"n"},
     {name:"호텔 스테이 이용권",price:"15~20만원",reason:"일상을 벗어난 둘만의 시간이에요.",sk:"호텔 스테이",cat:"experience",g:"n"},
+  ],
+  // ── 감사 인사 ──
+  "thanks|b1":[
+    {name:"프리미엄 티백 세트",price:"1~2만원",reason:"따뜻한 차 한 잔에 감사의 마음을 담아요.",sk:"프리미엄 티백 선물",cat:"food",g:"n"},
+    {name:"미니 핸드크림 세트",price:"1~2만원",reason:"매일 쓸 때마다 감사한 마음이 전해져요.",sk:"미니 핸드크림 세트",cat:"beauty",g:"f"},
+    {name:"감사 메시지 캔들",price:"1~2만원",reason:"향기로 고마운 마음을 전해요.",sk:"메시지 캔들",cat:"home",g:"n"},
+    {name:"감성 볼펜 세트",price:"1~2만원",reason:"글 쓸 때마다 감사를 떠올리게 해요.",sk:"감성 볼펜 선물",cat:"stationery",g:"m"},
+    {name:"건강 견과류 세트",price:"1~2만원",reason:"건강까지 챙기는 센스 있는 감사 선물이에요.",sk:"견과류 선물세트",cat:"health",g:"n"},
+    {name:"프리미엄 양말 세트",price:"1~2만원",reason:"실용적이면서 부담 없는 감사 표현이에요.",sk:"프리미엄 양말 선물",cat:"fashion",g:"m"},
+  ],
+  "thanks|b2":[
+    {name:"프리미엄 차 선물 세트",price:"3~5만원",reason:"격식 있으면서 부담 없는 감사의 표현이에요.",sk:"차 선물세트",cat:"food",g:"n"},
+    {name:"고급 올리브오일 세트",price:"3~5만원",reason:"건강을 생각하는 고급스러운 감사 선물이에요.",sk:"올리브오일 선물세트",cat:"food",g:"n"},
+    {name:"브랜드 핸드크림 세트",price:"3~5만원",reason:"매일 쓸 때마다 감사의 마음이 전해져요.",sk:"브랜드 핸드크림 세트",cat:"beauty",g:"f"},
+    {name:"프리미엄 만년필",price:"3~5만원",reason:"글을 쓸 때마다 감사의 마음을 떠올리게 해요.",sk:"프리미엄 만년필",cat:"stationery",g:"m"},
+    {name:"감성 디퓨저+캔들 세트",price:"3~5만원",reason:"공간에 향기로 감사를 전해요.",sk:"디퓨저 캔들 세트",cat:"home",g:"f"},
+    {name:"카페 상품권 5만원권",price:"5만원",reason:"편하게 쓸 수 있는 실용적인 감사 선물이에요.",sk:"카페 상품권",cat:"food",g:"n"},
+  ],
+  "thanks|b3":[
+    {name:"프리미엄 꿀 선물 세트",price:"7~10만원",reason:"달콤한 감사의 마음을 전해요.",sk:"프리미엄 꿀 선물세트",cat:"food",g:"n"},
+    {name:"브랜드 스카프",price:"7~10만원",reason:"격조 있는 감사의 표현이에요.",sk:"브랜드 스카프 선물",cat:"fashion",g:"f"},
+    {name:"고급 만년필 세트",price:"7~10만원",reason:"품격 있는 필기구로 마음을 전해요.",sk:"고급 만년필 세트",cat:"stationery",g:"m"},
+    {name:"프리미엄 홍삼 세트",price:"7~10만원",reason:"건강을 챙기는 정성 가득한 감사예요.",sk:"홍삼 선물세트",cat:"health",g:"n"},
+    {name:"고급 디퓨저 세트",price:"7~10만원",reason:"공간을 격조 있게 채우는 감사 선물이에요.",sk:"고급 디퓨저 선물세트",cat:"home",g:"n"},
+    {name:"스파 이용권",price:"7~10만원",reason:"특별한 힐링 시간을 선물하는 감사예요.",sk:"스파 이용권",cat:"experience",g:"f"},
+  ],
+  // ── 축하 승진·합격 ──
+  "congrats|b1":[
+    {name:"축하 케이크 쿠폰",price:"1~2만원",reason:"달콤한 축하의 메시지를 전해요.",sk:"케이크 기프티콘",cat:"food",g:"n"},
+    {name:"감성 다이어리",price:"1~2만원",reason:"새로운 시작을 기록하는 특별한 선물이에요.",sk:"감성 다이어리 선물",cat:"stationery",g:"n"},
+    {name:"축하 꽃다발 미니",price:"1~2만원",reason:"작지만 화사한 축하의 마음이에요.",sk:"미니 꽃다발",cat:"home",g:"f"},
+    {name:"넥타이핀·커프스 세트",price:"1~2만원",reason:"새로운 직장에서 빛날 센스 아이템이에요.",sk:"넥타이핀 선물",cat:"fashion",g:"m"},
+    {name:"에너지바 선물 세트",price:"1~2만원",reason:"바쁜 새 출발에 에너지를 충전해요.",sk:"에너지바 선물세트",cat:"health",g:"n"},
+    {name:"미니 블루투스 스피커",price:"1~2만원",reason:"새 공간을 음악으로 채워줘요.",sk:"미니 블루투스 스피커",cat:"tech",g:"m"},
+  ],
+  "congrats|b2":[
+    {name:"프리미엄 와인",price:"3~5만원",reason:"축하의 건배를 올리기 좋은 선물이에요.",sk:"프리미엄 와인 선물",cat:"food",g:"n"},
+    {name:"브랜드 명함 지갑",price:"3~5만원",reason:"승진 축하에 딱 맞는 격식 있는 선물이에요.",sk:"명함 지갑 선물",cat:"fashion",g:"m"},
+    {name:"원데이 클래스 이용권",price:"3~5만원",reason:"새로운 시작에 새로운 경험을 더해요.",sk:"원데이 클래스 이용권",cat:"experience",g:"n"},
+    {name:"고급 볼펜+노트 세트",price:"3~5만원",reason:"격조 있는 업무용 문구 선물이에요.",sk:"고급 볼펜 노트 세트",cat:"stationery",g:"n"},
+    {name:"프리미엄 향수 미니",price:"3~5만원",reason:"새로운 시작에 어울리는 향기예요.",sk:"향수 미니어처 세트",cat:"beauty",g:"f"},
+    {name:"데스크 오거나이저",price:"3~5만원",reason:"새 자리를 깔끔하게 정리해줘요.",sk:"데스크 오거나이저",cat:"home",g:"n"},
+  ],
+  "congrats|b3":[
+    {name:"브랜드 넥타이",price:"7~10만원",reason:"승진의 품격을 더하는 선물이에요.",sk:"브랜드 넥타이 선물",cat:"fashion",g:"m"},
+    {name:"고급 레스토랑 식사권",price:"7~10만원",reason:"축하의 자리를 더 특별하게 만들어요.",sk:"레스토랑 식사권",cat:"experience",g:"n"},
+    {name:"프리미엄 홍삼 스틱",price:"7~10만원",reason:"바쁜 새 시작에 건강을 챙겨요.",sk:"홍삼 스틱 선물",cat:"health",g:"n"},
+    {name:"무선 충전 패드+거치대",price:"6~8만원",reason:"새 데스크를 스마트하게 꾸며요.",sk:"무선충전기 거치대",cat:"tech",g:"m"},
+    {name:"프리미엄 립스틱 세트",price:"7~10만원",reason:"새로운 시작을 빛나게 해줘요.",sk:"프리미엄 립스틱 세트",cat:"beauty",g:"f"},
+    {name:"각인 만년필",price:"7~10만원",reason:"이름을 새긴 축하의 의미를 담아요.",sk:"각인 만년필 선물",cat:"custom",g:"n"},
+  ],
+  // ── 집들이 ──
+  "housewarming|b1":[
+    {name:"주방 타월 세트",price:"1~2만원",reason:"매일 쓰는 실용적인 집들이 선물이에요.",sk:"주방 타월 세트",cat:"home",g:"n"},
+    {name:"프리미엄 핸드워시",price:"1~2만원",reason:"새 집 욕실에 센스를 더해요.",sk:"프리미엄 핸드워시",cat:"beauty",g:"n"},
+    {name:"미니 화분·다육이 세트",price:"1~2만원",reason:"새 집에 생기를 더해줘요.",sk:"미니 화분 다육이",cat:"hobby",g:"n"},
+    {name:"고급 수세미 세트",price:"1~2만원",reason:"주방 필수템으로 실용적이에요.",sk:"고급 수세미 세트",cat:"home",g:"n"},
+    {name:"커피 드립백 세트",price:"1~2만원",reason:"새 집에서의 첫 커피를 선물해요.",sk:"커피 드립백 세트",cat:"food",g:"n"},
+    {name:"이니셜 머그컵",price:"1~2만원",reason:"나만의 특별한 컵으로 새 시작을 축하해요.",sk:"이니셜 머그컵",cat:"custom",g:"n"},
+  ],
+  "housewarming|b2":[
+    {name:"프리미엄 디퓨저",price:"3~5만원",reason:"새 집을 좋은 향기로 채워요.",sk:"프리미엄 디퓨저",cat:"home",g:"n"},
+    {name:"고급 와인+오프너 세트",price:"3~5만원",reason:"집들이 파티에 딱 어울려요.",sk:"와인 오프너 세트",cat:"food",g:"n"},
+    {name:"인테리어 액자 세트",price:"3~5만원",reason:"빈 벽을 예쁘게 채워줘요.",sk:"인테리어 액자 세트",cat:"hobby",g:"n"},
+    {name:"고급 타월 세트",price:"3~5만원",reason:"프리미엄 수건은 매일 쓸수록 좋아요.",sk:"고급 타월 세트",cat:"fashion",g:"n"},
+    {name:"무선 충전 무드등",price:"3~5만원",reason:"실용성과 인테리어를 동시에 잡아요.",sk:"무선충전 무드등",cat:"tech",g:"n"},
+    {name:"허브 재배 키트",price:"3~5만원",reason:"주방에서 직접 키우는 신선한 허브예요.",sk:"허브 재배 키트",cat:"health",g:"n"},
+  ],
+  "housewarming|b3":[
+    {name:"프리미엄 냄비 세트",price:"7~10만원",reason:"요리의 격을 올리는 집들이 선물이에요.",sk:"프리미엄 냄비 세트",cat:"home",g:"n"},
+    {name:"공기청정기 소형",price:"7~10만원",reason:"새 집의 공기를 깨끗하게 지켜요.",sk:"소형 공기청정기",cat:"tech",g:"n"},
+    {name:"고급 올리브오일+발사믹 세트",price:"7~10만원",reason:"주방에 프리미엄을 더해요.",sk:"올리브오일 발사믹 세트",cat:"food",g:"n"},
+    {name:"감성 벽시계",price:"6~8만원",reason:"새 집의 분위기를 완성해요.",sk:"감성 벽시계 인테리어",cat:"hobby",g:"n"},
+    {name:"프리미엄 배스 세트",price:"7~10만원",reason:"집에서 즐기는 스파 같은 목욕 시간이에요.",sk:"프리미엄 배스 세트",cat:"beauty",g:"f"},
+    {name:"커스텀 도어매트",price:"5~8만원",reason:"이름을 새긴 세상에 하나뿐인 환영 매트예요.",sk:"커스텀 도어매트",cat:"custom",g:"n"},
+  ],
+  // ── 병문안·위로 ──
+  "recovery|b1":[
+    {name:"비타민C 젤리 세트",price:"1~2만원",reason:"맛있게 먹으며 건강을 챙겨요.",sk:"비타민C 젤리",cat:"health",g:"n"},
+    {name:"따뜻한 차 세트",price:"1~2만원",reason:"따뜻한 차로 몸과 마음을 달래요.",sk:"건강 차 세트",cat:"food",g:"n"},
+    {name:"보습 립밤+핸드크림",price:"1~2만원",reason:"건조한 병실에서 촉촉함을 지켜줘요.",sk:"립밤 핸드크림 세트",cat:"beauty",g:"f"},
+    {name:"감성 응원 엽서 세트",price:"1~2만원",reason:"손글씨 응원이 큰 힘이 돼요.",sk:"응원 엽서 세트",cat:"stationery",g:"n"},
+    {name:"수면 안대+귀마개 세트",price:"1~2만원",reason:"편안한 휴식을 도와줘요.",sk:"수면 안대 세트",cat:"home",g:"n"},
+    {name:"프리미엄 죽 선물 세트",price:"1~2만원",reason:"속 편하게 먹을 수 있는 회복식이에요.",sk:"죽 선물세트",cat:"food",g:"n"},
+  ],
+  "recovery|b2":[
+    {name:"프리미엄 홍삼 젤리",price:"3~5만원",reason:"달콤하게 먹으며 면역력을 높여요.",sk:"홍삼 젤리 선물",cat:"health",g:"n"},
+    {name:"고급 과일 바구니",price:"3~5만원",reason:"신선한 과일로 영양을 보충해요.",sk:"과일 바구니 선물",cat:"food",g:"n"},
+    {name:"편안한 수면 양말 세트",price:"3~4만원",reason:"따뜻하게 감싸는 회복의 온기예요.",sk:"수면 양말 세트",cat:"fashion",g:"n"},
+    {name:"아로마 디퓨저",price:"3~5만원",reason:"편안한 향기로 회복을 도와요.",sk:"아로마 디퓨저",cat:"home",g:"n"},
+    {name:"오디오북 구독권 1개월",price:"3만원",reason:"누워서도 즐길 수 있는 마음의 양식이에요.",sk:"오디오북 이용권",cat:"experience",g:"n"},
+    {name:"보온 텀블러",price:"3~5만원",reason:"따뜻한 음료를 오래 간직해요.",sk:"보온 텀블러 선물",cat:"tech",g:"m"},
+  ],
+  "recovery|b3":[
+    {name:"프리미엄 홍삼 세트",price:"7~10만원",reason:"건강 회복을 도와주는 정성 가득한 선물이에요.",sk:"홍삼 선물세트",cat:"health",g:"n"},
+    {name:"고급 과일+견과 세트",price:"7~10만원",reason:"영양 가득한 프리미엄 회복 선물이에요.",sk:"프리미엄 과일 견과 세트",cat:"food",g:"n"},
+    {name:"실크 파자마 세트",price:"7~10만원",reason:"편안한 휴식을 위한 부드러운 선물이에요.",sk:"실크 파자마 선물",cat:"fashion",g:"f"},
+    {name:"안마 쿠션",price:"7~10만원",reason:"집에서 편하게 피로를 풀어줘요.",sk:"안마 쿠션 선물",cat:"tech",g:"n"},
+    {name:"프리미엄 유기농 꿀 세트",price:"6~8만원",reason:"자연의 달콤함으로 회복을 응원해요.",sk:"유기농 꿀 선물",cat:"food",g:"n"},
+    {name:"힐링 캔들 세트",price:"6~8만원",reason:"따뜻한 불빛과 향기로 마음의 안정을 줘요.",sk:"힐링 캔들 세트",cat:"home",g:"n"},
+  ],
+  // ── 명절·시즌 ──
+  "holiday|b1":[
+    {name:"전통 한과 세트",price:"1~2만원",reason:"명절의 정을 담은 전통 간식이에요.",sk:"한과 선물세트",cat:"food",g:"n"},
+    {name:"고급 손수건 세트",price:"1~2만원",reason:"격식 있으면서 실용적인 명절 선물이에요.",sk:"고급 손수건 세트",cat:"fashion",g:"n"},
+    {name:"미니 복주머니 세트",price:"1~2만원",reason:"복을 담아 전하는 의미 있는 선물이에요.",sk:"복주머니 세트",cat:"custom",g:"n"},
+    {name:"건강 차 세트",price:"1~2만원",reason:"명절에 어른들께 드리기 좋아요.",sk:"건강 차 선물",cat:"health",g:"n"},
+    {name:"미니 디퓨저",price:"1~2만원",reason:"집안을 명절 향기로 채워요.",sk:"미니 디퓨저",cat:"home",g:"n"},
+    {name:"감사 카드+펜 세트",price:"1~2만원",reason:"손글씨 인사와 함께 전하는 명절 선물이에요.",sk:"감사 카드 세트",cat:"stationery",g:"n"},
+  ],
+  "holiday|b2":[
+    {name:"명절 한우 세트",price:"3~5만원",reason:"고급스러운 명절 대표 선물이에요.",sk:"한우 선물세트",cat:"food",g:"n"},
+    {name:"프리미엄 참기름 세트",price:"3~5만원",reason:"주방의 격을 올리는 명절 필수 선물이에요.",sk:"참기름 들기름 선물세트",cat:"food",g:"n"},
+    {name:"실크 스카프",price:"3~5만원",reason:"어른들께 드리기 좋은 격조 있는 선물이에요.",sk:"실크 스카프 선물",cat:"fashion",g:"f"},
+    {name:"프리미엄 비타민 세트",price:"3~5만원",reason:"건강을 챙기는 실용적인 명절 선물이에요.",sk:"비타민 선물세트",cat:"health",g:"n"},
+    {name:"명절 캔들 세트",price:"3~5만원",reason:"따뜻한 분위기를 전하는 선물이에요.",sk:"명절 캔들 세트",cat:"home",g:"n"},
+    {name:"전통 다기 세트",price:"3~5만원",reason:"차 한 잔의 여유를 선물해요.",sk:"전통 다기 세트",cat:"hobby",g:"n"},
+  ],
+  "holiday|b3":[
+    {name:"프리미엄 갈비 세트",price:"7~10만원",reason:"명절 식탁을 풍성하게 채워요.",sk:"갈비 선물세트",cat:"food",g:"n"},
+    {name:"홍삼 정관장 세트",price:"7~10만원",reason:"건강을 생각하는 격식 있는 명절 선물이에요.",sk:"정관장 홍삼 세트",cat:"health",g:"n"},
+    {name:"브랜드 머플러",price:"7~10만원",reason:"따뜻함을 감싸는 고급스러운 선물이에요.",sk:"브랜드 머플러 선물",cat:"fashion",g:"n"},
+    {name:"고급 도자기 식기 세트",price:"7~10만원",reason:"식탁의 격을 올리는 명절 선물이에요.",sk:"도자기 식기 세트",cat:"home",g:"n"},
+    {name:"프리미엄 안마기",price:"7~10만원",reason:"어른들의 피로를 풀어드려요.",sk:"프리미엄 안마기 선물",cat:"tech",g:"n"},
+    {name:"프리미엄 전통주 세트",price:"7~10만원",reason:"명절에 함께 나누는 전통의 맛이에요.",sk:"전통주 선물세트",cat:"food",g:"m"},
+  ],
+  // ── 사과·화해 ──
+  "apology|b1":[
+    {name:"사과 편지지+봉투 세트",price:"1~2만원",reason:"진심을 글로 전하는 첫 걸음이에요.",sk:"편지지 봉투 세트",cat:"stationery",g:"n"},
+    {name:"미니 꽃다발",price:"1~2만원",reason:"작은 꽃 한 송이가 마음을 녹여요.",sk:"미니 꽃다발 선물",cat:"home",g:"f"},
+    {name:"수제 초콜릿 세트",price:"1~2만원",reason:"달콤함으로 미안한 마음을 전해요.",sk:"수제 초콜릿 선물",cat:"food",g:"n"},
+    {name:"보습 핸드크림",price:"1~2만원",reason:"매일 바를 때마다 화해의 마음이 전해져요.",sk:"핸드크림 선물",cat:"beauty",g:"f"},
+    {name:"힐링 허브티 세트",price:"1~2만원",reason:"따뜻한 차로 풀어지는 마음이에요.",sk:"허브티 세트",cat:"health",g:"n"},
+    {name:"감성 키링",price:"1~2만원",reason:"매일 가지고 다니며 마음을 기억해요.",sk:"감성 키링 선물",cat:"fashion",g:"n"},
+  ],
+  "apology|b2":[
+    {name:"프리미엄 꽃다발",price:"3~5만원",reason:"진심 어린 사과를 꽃으로 전해요.",sk:"꽃다발 배달",cat:"home",g:"f"},
+    {name:"고급 디저트 세트",price:"3~5만원",reason:"달콤한 선물로 어색함을 녹여요.",sk:"고급 디저트 선물세트",cat:"food",g:"n"},
+    {name:"브랜드 핸드크림+바디로션 세트",price:"3~5만원",reason:"매일 쓰며 화해의 마음을 느끼게 해요.",sk:"핸드크림 바디로션 세트",cat:"beauty",g:"f"},
+    {name:"감성 무드등",price:"3~5만원",reason:"따뜻한 빛으로 마음을 밝혀요.",sk:"감성 무드등",cat:"tech",g:"n"},
+    {name:"카페 상품권 5만원",price:"5만원",reason:"함께 커피 한 잔 하며 이야기 나눠요.",sk:"카페 상품권",cat:"experience",g:"n"},
+    {name:"커스텀 메시지 쿠션",price:"3~5만원",reason:"진심을 담은 문구로 마음을 전해요.",sk:"커스텀 메시지 쿠션",cat:"custom",g:"n"},
+  ],
+  "apology|b3":[
+    {name:"프리미엄 꽃바구니",price:"7~10만원",reason:"진심 어린 사과를 풍성한 꽃으로 전해요.",sk:"프리미엄 꽃바구니",cat:"home",g:"f"},
+    {name:"고급 레스토랑 식사권",price:"7~10만원",reason:"함께 식사하며 진심을 전하는 시간이에요.",sk:"레스토랑 식사권",cat:"experience",g:"n"},
+    {name:"프리미엄 향수",price:"7~10만원",reason:"향기가 날 때마다 화해의 순간을 기억해요.",sk:"프리미엄 향수 선물",cat:"beauty",g:"f"},
+    {name:"브랜드 넥타이",price:"7~10만원",reason:"매일 매는 넥타이에 마음을 담아요.",sk:"브랜드 넥타이 선물",cat:"fashion",g:"m"},
+    {name:"프리미엄 견과류 세트",price:"7~10만원",reason:"건강을 생각하는 진심 어린 선물이에요.",sk:"프리미엄 견과류 선물",cat:"health",g:"n"},
+    {name:"각인 팔찌",price:"6~8만원",reason:"이름을 새겨 마음의 약속을 남겨요.",sk:"각인 팔찌 선물",cat:"custom",g:"n"},
+  ],
+  // ── 그냥, 마음 전달 ──
+  "justbecause|b1":[
+    {name:"카페 기프티콘",price:"1만원",reason:"부담 없이 마음을 전하는 센스 선물이에요.",sk:"카페 기프티콘",cat:"food",g:"n"},
+    {name:"감성 엽서+스티커 세트",price:"1~2만원",reason:"아날로그 감성으로 마음을 전해요.",sk:"감성 엽서 스티커 세트",cat:"stationery",g:"n"},
+    {name:"미니 디퓨저",price:"1~2만원",reason:"작은 향기에 큰 마음을 담아요.",sk:"미니 디퓨저 선물",cat:"home",g:"n"},
+    {name:"립밤+핸드크림 미니",price:"1~2만원",reason:"일상 속 작은 행복을 선물해요.",sk:"립밤 핸드크림 세트",cat:"beauty",g:"f"},
+    {name:"프리미엄 초콜릿",price:"1~2만원",reason:"달콤한 한 조각에 마음을 전해요.",sk:"프리미엄 초콜릿 선물",cat:"food",g:"n"},
+    {name:"프리미엄 양말",price:"1~2만원",reason:"소소하지만 센스 있는 마음이에요.",sk:"프리미엄 양말 선물",cat:"fashion",g:"m"},
+  ],
+  "justbecause|b2":[
+    {name:"감성 캔들+디퓨저 세트",price:"3~5만원",reason:"향기로 전하는 따뜻한 마음이에요.",sk:"캔들 디퓨저 세트",cat:"home",g:"f"},
+    {name:"프리미엄 드립커피 세트",price:"3~5만원",reason:"매일 아침이 특별해지는 선물이에요.",sk:"드립커피 선물세트",cat:"food",g:"n"},
+    {name:"레트로 사진관 이용권",price:"3~5만원",reason:"함께한 순간을 사진으로 남겨요.",sk:"레트로 사진관 이용권",cat:"experience",g:"n"},
+    {name:"가죽 공예 키트",price:"3~4만원",reason:"직접 만드는 세상에 하나뿐인 선물이에요.",sk:"가죽 공예 키트",cat:"hobby",g:"m"},
+    {name:"커스텀 폰케이스",price:"3~4만원",reason:"나만의 감성을 담은 케이스예요.",sk:"커스텀 폰케이스",cat:"custom",g:"n"},
+    {name:"바디미스트 세트",price:"3~5만원",reason:"가벼운 향기로 일상을 환하게 해줘요.",sk:"바디미스트 세트",cat:"beauty",g:"f"},
+  ],
+  "justbecause|b3":[
+    {name:"브랜드 카드지갑",price:"7~10만원",reason:"매일 쓰는 물건에 특별한 마음을 담아요.",sk:"브랜드 카드지갑 선물",cat:"fashion",g:"n"},
+    {name:"블루투스 이어폰",price:"7~10만원",reason:"매일 함께하는 실용적인 마음이에요.",sk:"블루투스 이어폰",cat:"tech",g:"n"},
+    {name:"고급 캔들 세트",price:"7~10만원",reason:"향기로 공간과 마음을 채워요.",sk:"고급 캔들 세트",cat:"home",g:"f"},
+    {name:"원데이 클래스 2인권",price:"7~10만원",reason:"함께 만드는 추억이 최고의 선물이에요.",sk:"원데이 클래스 2인",cat:"experience",g:"n"},
+    {name:"월간 꽃 구독 1개월",price:"5~7만원",reason:"매주 찾아오는 꽃이 감동이에요.",sk:"꽃 구독 선물",cat:"custom",g:"f"},
+    {name:"근막 마사지건",price:"6~9만원",reason:"매일의 피로를 풀어주는 마음이에요.",sk:"마사지건 선물",cat:"health",g:"m"},
+  ],
+  // ── 기념일 ──
+  "anniversary|b1":[
+    {name:"커플 키링 세트",price:"1~2만원",reason:"둘만의 작은 매칭 아이템이에요.",sk:"커플 키링 세트",cat:"custom",g:"n"},
+    {name:"감성 디저트 세트",price:"1~2만원",reason:"달콤한 간식으로 기념일을 축하해요.",sk:"디저트 선물세트",cat:"food",g:"n"},
+    {name:"미니 꽃다발+편지",price:"1~2만원",reason:"작은 꽃과 진심 어린 편지의 조합이에요.",sk:"미니 꽃다발",cat:"home",g:"f"},
+    {name:"감성 볼펜",price:"1~2만원",reason:"함께 쓰는 일상의 특별한 아이템이에요.",sk:"감성 볼펜 선물",cat:"stationery",g:"m"},
+    {name:"프리미엄 입욕제 세트",price:"1~2만원",reason:"편안한 시간을 선물해요.",sk:"입욕제 세트 선물",cat:"beauty",g:"f"},
+    {name:"커플 양말 세트",price:"1~2만원",reason:"함께 맞춰 신는 소소한 행복이에요.",sk:"커플 양말 세트",cat:"fashion",g:"n"},
+  ],
+  "anniversary|b2":[
+    {name:"커플 향수 미니 세트",price:"3~5만원",reason:"둘만의 향기를 만들어요.",sk:"커플 향수 미니세트",cat:"beauty",g:"n"},
+    {name:"고급 레터링 케이크 쿠폰",price:"3~5만원",reason:"이름을 새긴 특별한 축하 케이크예요.",sk:"레터링 케이크 주문",cat:"food",g:"n"},
+    {name:"프리미엄 무드등",price:"3~5만원",reason:"둘만의 공간을 로맨틱하게 만들어요.",sk:"감성 무드등",cat:"home",g:"n"},
+    {name:"레트로 사진관 커플 촬영",price:"3~5만원",reason:"둘의 순간을 빈티지 사진으로 남겨요.",sk:"레트로 사진관 커플",cat:"experience",g:"n"},
+    {name:"커스텀 폰케이스 2개",price:"4~5만원",reason:"나만의 커플 케이스를 만들어요.",sk:"커플 폰케이스 커스텀",cat:"custom",g:"n"},
+    {name:"프리미엄 초콜릿 세트",price:"3~5만원",reason:"달콤한 순간을 함께 나눠요.",sk:"프리미엄 초콜릿 세트",cat:"food",g:"n"},
+  ],
+  "anniversary|b3":[
+    {name:"커플 액세서리 세트",price:"7~10만원",reason:"함께 착용하는 특별한 기념 아이템이에요.",sk:"커플 팔찌 세트",cat:"fashion",g:"n"},
+    {name:"호텔 레스토랑 식사권",price:"7~10만원",reason:"특별한 날 특별한 공간에서의 식사예요.",sk:"호텔 레스토랑 식사권",cat:"experience",g:"n"},
+    {name:"각인 반지·팔찌",price:"7~10만원",reason:"둘의 이름을 새긴 세상에 하나뿐인 선물이에요.",sk:"각인 반지 팔찌 커플",cat:"custom",g:"n"},
+    {name:"프리미엄 향수",price:"7~10만원",reason:"기념일의 향기를 함께 기억해요.",sk:"프리미엄 향수 선물",cat:"beauty",g:"f"},
+    {name:"포토북 제작 바우처",price:"5~8만원",reason:"함께한 순간을 한 권의 책으로 간직해요.",sk:"포토북 제작 바우처",cat:"hobby",g:"n"},
+    {name:"스마트 체중계+밴드 세트",price:"7~10만원",reason:"함께 건강을 챙기는 커플 아이템이에요.",sk:"스마트 체중계 밴드",cat:"health",g:"n"},
   ],
 };
 const FD={
@@ -364,6 +566,7 @@ function App(){
       if(!r.ok||!d.gifts?.length){console.warn("[마로] API 실패 - fallback",d);throw d;}
       console.log("[마로] AI 응답 성공",d.gifts.map(g=>g.name));
       setResults(d.gifts);
+      try{const p=new URLSearchParams({r:rel?.id,g:gender,d:dep,o:occ?.id,b:bud?.id});history.replaceState(null,'','/app?'+p.toString());}catch{}
     }catch{
       console.warn("[마로] fallback DB 사용");
       setResults(gfb(occ?.id,bud?.id,tags,rel?.id,gender));
@@ -398,8 +601,8 @@ function App(){
                 <span key={i} onClick={()=>{if(i<prog)go(i+1)}} style={{fontSize:10,color:i<prog?TX2:TX3,fontWeight:i<prog?600:400,cursor:i<prog?"pointer":"default",textDecoration:i<prog?"underline":"none",textUnderlineOffset:3}}>{l}</span>
               ))}
             </div>
-            <div style={{height:3,background:"#e6dfd4",borderRadius:2,overflow:"hidden"}}>
-              <div style={{height:"100%",width:`${(prog/6)*100}%`,background:`linear-gradient(90deg,${P},${P2})`,borderRadius:2,transition:"width .5s cubic-bezier(.4,0,.2,1)"}}/>
+            <div style={{height:4,background:"#E8DCD8",borderRadius:3,overflow:"hidden"}}>
+              <div style={{height:"100%",width:`${Math.max((prog/6)*100,8)}%`,background:`linear-gradient(90deg,${P},${P2})`,borderRadius:3,transition:"width .5s cubic-bezier(.4,0,.2,1)"}}/>
             </div>
           </div>
         )}
@@ -410,7 +613,7 @@ function App(){
               <div style={{fontSize:52,marginBottom:20}}>🎁</div>
               <h2 style={{fontFamily:"'Gowun Batang',serif",fontSize:20,fontWeight:600,color:TX,marginBottom:10}}>어떤 마음을 전하고 싶으세요?</h2>
               <p style={{fontSize:14,color:TX3,lineHeight:1.7,marginBottom:36}}>선물이 아니라, 관계에서 전하고 싶은<br/>마음을 먼저 정리해드릴게요.</p>
-              <Btn onClick={()=>go(1)} ms={280} style={{background:`linear-gradient(135deg,${TX},#6b5d4a)`,color:"#f5f0e8",border:"none",borderRadius:14,padding:"16px 48px",fontSize:15,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 20px rgba(74,63,48,.2)"}}>시작하기</Btn>
+              <Btn onClick={()=>go(1)} ms={280} style={{background:"#2B7A78",color:"#fff",border:"none",borderRadius:14,padding:"16px 48px",fontSize:15,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 20px rgba(43,122,120,.25)",minHeight:52,width:"100%",maxWidth:320}}>지금 시작하기 →</Btn>
               <p style={{fontSize:11,color:"#c0b5a4",marginTop:20}}>약 30초면 완료돼요</p>
             </div>
           )}
@@ -503,7 +706,7 @@ function App(){
                 <div style={{fontSize:11,color:P,fontWeight:600,marginBottom:6,letterSpacing:1}}>분석 요약</div>
                 <div style={{fontSize:13,color:TX2,lineHeight:1.7}}>{rel?.icon} {rel?.label} ({dep}) · {occ?.icon} {occ?.label} · {bud?.label}</div>
               </div>
-              <Btn onClick={analyze} ms={300} style={{width:"100%",background:`linear-gradient(135deg,${TX},#6b5d4a)`,color:"#f5f0e8",border:"none",borderRadius:14,padding:16,fontSize:15,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 20px rgba(74,63,48,.2)"}}>AI 분석 시작하기 ✨</Btn>
+              <Btn onClick={analyze} ms={300} style={{width:"100%",background:"#2B7A78",color:"#fff",border:"none",borderRadius:14,padding:16,fontSize:15,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 20px rgba(43,122,120,.25)",minHeight:52}}>AI 분석 시작하기 ✨</Btn>
               <button onClick={()=>{setIntent("");analyze();}} style={{width:"100%",background:"transparent",border:"none",color:TX3,fontSize:13,padding:12,cursor:"pointer",marginTop:4}}>건너뛰기 — AI가 알아서 판단할게요</button>
             </div>
           )}
