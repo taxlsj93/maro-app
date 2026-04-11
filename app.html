@@ -28,7 +28,6 @@
 <link rel="preconnect" href="https://unpkg.com">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,'Helvetica Neue','Segoe UI','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;background:linear-gradient(160deg,#faf8f4 0%,#f5f0e8 40%,#faf6ef 70%,#f0ebe0 100%);min-height:100vh;color:#3d3428}
@@ -45,765 +44,3265 @@ a:focus-visible,button:focus-visible{outline:2px solid #c4756e;outline-offset:2p
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel" data-presets="react">
-const {useState,useEffect,useRef} = React;
-const P="#c4756e",P2="#a85e58",TX="#2d2420",TX2="#5a4a3a",TX3="#9a8a7a";
-const PARTNER_ID="AF3339921";
-
-const RELATIONS=[
-  {id:"lover",icon:"💕",label:"연인",desc:"사랑하는 사람에게",depth:["썸 단계","3개월 미만","6개월~1년","1년 이상","3년 이상"]},
-  {id:"spouse",icon:"💍",label:"배우자",desc:"함께 하는 소중한 사람",depth:["신혼 (1년 미만)","1~3년차","3~10년차","10년 이상"]},
-  {id:"friend",icon:"🤝",label:"친구",desc:"마음을 나누는 사이",depth:["아는 사이","가끔 만나는 친구","자주 만나는 친구","절친"]},
-  {id:"parent",icon:"🏠",label:"부모님",desc:"늘 감사한 분들",depth:["함께 사는","따로 사는","자주 연락하는","명절에 만나는"]},
-  {id:"colleague",icon:"💼",label:"직장 동료",desc:"함께 일하는 관계",depth:["같은 팀","다른 팀","상사","후배"]},
-  {id:"mentor",icon:"🎓",label:"선생님·은사",desc:"배움을 주신 분",depth:["현재 가르침 받는","졸업 후 인연"]},
-  {id:"family",icon:"👨‍👩‍👧‍👦",label:"친척·가족",desc:"가까운 혈연 관계",depth:["형제·자매","조부모","삼촌·이모","사촌"]},
-  {id:"inlaw",icon:"🤝",label:"시댁·처가",desc:"조심스러운 가족 관계",depth:["시부모·장인장모","시누이·처남","기타 인척"]},
-];
-const OCCASIONS=[
-  {id:"birthday",icon:"🎂",label:"생일"},{id:"anniversary",icon:"💝",label:"기념일"},
-  {id:"thanks",icon:"🙏",label:"감사 인사"},{id:"congrats",icon:"🎊",label:"축하 (승진·합격)"},
-  {id:"wedding",icon:"💒",label:"결혼·약혼"},{id:"baby",icon:"👶",label:"출산·돌잔치"},
-  {id:"housewarming",icon:"🏡",label:"집들이"},{id:"recovery",icon:"🌿",label:"병문안·위로"},
-  {id:"apology",icon:"💐",label:"사과·화해"},{id:"holiday",icon:"🎁",label:"명절·시즌"},
-  {id:"justbecause",icon:"✨",label:"그냥, 마음 전달"},
-];
-const BUDGETS=[
-  {id:"b1",label:"~2만원",tag:"부담 없는"},{id:"b2",label:"2~5만원",tag:"적당한"},
-  {id:"b3",label:"5~10만원",tag:"정성을 담은"},{id:"b4",label:"10~20만원",tag:"특별한"},
-  {id:"b5",label:"20만원 이상",tag:"프리미엄"},
-];
-const INTENT_HINTS={
-  lover:["보고 싶었어","항상 고마워","사랑해","우리 오래가자"],
-  spouse:["항상 고생 많아","덕분에 행복해","사랑해","고마워"],
-  friend:["곁에 있어줘서 고마워","축하해","힘내","보고 싶다"],
-  parent:["항상 감사합니다","건강하세요","사랑합니다"],
-  colleague:["수고 많으셨습니다","감사합니다","잘 부탁드립니다"],
-  mentor:["가르침 감사합니다","덕분에 성장했습니다"],
-  family:["감사해요","건강하세요","보고 싶어요"],
-  inlaw:["감사합니다","건강하세요","잘 부탁드립니다"],
+<script>const {
+  useState,
+  useEffect,
+  useRef
+} = React;
+const P = "#c4756e",
+  P2 = "#a85e58",
+  TX = "#2d2420",
+  TX2 = "#5a4a3a",
+  TX3 = "#9a8a7a";
+const PARTNER_ID = "AF3339921";
+const RELATIONS = [{
+  id: "lover",
+  icon: "💕",
+  label: "연인",
+  desc: "사랑하는 사람에게",
+  depth: ["썸 단계", "3개월 미만", "6개월~1년", "1년 이상", "3년 이상"]
+}, {
+  id: "spouse",
+  icon: "💍",
+  label: "배우자",
+  desc: "함께 하는 소중한 사람",
+  depth: ["신혼 (1년 미만)", "1~3년차", "3~10년차", "10년 이상"]
+}, {
+  id: "friend",
+  icon: "🤝",
+  label: "친구",
+  desc: "마음을 나누는 사이",
+  depth: ["아는 사이", "가끔 만나는 친구", "자주 만나는 친구", "절친"]
+}, {
+  id: "parent",
+  icon: "🏠",
+  label: "부모님",
+  desc: "늘 감사한 분들",
+  depth: ["함께 사는", "따로 사는", "자주 연락하는", "명절에 만나는"]
+}, {
+  id: "colleague",
+  icon: "💼",
+  label: "직장 동료",
+  desc: "함께 일하는 관계",
+  depth: ["같은 팀", "다른 팀", "상사", "후배"]
+}, {
+  id: "mentor",
+  icon: "🎓",
+  label: "선생님·은사",
+  desc: "배움을 주신 분",
+  depth: ["현재 가르침 받는", "졸업 후 인연"]
+}, {
+  id: "family",
+  icon: "👨‍👩‍👧‍👦",
+  label: "친척·가족",
+  desc: "가까운 혈연 관계",
+  depth: ["형제·자매", "조부모", "삼촌·이모", "사촌"]
+}, {
+  id: "inlaw",
+  icon: "🤝",
+  label: "시댁·처가",
+  desc: "조심스러운 가족 관계",
+  depth: ["시부모·장인장모", "시누이·처남", "기타 인척"]
+}];
+const OCCASIONS = [{
+  id: "birthday",
+  icon: "🎂",
+  label: "생일"
+}, {
+  id: "anniversary",
+  icon: "💝",
+  label: "기념일"
+}, {
+  id: "thanks",
+  icon: "🙏",
+  label: "감사 인사"
+}, {
+  id: "congrats",
+  icon: "🎊",
+  label: "축하 (승진·합격)"
+}, {
+  id: "wedding",
+  icon: "💒",
+  label: "결혼·약혼"
+}, {
+  id: "baby",
+  icon: "👶",
+  label: "출산·돌잔치"
+}, {
+  id: "housewarming",
+  icon: "🏡",
+  label: "집들이"
+}, {
+  id: "recovery",
+  icon: "🌿",
+  label: "병문안·위로"
+}, {
+  id: "apology",
+  icon: "💐",
+  label: "사과·화해"
+}, {
+  id: "holiday",
+  icon: "🎁",
+  label: "명절·시즌"
+}, {
+  id: "justbecause",
+  icon: "✨",
+  label: "그냥, 마음 전달"
+}];
+const BUDGETS = [{
+  id: "b1",
+  label: "~2만원",
+  tag: "부담 없는"
+}, {
+  id: "b2",
+  label: "2~5만원",
+  tag: "적당한"
+}, {
+  id: "b3",
+  label: "5~10만원",
+  tag: "정성을 담은"
+}, {
+  id: "b4",
+  label: "10~20만원",
+  tag: "특별한"
+}, {
+  id: "b5",
+  label: "20만원 이상",
+  tag: "프리미엄"
+}];
+const INTENT_HINTS = {
+  lover: ["보고 싶었어", "항상 고마워", "사랑해", "우리 오래가자"],
+  spouse: ["항상 고생 많아", "덕분에 행복해", "사랑해", "고마워"],
+  friend: ["곁에 있어줘서 고마워", "축하해", "힘내", "보고 싶다"],
+  parent: ["항상 감사합니다", "건강하세요", "사랑합니다"],
+  colleague: ["수고 많으셨습니다", "감사합니다", "잘 부탁드립니다"],
+  mentor: ["가르침 감사합니다", "덕분에 성장했습니다"],
+  family: ["감사해요", "건강하세요", "보고 싶어요"],
+  inlaw: ["감사합니다", "건강하세요", "잘 부탁드립니다"]
 };
-const TAGS=[
-  {id:"cafe",label:"카페·맛집",em:"☕"},{id:"fashion",label:"패션·뷰티",em:"👗"},
-  {id:"fitness",label:"운동·건강",em:"💪"},{id:"travel",label:"여행",em:"✈️"},
-  {id:"interior",label:"집꾸미기",em:"🏠"},{id:"tech",label:"테크·가전",em:"📱"},
-  {id:"pet",label:"반려동물",em:"🐶"},{id:"book",label:"독서·문화",em:"📚"},
-  {id:"game",label:"게임",em:"🎮"},{id:"music",label:"음악",em:"🎵"},
-  {id:"cooking",label:"요리·베이킹",em:"🍳"},{id:"camping",label:"캠핑·아웃도어",em:"⛺"},
-  {id:"idol",label:"아이돌·덕질",em:"🎤"},{id:"selfcare",label:"셀프케어·힐링",em:"🧖"},
-  {id:"photo",label:"사진·영상",em:"📸"},{id:"alcohol",label:"술·와인",em:"🍷"},
-  {id:"character",label:"캐릭터·굿즈",em:"🧸"},{id:"retro",label:"레트로·빈티지",em:"📻"},
-  {id:"funny",label:"웃긴선물·장난감",em:"🤣"},{id:"practical",label:"극한의 실용템",em:"🧹"},
-];
+const TAGS = [{
+  id: "cafe",
+  label: "카페·맛집",
+  em: "☕"
+}, {
+  id: "fashion",
+  label: "패션·뷰티",
+  em: "👗"
+}, {
+  id: "fitness",
+  label: "운동·건강",
+  em: "💪"
+}, {
+  id: "travel",
+  label: "여행",
+  em: "✈️"
+}, {
+  id: "interior",
+  label: "집꾸미기",
+  em: "🏠"
+}, {
+  id: "tech",
+  label: "테크·가전",
+  em: "📱"
+}, {
+  id: "pet",
+  label: "반려동물",
+  em: "🐶"
+}, {
+  id: "book",
+  label: "독서·문화",
+  em: "📚"
+}, {
+  id: "game",
+  label: "게임",
+  em: "🎮"
+}, {
+  id: "music",
+  label: "음악",
+  em: "🎵"
+}, {
+  id: "cooking",
+  label: "요리·베이킹",
+  em: "🍳"
+}, {
+  id: "camping",
+  label: "캠핑·아웃도어",
+  em: "⛺"
+}, {
+  id: "idol",
+  label: "아이돌·덕질",
+  em: "🎤"
+}, {
+  id: "selfcare",
+  label: "셀프케어·힐링",
+  em: "🧖"
+}, {
+  id: "photo",
+  label: "사진·영상",
+  em: "📸"
+}, {
+  id: "alcohol",
+  label: "술·와인",
+  em: "🍷"
+}, {
+  id: "character",
+  label: "캐릭터·굿즈",
+  em: "🧸"
+}, {
+  id: "retro",
+  label: "레트로·빈티지",
+  em: "📻"
+}, {
+  id: "funny",
+  label: "웃긴선물·장난감",
+  em: "🤣"
+}, {
+  id: "practical",
+  label: "극한의 실용템",
+  em: "🧹"
+}];
 
 // ── 10개 상위 카테고리 시스템 ──
-const GIFT_CATEGORIES={food:"식품·음료",beauty:"뷰티·향기",fashion:"패션·액세서리",home:"홈·리빙",experience:"경험·체험",tech:"테크·가젯",stationery:"문구·서적",health:"건강·웰니스",hobby:"취미·DIY",custom:"맞춤제작·구독"};
-
-const FB={
-  "birthday|b1":[
-    {name:"프리미엄 핸드크림",price:"1~2만원",reason:"매일 쓸 때마다 생각나는 감성적인 선물이에요.",sk:"프리미엄 핸드크림 선물",cat:"beauty",g:"f"},
-    {name:"카페 기프트카드",price:"1~2만원",reason:"부담 없이 센스 있는 선물이에요.",sk:"스타벅스 기프트카드",cat:"food",g:"n"},
-    {name:"감성 디저트 세트",price:"1~2만원",reason:"생일의 달콤함을 더해주는 특별한 간식이에요.",sk:"선물용 디저트 세트",cat:"food",g:"n"},
-    {name:"이니셜 키링",price:"1~2만원",reason:"세상에 하나뿐인 나만의 소품이에요.",sk:"이니셜 각인 키링",cat:"custom",g:"n"},
-    {name:"감성 노트+펜 세트",price:"1~2만원",reason:"일상에 영감을 더하는 문구 선물이에요.",sk:"감성 노트 펜 세트",cat:"stationery",g:"n"},
-    {name:"미니 화분 세트",price:"1~2만원",reason:"책상 위 작은 초록이 주는 힐링이에요.",sk:"미니 화분 선물",cat:"home",g:"n"},
-    {name:"립밤+핸드크림 미니 세트",price:"1~2만원",reason:"작지만 실용적인 뷰티 선물이에요.",sk:"립밤 핸드크림 세트",cat:"beauty",g:"f"},
-    {name:"프리미엄 양말 세트",price:"1~2만원",reason:"매일 쓰는 실용적인 센스 선물이에요.",sk:"프리미엄 양말 선물",cat:"fashion",g:"m"},
-    {name:"프리미엄 육포 세트",price:"1~2만원",reason:"술안주로도, 간식으로도 좋은 선물이에요.",sk:"프리미엄 육포 선물",cat:"food",g:"m"},
-  ],
-  "birthday|b2":[
-    {name:"향수 미니어처 세트",price:"3~5만원",reason:"여러 향을 체험할 수 있어서 센스 있어 보여요.",sk:"향수 미니어처 세트",cat:"beauty",g:"f"},
-    {name:"감성 무드등",price:"3~5만원",reason:"공간에 분위기를 더해주는 인테리어 선물이에요.",sk:"감성 무드등",cat:"home",g:"n"},
-    {name:"원데이 클래스 이용권",price:"3~5만원",reason:"함께 만드는 경험이 최고의 추억이 돼요.",sk:"원데이 클래스 이용권",cat:"experience",g:"n"},
-    {name:"이니셜 각인 팔찌",price:"3~5만원",reason:"세상에 하나뿐인 나만의 액세서리예요.",sk:"이니셜 각인 팔찌",cat:"custom",g:"f"},
-    {name:"폴라로이드 필름 세트",price:"3~4만원",reason:"추억을 즉석으로 담는 아날로그 감성이에요.",sk:"폴라로이드 필름 세트",cat:"hobby",g:"n"},
-    {name:"프리미엄 드립커피 세트",price:"3~5만원",reason:"홈카페의 시작, 매일 아침이 특별해져요.",sk:"드립커피 선물세트",cat:"food",g:"n"},
-    {name:"네일 케어 세트",price:"3~4만원",reason:"집에서 즐기는 프리미엄 셀프 네일이에요.",sk:"네일 케어 세트",cat:"beauty",g:"f"},
-    {name:"수제 맥주 세트",price:"3~5만원",reason:"다양한 맛을 즐기는 크래프트 비어 선물이에요.",sk:"수제 맥주 선물세트",cat:"food",g:"m"},
-    {name:"빈티지 블루투스 스피커",price:"3~5만원",reason:"레트로 감성으로 음악을 즐기는 스피커예요.",sk:"빈티지 블루투스 스피커",cat:"tech",g:"m"},
-    {name:"가죽 공예 키트",price:"3~4만원",reason:"직접 만드는 세상에 하나뿐인 가죽 소품이에요.",sk:"가죽 공예 키트",cat:"hobby",g:"m"},
-  ],
-  "birthday|b3":[
-    {name:"브랜드 지갑·카드홀더",price:"7~10만원",reason:"매일 쓰는 물건이라 오래 기억에 남아요.",sk:"브랜드 카드지갑 선물",cat:"fashion",g:"n"},
-    {name:"블루투스 이어폰",price:"8~10만원",reason:"매일 쓰는 아이템이라 실용적이에요.",sk:"블루투스 이어폰",cat:"tech",g:"n"},
-    {name:"고급 레스토랑 식사권",price:"6~10만원",reason:"특별한 날 특별한 경험을 선물해요.",sk:"레스토랑 식사권",cat:"experience",g:"n"},
-    {name:"캔들 만들기 키트",price:"5~7만원",reason:"직접 만드는 세상에 하나뿐인 향초예요.",sk:"캔들 만들기 키트",cat:"hobby",g:"f"},
-    {name:"포토북 제작 바우처",price:"5~8만원",reason:"함께한 순간을 한 권의 책으로 간직해요.",sk:"포토북 제작",cat:"custom",g:"n"},
-    {name:"프리미엄 홍삼 스틱",price:"7~10만원",reason:"건강을 챙기는 정성 가득한 선물이에요.",sk:"홍삼 스틱 선물",cat:"health",g:"n"},
-    {name:"데일리 주얼리 세트",price:"5~8만원",reason:"매일 빛나는 세련된 액세서리 선물이에요.",sk:"여성 주얼리 세트",cat:"fashion",g:"f"},
-    {name:"근막 마사지건",price:"6~9만원",reason:"운동 후 회복을 도와주는 실용 건강 선물이에요.",sk:"마사지건 선물",cat:"health",g:"m"},
-    {name:"위스키 글라스 세트",price:"5~8만원",reason:"한 잔의 여유를 더 특별하게 만들어줘요.",sk:"위스키 글라스 세트",cat:"hobby",g:"m"},
-    {name:"스마트 머그",price:"6~8만원",reason:"항상 적정 온도의 음료를 즐기는 스마트 아이템이에요.",sk:"스마트 온도유지 머그",cat:"tech",g:"m"},
-  ],
-  "birthday|b4":[
-    {name:"브랜드 가방",price:"15~20만원",reason:"매일 함께하니까 특별한 선물이에요.",sk:"브랜드 가방",cat:"fashion",g:"f"},
-    {name:"스마트워치",price:"15~20만원",reason:"건강도 챙기는 스마트한 선물이에요.",sk:"스마트워치",cat:"tech",g:"n"},
-    {name:"프리미엄 향수 정품",price:"12~18만원",reason:"향기로 특별한 날을 기억하게 해줘요.",sk:"프리미엄 향수",cat:"beauty",g:"f"},
-    {name:"호텔 디너 코스",price:"10~15만원",reason:"특별한 공간에서 특별한 시간이에요.",sk:"호텔 디너",cat:"experience",g:"n"},
-    {name:"미니 빔프로젝터",price:"12~18만원",reason:"집에서 영화관을 즐기는 새로운 경험이에요.",sk:"미니 빔프로젝터",cat:"tech",g:"m"},
-    {name:"가죽 벨트+카드지갑 세트",price:"10~15만원",reason:"매일 쓰는 남성 필수 아이템이에요.",sk:"남성 가죽 벨트 지갑",cat:"fashion",g:"m"},
-    {name:"요가 원데이 클래스 5회권",price:"10~15만원",reason:"몸과 마음의 균형을 찾는 경험이에요.",sk:"요가 필라테스 이용권",cat:"experience",g:"f"},
-  ],
-  "birthday|b5":[
-    {name:"명품 액세서리",price:"25~40만원",reason:"오래도록 간직할 수 있는 의미 있는 선물이에요.",sk:"명품 액세서리",cat:"fashion",g:"f"},
-    {name:"프리미엄 전자기기",price:"25~50만원",reason:"정말 갖고 싶었던 걸 선물받는 기쁨이에요.",sk:"에어팟 맥스",cat:"tech",g:"m"},
-    {name:"호텔 스파 패키지",price:"20~35만원",reason:"잊을 수 없는 경험을 선물하는 거예요.",sk:"호텔 숙박 패키지",cat:"experience",g:"n"},
-    {name:"커스텀 네온사인",price:"25~40만원",reason:"이름을 빛으로 새기는 특별한 인테리어예요.",sk:"커스텀 네온사인",cat:"custom",g:"n"},
-  ],
-  "baby|b1":[
-    {name:"오가닉 아기 턱받이 세트",price:"1~2만원",reason:"매일 쓰는 필수템이에요.",sk:"아기 턱받이 세트",cat:"fashion",g:"n"},
-    {name:"아기 가제 수건 세트",price:"1~2만원",reason:"매일 여러 장 쓰는 필수품이에요.",sk:"아기 가제수건",cat:"home",g:"n"},
-    {name:"유기농 아기 입욕제",price:"1~2만원",reason:"아기 피부에 순한 목욕 시간을 선물해요.",sk:"아기 입욕제",cat:"beauty",g:"n"},
-  ],
-  "baby|b2":[
-    {name:"유기농 베이비 로션 세트",price:"3~5만원",reason:"아기 피부를 생각하는 세심한 마음이에요.",sk:"유기농 베이비 로션 세트",cat:"beauty",g:"n"},
-    {name:"이유식 용기 세트",price:"2~4만원",reason:"곧 필요한 센스 있는 선물이에요.",sk:"이유식 용기 세트",cat:"home",g:"n"},
-    {name:"프리미엄 기저귀 대용량",price:"3~4만원",reason:"가장 실용적인 출산 선물이에요.",sk:"프리미엄 기저귀",cat:"health",g:"n"},
-  ],
-  "baby|b3":[
-    {name:"아기 바운서",price:"7~10만원",reason:"육아 부담을 덜어주는 도움이에요.",sk:"아기 바운서",cat:"tech",g:"n"},
-    {name:"프리미엄 아기띠",price:"8~10만원",reason:"외출 필수템이에요.",sk:"아기띠 힙시트",cat:"fashion",g:"n"},
-    {name:"유기농 아기 의류 세트",price:"5~8만원",reason:"프리미엄 브랜드라 특별해요.",sk:"아기옷 선물세트",cat:"fashion",g:"n"},
-  ],
-  "wedding|b3":[
-    {name:"프리미엄 침구 세트",price:"7~10만원",reason:"좋은 침구는 삶의 질을 바꿔요.",sk:"프리미엄 침구 세트",cat:"home",g:"n"},
-    {name:"커플 향수 세트",price:"8~10만원",reason:"둘만의 향기를 만들어줘요.",sk:"커플 향수 세트",cat:"beauty",g:"n"},
-    {name:"고급 와인+치즈 세트",price:"7~10만원",reason:"로맨틱한 저녁에 어울려요.",sk:"와인 치즈 세트",cat:"food",g:"n"},
-    {name:"웨딩 포토 액자 제작",price:"5~8만원",reason:"두 사람의 순간을 영원히 간직해요.",sk:"웨딩 액자 제작",cat:"custom",g:"n"},
-  ],
-  "wedding|b4":[
-    {name:"로봇청소기",price:"15~20만원",reason:"신혼생활을 편리하게 만들어줘요.",sk:"로봇청소기",cat:"tech",g:"n"},
-    {name:"프리미엄 커피머신",price:"15~20만원",reason:"매일 아침 둘만의 카페를 만들어줘요.",sk:"커피머신",cat:"home",g:"n"},
-    {name:"호텔 스테이 이용권",price:"15~20만원",reason:"일상을 벗어난 둘만의 시간이에요.",sk:"호텔 스테이",cat:"experience",g:"n"},
-  ],
-  // ── 감사 인사 ──
-  "thanks|b1":[
-    {name:"프리미엄 티백 세트",price:"1~2만원",reason:"따뜻한 차 한 잔에 감사의 마음을 담아요.",sk:"프리미엄 티백 선물",cat:"food",g:"n"},
-    {name:"미니 핸드크림 세트",price:"1~2만원",reason:"매일 쓸 때마다 감사한 마음이 전해져요.",sk:"미니 핸드크림 세트",cat:"beauty",g:"f"},
-    {name:"감사 메시지 캔들",price:"1~2만원",reason:"향기로 고마운 마음을 전해요.",sk:"메시지 캔들",cat:"home",g:"n"},
-    {name:"감성 볼펜 세트",price:"1~2만원",reason:"글 쓸 때마다 감사를 떠올리게 해요.",sk:"감성 볼펜 선물",cat:"stationery",g:"m"},
-    {name:"건강 견과류 세트",price:"1~2만원",reason:"건강까지 챙기는 센스 있는 감사 선물이에요.",sk:"견과류 선물세트",cat:"health",g:"n"},
-    {name:"프리미엄 양말 세트",price:"1~2만원",reason:"실용적이면서 부담 없는 감사 표현이에요.",sk:"프리미엄 양말 선물",cat:"fashion",g:"m"},
-  ],
-  "thanks|b2":[
-    {name:"프리미엄 차 선물 세트",price:"3~5만원",reason:"격식 있으면서 부담 없는 감사의 표현이에요.",sk:"차 선물세트",cat:"food",g:"n"},
-    {name:"고급 올리브오일 세트",price:"3~5만원",reason:"건강을 생각하는 고급스러운 감사 선물이에요.",sk:"올리브오일 선물세트",cat:"food",g:"n"},
-    {name:"브랜드 핸드크림 세트",price:"3~5만원",reason:"매일 쓸 때마다 감사의 마음이 전해져요.",sk:"브랜드 핸드크림 세트",cat:"beauty",g:"f"},
-    {name:"프리미엄 만년필",price:"3~5만원",reason:"글을 쓸 때마다 감사의 마음을 떠올리게 해요.",sk:"프리미엄 만년필",cat:"stationery",g:"m"},
-    {name:"감성 디퓨저+캔들 세트",price:"3~5만원",reason:"공간에 향기로 감사를 전해요.",sk:"디퓨저 캔들 세트",cat:"home",g:"f"},
-    {name:"카페 상품권 5만원권",price:"5만원",reason:"편하게 쓸 수 있는 실용적인 감사 선물이에요.",sk:"카페 상품권",cat:"food",g:"n"},
-  ],
-  "thanks|b3":[
-    {name:"프리미엄 꿀 선물 세트",price:"7~10만원",reason:"달콤한 감사의 마음을 전해요.",sk:"프리미엄 꿀 선물세트",cat:"food",g:"n"},
-    {name:"브랜드 스카프",price:"7~10만원",reason:"격조 있는 감사의 표현이에요.",sk:"브랜드 스카프 선물",cat:"fashion",g:"f"},
-    {name:"고급 만년필 세트",price:"7~10만원",reason:"품격 있는 필기구로 마음을 전해요.",sk:"고급 만년필 세트",cat:"stationery",g:"m"},
-    {name:"프리미엄 홍삼 세트",price:"7~10만원",reason:"건강을 챙기는 정성 가득한 감사예요.",sk:"홍삼 선물세트",cat:"health",g:"n"},
-    {name:"고급 디퓨저 세트",price:"7~10만원",reason:"공간을 격조 있게 채우는 감사 선물이에요.",sk:"고급 디퓨저 선물세트",cat:"home",g:"n"},
-    {name:"스파 이용권",price:"7~10만원",reason:"특별한 힐링 시간을 선물하는 감사예요.",sk:"스파 이용권",cat:"experience",g:"f"},
-  ],
-  // ── 축하 승진·합격 ──
-  "congrats|b1":[
-    {name:"축하 케이크 쿠폰",price:"1~2만원",reason:"달콤한 축하의 메시지를 전해요.",sk:"케이크 기프티콘",cat:"food",g:"n"},
-    {name:"감성 다이어리",price:"1~2만원",reason:"새로운 시작을 기록하는 특별한 선물이에요.",sk:"감성 다이어리 선물",cat:"stationery",g:"n"},
-    {name:"축하 꽃다발 미니",price:"1~2만원",reason:"작지만 화사한 축하의 마음이에요.",sk:"미니 꽃다발",cat:"home",g:"f"},
-    {name:"넥타이핀·커프스 세트",price:"1~2만원",reason:"새로운 직장에서 빛날 센스 아이템이에요.",sk:"넥타이핀 선물",cat:"fashion",g:"m"},
-    {name:"에너지바 선물 세트",price:"1~2만원",reason:"바쁜 새 출발에 에너지를 충전해요.",sk:"에너지바 선물세트",cat:"health",g:"n"},
-    {name:"미니 블루투스 스피커",price:"1~2만원",reason:"새 공간을 음악으로 채워줘요.",sk:"미니 블루투스 스피커",cat:"tech",g:"m"},
-  ],
-  "congrats|b2":[
-    {name:"프리미엄 와인",price:"3~5만원",reason:"축하의 건배를 올리기 좋은 선물이에요.",sk:"프리미엄 와인 선물",cat:"food",g:"n"},
-    {name:"브랜드 명함 지갑",price:"3~5만원",reason:"승진 축하에 딱 맞는 격식 있는 선물이에요.",sk:"명함 지갑 선물",cat:"fashion",g:"m"},
-    {name:"원데이 클래스 이용권",price:"3~5만원",reason:"새로운 시작에 새로운 경험을 더해요.",sk:"원데이 클래스 이용권",cat:"experience",g:"n"},
-    {name:"고급 볼펜+노트 세트",price:"3~5만원",reason:"격조 있는 업무용 문구 선물이에요.",sk:"고급 볼펜 노트 세트",cat:"stationery",g:"n"},
-    {name:"프리미엄 향수 미니",price:"3~5만원",reason:"새로운 시작에 어울리는 향기예요.",sk:"향수 미니어처 세트",cat:"beauty",g:"f"},
-    {name:"데스크 오거나이저",price:"3~5만원",reason:"새 자리를 깔끔하게 정리해줘요.",sk:"데스크 오거나이저",cat:"home",g:"n"},
-  ],
-  "congrats|b3":[
-    {name:"브랜드 넥타이",price:"7~10만원",reason:"승진의 품격을 더하는 선물이에요.",sk:"브랜드 넥타이 선물",cat:"fashion",g:"m"},
-    {name:"고급 레스토랑 식사권",price:"7~10만원",reason:"축하의 자리를 더 특별하게 만들어요.",sk:"레스토랑 식사권",cat:"experience",g:"n"},
-    {name:"프리미엄 홍삼 스틱",price:"7~10만원",reason:"바쁜 새 시작에 건강을 챙겨요.",sk:"홍삼 스틱 선물",cat:"health",g:"n"},
-    {name:"무선 충전 패드+거치대",price:"6~8만원",reason:"새 데스크를 스마트하게 꾸며요.",sk:"무선충전기 거치대",cat:"tech",g:"m"},
-    {name:"프리미엄 립스틱 세트",price:"7~10만원",reason:"새로운 시작을 빛나게 해줘요.",sk:"프리미엄 립스틱 세트",cat:"beauty",g:"f"},
-    {name:"각인 만년필",price:"7~10만원",reason:"이름을 새긴 축하의 의미를 담아요.",sk:"각인 만년필 선물",cat:"custom",g:"n"},
-  ],
-  // ── 집들이 ──
-  "housewarming|b1":[
-    {name:"주방 타월 세트",price:"1~2만원",reason:"매일 쓰는 실용적인 집들이 선물이에요.",sk:"주방 타월 세트",cat:"home",g:"n"},
-    {name:"프리미엄 핸드워시",price:"1~2만원",reason:"새 집 욕실에 센스를 더해요.",sk:"프리미엄 핸드워시",cat:"beauty",g:"n"},
-    {name:"미니 화분·다육이 세트",price:"1~2만원",reason:"새 집에 생기를 더해줘요.",sk:"미니 화분 다육이",cat:"hobby",g:"n"},
-    {name:"고급 수세미 세트",price:"1~2만원",reason:"주방 필수템으로 실용적이에요.",sk:"고급 수세미 세트",cat:"home",g:"n"},
-    {name:"커피 드립백 세트",price:"1~2만원",reason:"새 집에서의 첫 커피를 선물해요.",sk:"커피 드립백 세트",cat:"food",g:"n"},
-    {name:"이니셜 머그컵",price:"1~2만원",reason:"나만의 특별한 컵으로 새 시작을 축하해요.",sk:"이니셜 머그컵",cat:"custom",g:"n"},
-  ],
-  "housewarming|b2":[
-    {name:"프리미엄 디퓨저",price:"3~5만원",reason:"새 집을 좋은 향기로 채워요.",sk:"프리미엄 디퓨저",cat:"home",g:"n"},
-    {name:"고급 와인+오프너 세트",price:"3~5만원",reason:"집들이 파티에 딱 어울려요.",sk:"와인 오프너 세트",cat:"food",g:"n"},
-    {name:"인테리어 액자 세트",price:"3~5만원",reason:"빈 벽을 예쁘게 채워줘요.",sk:"인테리어 액자 세트",cat:"hobby",g:"n"},
-    {name:"고급 타월 세트",price:"3~5만원",reason:"프리미엄 수건은 매일 쓸수록 좋아요.",sk:"고급 타월 세트",cat:"fashion",g:"n"},
-    {name:"무선 충전 무드등",price:"3~5만원",reason:"실용성과 인테리어를 동시에 잡아요.",sk:"무선충전 무드등",cat:"tech",g:"n"},
-    {name:"허브 재배 키트",price:"3~5만원",reason:"주방에서 직접 키우는 신선한 허브예요.",sk:"허브 재배 키트",cat:"health",g:"n"},
-  ],
-  "housewarming|b3":[
-    {name:"프리미엄 냄비 세트",price:"7~10만원",reason:"요리의 격을 올리는 집들이 선물이에요.",sk:"프리미엄 냄비 세트",cat:"home",g:"n"},
-    {name:"공기청정기 소형",price:"7~10만원",reason:"새 집의 공기를 깨끗하게 지켜요.",sk:"소형 공기청정기",cat:"tech",g:"n"},
-    {name:"고급 올리브오일+발사믹 세트",price:"7~10만원",reason:"주방에 프리미엄을 더해요.",sk:"올리브오일 발사믹 세트",cat:"food",g:"n"},
-    {name:"감성 벽시계",price:"6~8만원",reason:"새 집의 분위기를 완성해요.",sk:"감성 벽시계 인테리어",cat:"hobby",g:"n"},
-    {name:"프리미엄 배스 세트",price:"7~10만원",reason:"집에서 즐기는 스파 같은 목욕 시간이에요.",sk:"프리미엄 배스 세트",cat:"beauty",g:"f"},
-    {name:"커스텀 도어매트",price:"5~8만원",reason:"이름을 새긴 세상에 하나뿐인 환영 매트예요.",sk:"커스텀 도어매트",cat:"custom",g:"n"},
-  ],
-  // ── 병문안·위로 ──
-  "recovery|b1":[
-    {name:"비타민C 젤리 세트",price:"1~2만원",reason:"맛있게 먹으며 건강을 챙겨요.",sk:"비타민C 젤리",cat:"health",g:"n"},
-    {name:"따뜻한 차 세트",price:"1~2만원",reason:"따뜻한 차로 몸과 마음을 달래요.",sk:"건강 차 세트",cat:"food",g:"n"},
-    {name:"보습 립밤+핸드크림",price:"1~2만원",reason:"건조한 병실에서 촉촉함을 지켜줘요.",sk:"립밤 핸드크림 세트",cat:"beauty",g:"f"},
-    {name:"감성 응원 엽서 세트",price:"1~2만원",reason:"손글씨 응원이 큰 힘이 돼요.",sk:"응원 엽서 세트",cat:"stationery",g:"n"},
-    {name:"수면 안대+귀마개 세트",price:"1~2만원",reason:"편안한 휴식을 도와줘요.",sk:"수면 안대 세트",cat:"home",g:"n"},
-    {name:"프리미엄 죽 선물 세트",price:"1~2만원",reason:"속 편하게 먹을 수 있는 회복식이에요.",sk:"죽 선물세트",cat:"food",g:"n"},
-  ],
-  "recovery|b2":[
-    {name:"프리미엄 홍삼 젤리",price:"3~5만원",reason:"달콤하게 먹으며 면역력을 높여요.",sk:"홍삼 젤리 선물",cat:"health",g:"n"},
-    {name:"고급 과일 바구니",price:"3~5만원",reason:"신선한 과일로 영양을 보충해요.",sk:"과일 바구니 선물",cat:"food",g:"n"},
-    {name:"편안한 수면 양말 세트",price:"3~4만원",reason:"따뜻하게 감싸는 회복의 온기예요.",sk:"수면 양말 세트",cat:"fashion",g:"n"},
-    {name:"아로마 디퓨저",price:"3~5만원",reason:"편안한 향기로 회복을 도와요.",sk:"아로마 디퓨저",cat:"home",g:"n"},
-    {name:"오디오북 구독권 1개월",price:"3만원",reason:"누워서도 즐길 수 있는 마음의 양식이에요.",sk:"오디오북 이용권",cat:"experience",g:"n"},
-    {name:"보온 텀블러",price:"3~5만원",reason:"따뜻한 음료를 오래 간직해요.",sk:"보온 텀블러 선물",cat:"tech",g:"m"},
-  ],
-  "recovery|b3":[
-    {name:"프리미엄 홍삼 세트",price:"7~10만원",reason:"건강 회복을 도와주는 정성 가득한 선물이에요.",sk:"홍삼 선물세트",cat:"health",g:"n"},
-    {name:"고급 과일+견과 세트",price:"7~10만원",reason:"영양 가득한 프리미엄 회복 선물이에요.",sk:"프리미엄 과일 견과 세트",cat:"food",g:"n"},
-    {name:"실크 파자마 세트",price:"7~10만원",reason:"편안한 휴식을 위한 부드러운 선물이에요.",sk:"실크 파자마 선물",cat:"fashion",g:"f"},
-    {name:"안마 쿠션",price:"7~10만원",reason:"집에서 편하게 피로를 풀어줘요.",sk:"안마 쿠션 선물",cat:"tech",g:"n"},
-    {name:"프리미엄 유기농 꿀 세트",price:"6~8만원",reason:"자연의 달콤함으로 회복을 응원해요.",sk:"유기농 꿀 선물",cat:"food",g:"n"},
-    {name:"힐링 캔들 세트",price:"6~8만원",reason:"따뜻한 불빛과 향기로 마음의 안정을 줘요.",sk:"힐링 캔들 세트",cat:"home",g:"n"},
-  ],
-  // ── 명절·시즌 ──
-  "holiday|b1":[
-    {name:"전통 한과 세트",price:"1~2만원",reason:"명절의 정을 담은 전통 간식이에요.",sk:"한과 선물세트",cat:"food",g:"n"},
-    {name:"고급 손수건 세트",price:"1~2만원",reason:"격식 있으면서 실용적인 명절 선물이에요.",sk:"고급 손수건 세트",cat:"fashion",g:"n"},
-    {name:"미니 복주머니 세트",price:"1~2만원",reason:"복을 담아 전하는 의미 있는 선물이에요.",sk:"복주머니 세트",cat:"custom",g:"n"},
-    {name:"건강 차 세트",price:"1~2만원",reason:"명절에 어른들께 드리기 좋아요.",sk:"건강 차 선물",cat:"health",g:"n"},
-    {name:"미니 디퓨저",price:"1~2만원",reason:"집안을 명절 향기로 채워요.",sk:"미니 디퓨저",cat:"home",g:"n"},
-    {name:"감사 카드+펜 세트",price:"1~2만원",reason:"손글씨 인사와 함께 전하는 명절 선물이에요.",sk:"감사 카드 세트",cat:"stationery",g:"n"},
-  ],
-  "holiday|b2":[
-    {name:"명절 한우 세트",price:"3~5만원",reason:"고급스러운 명절 대표 선물이에요.",sk:"한우 선물세트",cat:"food",g:"n"},
-    {name:"프리미엄 참기름 세트",price:"3~5만원",reason:"주방의 격을 올리는 명절 필수 선물이에요.",sk:"참기름 들기름 선물세트",cat:"food",g:"n"},
-    {name:"실크 스카프",price:"3~5만원",reason:"어른들께 드리기 좋은 격조 있는 선물이에요.",sk:"실크 스카프 선물",cat:"fashion",g:"f"},
-    {name:"프리미엄 비타민 세트",price:"3~5만원",reason:"건강을 챙기는 실용적인 명절 선물이에요.",sk:"비타민 선물세트",cat:"health",g:"n"},
-    {name:"명절 캔들 세트",price:"3~5만원",reason:"따뜻한 분위기를 전하는 선물이에요.",sk:"명절 캔들 세트",cat:"home",g:"n"},
-    {name:"전통 다기 세트",price:"3~5만원",reason:"차 한 잔의 여유를 선물해요.",sk:"전통 다기 세트",cat:"hobby",g:"n"},
-  ],
-  "holiday|b3":[
-    {name:"프리미엄 갈비 세트",price:"7~10만원",reason:"명절 식탁을 풍성하게 채워요.",sk:"갈비 선물세트",cat:"food",g:"n"},
-    {name:"홍삼 정관장 세트",price:"7~10만원",reason:"건강을 생각하는 격식 있는 명절 선물이에요.",sk:"정관장 홍삼 세트",cat:"health",g:"n"},
-    {name:"브랜드 머플러",price:"7~10만원",reason:"따뜻함을 감싸는 고급스러운 선물이에요.",sk:"브랜드 머플러 선물",cat:"fashion",g:"n"},
-    {name:"고급 도자기 식기 세트",price:"7~10만원",reason:"식탁의 격을 올리는 명절 선물이에요.",sk:"도자기 식기 세트",cat:"home",g:"n"},
-    {name:"프리미엄 안마기",price:"7~10만원",reason:"어른들의 피로를 풀어드려요.",sk:"프리미엄 안마기 선물",cat:"tech",g:"n"},
-    {name:"프리미엄 전통주 세트",price:"7~10만원",reason:"명절에 함께 나누는 전통의 맛이에요.",sk:"전통주 선물세트",cat:"food",g:"m"},
-  ],
-  // ── 사과·화해 ──
-  "apology|b1":[
-    {name:"사과 편지지+봉투 세트",price:"1~2만원",reason:"진심을 글로 전하는 첫 걸음이에요.",sk:"편지지 봉투 세트",cat:"stationery",g:"n"},
-    {name:"미니 꽃다발",price:"1~2만원",reason:"작은 꽃 한 송이가 마음을 녹여요.",sk:"미니 꽃다발 선물",cat:"home",g:"f"},
-    {name:"수제 초콜릿 세트",price:"1~2만원",reason:"달콤함으로 미안한 마음을 전해요.",sk:"수제 초콜릿 선물",cat:"food",g:"n"},
-    {name:"보습 핸드크림",price:"1~2만원",reason:"매일 바를 때마다 화해의 마음이 전해져요.",sk:"핸드크림 선물",cat:"beauty",g:"f"},
-    {name:"힐링 허브티 세트",price:"1~2만원",reason:"따뜻한 차로 풀어지는 마음이에요.",sk:"허브티 세트",cat:"health",g:"n"},
-    {name:"감성 키링",price:"1~2만원",reason:"매일 가지고 다니며 마음을 기억해요.",sk:"감성 키링 선물",cat:"fashion",g:"n"},
-  ],
-  "apology|b2":[
-    {name:"프리미엄 꽃다발",price:"3~5만원",reason:"진심 어린 사과를 꽃으로 전해요.",sk:"꽃다발 배달",cat:"home",g:"f"},
-    {name:"고급 디저트 세트",price:"3~5만원",reason:"달콤한 선물로 어색함을 녹여요.",sk:"고급 디저트 선물세트",cat:"food",g:"n"},
-    {name:"브랜드 핸드크림+바디로션 세트",price:"3~5만원",reason:"매일 쓰며 화해의 마음을 느끼게 해요.",sk:"핸드크림 바디로션 세트",cat:"beauty",g:"f"},
-    {name:"감성 무드등",price:"3~5만원",reason:"따뜻한 빛으로 마음을 밝혀요.",sk:"감성 무드등",cat:"tech",g:"n"},
-    {name:"카페 상품권 5만원",price:"5만원",reason:"함께 커피 한 잔 하며 이야기 나눠요.",sk:"카페 상품권",cat:"experience",g:"n"},
-    {name:"커스텀 메시지 쿠션",price:"3~5만원",reason:"진심을 담은 문구로 마음을 전해요.",sk:"커스텀 메시지 쿠션",cat:"custom",g:"n"},
-  ],
-  "apology|b3":[
-    {name:"프리미엄 꽃바구니",price:"7~10만원",reason:"진심 어린 사과를 풍성한 꽃으로 전해요.",sk:"프리미엄 꽃바구니",cat:"home",g:"f"},
-    {name:"고급 레스토랑 식사권",price:"7~10만원",reason:"함께 식사하며 진심을 전하는 시간이에요.",sk:"레스토랑 식사권",cat:"experience",g:"n"},
-    {name:"프리미엄 향수",price:"7~10만원",reason:"향기가 날 때마다 화해의 순간을 기억해요.",sk:"프리미엄 향수 선물",cat:"beauty",g:"f"},
-    {name:"브랜드 넥타이",price:"7~10만원",reason:"매일 매는 넥타이에 마음을 담아요.",sk:"브랜드 넥타이 선물",cat:"fashion",g:"m"},
-    {name:"프리미엄 견과류 세트",price:"7~10만원",reason:"건강을 생각하는 진심 어린 선물이에요.",sk:"프리미엄 견과류 선물",cat:"health",g:"n"},
-    {name:"각인 팔찌",price:"6~8만원",reason:"이름을 새겨 마음의 약속을 남겨요.",sk:"각인 팔찌 선물",cat:"custom",g:"n"},
-  ],
-  // ── 그냥, 마음 전달 ──
-  "justbecause|b1":[
-    {name:"카페 기프티콘",price:"1만원",reason:"부담 없이 마음을 전하는 센스 선물이에요.",sk:"카페 기프티콘",cat:"food",g:"n"},
-    {name:"감성 엽서+스티커 세트",price:"1~2만원",reason:"아날로그 감성으로 마음을 전해요.",sk:"감성 엽서 스티커 세트",cat:"stationery",g:"n"},
-    {name:"미니 디퓨저",price:"1~2만원",reason:"작은 향기에 큰 마음을 담아요.",sk:"미니 디퓨저 선물",cat:"home",g:"n"},
-    {name:"립밤+핸드크림 미니",price:"1~2만원",reason:"일상 속 작은 행복을 선물해요.",sk:"립밤 핸드크림 세트",cat:"beauty",g:"f"},
-    {name:"프리미엄 초콜릿",price:"1~2만원",reason:"달콤한 한 조각에 마음을 전해요.",sk:"프리미엄 초콜릿 선물",cat:"food",g:"n"},
-    {name:"프리미엄 양말",price:"1~2만원",reason:"소소하지만 센스 있는 마음이에요.",sk:"프리미엄 양말 선물",cat:"fashion",g:"m"},
-  ],
-  "justbecause|b2":[
-    {name:"감성 캔들+디퓨저 세트",price:"3~5만원",reason:"향기로 전하는 따뜻한 마음이에요.",sk:"캔들 디퓨저 세트",cat:"home",g:"f"},
-    {name:"프리미엄 드립커피 세트",price:"3~5만원",reason:"매일 아침이 특별해지는 선물이에요.",sk:"드립커피 선물세트",cat:"food",g:"n"},
-    {name:"레트로 사진관 이용권",price:"3~5만원",reason:"함께한 순간을 사진으로 남겨요.",sk:"레트로 사진관 이용권",cat:"experience",g:"n"},
-    {name:"가죽 공예 키트",price:"3~4만원",reason:"직접 만드는 세상에 하나뿐인 선물이에요.",sk:"가죽 공예 키트",cat:"hobby",g:"m"},
-    {name:"커스텀 폰케이스",price:"3~4만원",reason:"나만의 감성을 담은 케이스예요.",sk:"커스텀 폰케이스",cat:"custom",g:"n"},
-    {name:"바디미스트 세트",price:"3~5만원",reason:"가벼운 향기로 일상을 환하게 해줘요.",sk:"바디미스트 세트",cat:"beauty",g:"f"},
-  ],
-  "justbecause|b3":[
-    {name:"브랜드 카드지갑",price:"7~10만원",reason:"매일 쓰는 물건에 특별한 마음을 담아요.",sk:"브랜드 카드지갑 선물",cat:"fashion",g:"n"},
-    {name:"블루투스 이어폰",price:"7~10만원",reason:"매일 함께하는 실용적인 마음이에요.",sk:"블루투스 이어폰",cat:"tech",g:"n"},
-    {name:"고급 캔들 세트",price:"7~10만원",reason:"향기로 공간과 마음을 채워요.",sk:"고급 캔들 세트",cat:"home",g:"f"},
-    {name:"원데이 클래스 2인권",price:"7~10만원",reason:"함께 만드는 추억이 최고의 선물이에요.",sk:"원데이 클래스 2인",cat:"experience",g:"n"},
-    {name:"월간 꽃 구독 1개월",price:"5~7만원",reason:"매주 찾아오는 꽃이 감동이에요.",sk:"꽃 구독 선물",cat:"custom",g:"f"},
-    {name:"근막 마사지건",price:"6~9만원",reason:"매일의 피로를 풀어주는 마음이에요.",sk:"마사지건 선물",cat:"health",g:"m"},
-  ],
-  // ── 기념일 ──
-  "anniversary|b1":[
-    {name:"커플 키링 세트",price:"1~2만원",reason:"둘만의 작은 매칭 아이템이에요.",sk:"커플 키링 세트",cat:"custom",g:"n"},
-    {name:"감성 디저트 세트",price:"1~2만원",reason:"달콤한 간식으로 기념일을 축하해요.",sk:"디저트 선물세트",cat:"food",g:"n"},
-    {name:"미니 꽃다발+편지",price:"1~2만원",reason:"작은 꽃과 진심 어린 편지의 조합이에요.",sk:"미니 꽃다발",cat:"home",g:"f"},
-    {name:"감성 볼펜",price:"1~2만원",reason:"함께 쓰는 일상의 특별한 아이템이에요.",sk:"감성 볼펜 선물",cat:"stationery",g:"m"},
-    {name:"프리미엄 입욕제 세트",price:"1~2만원",reason:"편안한 시간을 선물해요.",sk:"입욕제 세트 선물",cat:"beauty",g:"f"},
-    {name:"커플 양말 세트",price:"1~2만원",reason:"함께 맞춰 신는 소소한 행복이에요.",sk:"커플 양말 세트",cat:"fashion",g:"n"},
-  ],
-  "anniversary|b2":[
-    {name:"커플 향수 미니 세트",price:"3~5만원",reason:"둘만의 향기를 만들어요.",sk:"커플 향수 미니세트",cat:"beauty",g:"n"},
-    {name:"고급 레터링 케이크 쿠폰",price:"3~5만원",reason:"이름을 새긴 특별한 축하 케이크예요.",sk:"레터링 케이크 주문",cat:"food",g:"n"},
-    {name:"프리미엄 무드등",price:"3~5만원",reason:"둘만의 공간을 로맨틱하게 만들어요.",sk:"감성 무드등",cat:"home",g:"n"},
-    {name:"레트로 사진관 커플 촬영",price:"3~5만원",reason:"둘의 순간을 빈티지 사진으로 남겨요.",sk:"레트로 사진관 커플",cat:"experience",g:"n"},
-    {name:"커스텀 폰케이스 2개",price:"4~5만원",reason:"나만의 커플 케이스를 만들어요.",sk:"커플 폰케이스 커스텀",cat:"custom",g:"n"},
-    {name:"프리미엄 초콜릿 세트",price:"3~5만원",reason:"달콤한 순간을 함께 나눠요.",sk:"프리미엄 초콜릿 세트",cat:"food",g:"n"},
-  ],
-  "anniversary|b3":[
-    {name:"커플 액세서리 세트",price:"7~10만원",reason:"함께 착용하는 특별한 기념 아이템이에요.",sk:"커플 팔찌 세트",cat:"fashion",g:"n"},
-    {name:"호텔 레스토랑 식사권",price:"7~10만원",reason:"특별한 날 특별한 공간에서의 식사예요.",sk:"호텔 레스토랑 식사권",cat:"experience",g:"n"},
-    {name:"각인 반지·팔찌",price:"7~10만원",reason:"둘의 이름을 새긴 세상에 하나뿐인 선물이에요.",sk:"각인 반지 팔찌 커플",cat:"custom",g:"n"},
-    {name:"프리미엄 향수",price:"7~10만원",reason:"기념일의 향기를 함께 기억해요.",sk:"프리미엄 향수 선물",cat:"beauty",g:"f"},
-    {name:"포토북 제작 바우처",price:"5~8만원",reason:"함께한 순간을 한 권의 책으로 간직해요.",sk:"포토북 제작 바우처",cat:"hobby",g:"n"},
-    {name:"스마트 체중계+밴드 세트",price:"7~10만원",reason:"함께 건강을 챙기는 커플 아이템이에요.",sk:"스마트 체중계 밴드",cat:"health",g:"n"},
-  ],
+const GIFT_CATEGORIES = {
+  food: "식품·음료",
+  beauty: "뷰티·향기",
+  fashion: "패션·액세서리",
+  home: "홈·리빙",
+  experience: "경험·체험",
+  tech: "테크·가젯",
+  stationery: "문구·서적",
+  health: "건강·웰니스",
+  hobby: "취미·DIY",
+  custom: "맞춤제작·구독"
 };
-const FD={
-  b1:[
-    {name:"프리미엄 핸드크림 세트",price:"1~2만원",reason:"매일 쓸 때마다 마음이 전해져요.",sk:"핸드크림 선물 세트",cat:"beauty",g:"f"},
-    {name:"카페 기프티콘",price:"1만원",reason:"편하게 쓸 수 있는 실용적인 선물이에요.",sk:"카페 기프티콘",cat:"food",g:"n"},
-    {name:"감성 미니 디퓨저",price:"1~2만원",reason:"향기를 남기는 작지만 특별한 선물이에요.",sk:"미니 디퓨저",cat:"home",g:"n"},
-    {name:"감성 엽서+스티커",price:"1만원",reason:"손글씨와 함께 전하는 아날로그 감성이에요.",sk:"감성 엽서 세트",cat:"stationery",g:"n"},
-    {name:"비타민 젤리 세트",price:"1~2만원",reason:"맛있게 건강을 챙기는 선물이에요.",sk:"비타민 젤리 선물",cat:"health",g:"n"},
-    {name:"프리미엄 육포 세트",price:"1~2만원",reason:"든든한 간식 선물이에요.",sk:"프리미엄 육포",cat:"food",g:"m"},
-  ],
-  b2:[
-    {name:"프리미엄 디퓨저 세트",price:"3~5만원",reason:"향기가 날 때마다 마음이 전해져요.",sk:"프리미엄 디퓨저 세트",cat:"beauty",g:"f"},
-    {name:"고급 차 선물 세트",price:"3~5만원",reason:"매일 마실 때마다 생각나는 따뜻한 선물이에요.",sk:"차 선물 세트",cat:"food",g:"n"},
-    {name:"레트로 사진관 이용권",price:"3~5만원",reason:"특별한 순간을 빈티지 사진으로 남겨요.",sk:"레트로 사진관",cat:"experience",g:"n"},
-    {name:"가죽 공예 키트",price:"3~4만원",reason:"직접 만드는 가죽 소품이에요.",sk:"가죽 공예 키트",cat:"hobby",g:"m"},
-    {name:"커스텀 폰케이스",price:"2~4만원",reason:"나만의 케이스예요.",sk:"커스텀 폰케이스 제작",cat:"custom",g:"n"},
-    {name:"브랜드 손수건",price:"3~5만원",reason:"격식 있는 선물이에요.",sk:"브랜드 손수건 선물",cat:"fashion",g:"n"},
-    {name:"수제 맥주 세트",price:"3~5만원",reason:"크래프트 비어의 다양한 맛을 선물해요.",sk:"수제 맥주 선물세트",cat:"food",g:"m"},
-    {name:"바디미스트 세트",price:"3~4만원",reason:"가볍고 상쾌한 향기를 선물해요.",sk:"바디미스트 선물세트",cat:"beauty",g:"f"},
-  ],
-  b3:[
-    {name:"브랜드 지갑·카드홀더",price:"7~10만원",reason:"매일 쓰는 물건이라 오래 기억에 남아요.",sk:"브랜드 카드지갑",cat:"fashion",g:"n"},
-    {name:"고급 캔들 세트",price:"8~10만원",reason:"은은한 향으로 공간을 채워요.",sk:"고급 캔들 세트",cat:"home",g:"f"},
-    {name:"블루투스 스피커",price:"7~10만원",reason:"일상에 음악을 더해요.",sk:"블루투스 스피커",cat:"tech",g:"m"},
-    {name:"스파 이용권",price:"7~10만원",reason:"몸과 마음의 힐링이에요.",sk:"스파 이용권",cat:"experience",g:"n"},
-    {name:"프리미엄 만년필",price:"7~10만원",reason:"글을 쓸 때마다 특별해요.",sk:"프리미엄 만년필",cat:"stationery",g:"m"},
-    {name:"월간 꽃 구독 3개월",price:"6~9만원",reason:"매달 찾아오는 감동이에요.",sk:"꽃 정기구독",cat:"custom",g:"f"},
-    {name:"골프공 세트",price:"5~8만원",reason:"골퍼에게 가장 실용적인 선물이에요.",sk:"프리미엄 골프공 세트",cat:"hobby",g:"m"},
-    {name:"근막 마사지건",price:"6~9만원",reason:"운동 후 회복을 도와줘요.",sk:"마사지건",cat:"health",g:"m"},
-  ],
-  b4:[
-    {name:"브랜드 가방",price:"12~18만원",reason:"매일 함께하는 특별한 아이템이에요.",sk:"브랜드 가방",cat:"fashion",g:"f"},
-    {name:"프리미엄 향수",price:"12~18만원",reason:"향기로 마음을 전해요.",sk:"프리미엄 향수",cat:"beauty",g:"f"},
-    {name:"고급 레스토랑 식사권",price:"10~15만원",reason:"특별한 경험을 함께 나눠요.",sk:"레스토랑 식사권",cat:"experience",g:"n"},
-    {name:"스마트 체중계+밴드",price:"10~15만원",reason:"건강을 스마트하게 관리해요.",sk:"스마트 체중계",cat:"health",g:"n"},
-    {name:"미니 빔프로젝터",price:"12~18만원",reason:"집에서 영화관을 즐겨요.",sk:"미니 빔프로젝터",cat:"tech",g:"m"},
-  ],
-  b5:[
-    {name:"명품 액세서리",price:"25~40만원",reason:"오래도록 간직할 수 있는 선물이에요.",sk:"명품 액세서리",cat:"fashion",g:"f"},
-    {name:"프리미엄 전자기기",price:"25~50만원",reason:"갖고 싶었던 걸 선물받는 기쁨이에요.",sk:"프리미엄 전자기기",cat:"tech",g:"m"},
-    {name:"호텔 스파 패키지",price:"20~35만원",reason:"몸과 마음 모두 쉴 수 있는 경험이에요.",sk:"호텔 스파 패키지",cat:"experience",g:"n"},
-    {name:"커스텀 네온사인",price:"25~40만원",reason:"이름을 빛으로 새기는 인테리어예요.",sk:"커스텀 네온사인",cat:"custom",g:"n"},
-  ],
+const FB = {
+  "birthday|b1": [{
+    name: "프리미엄 핸드크림",
+    price: "1~2만원",
+    reason: "매일 쓸 때마다 생각나는 감성적인 선물이에요.",
+    sk: "프리미엄 핸드크림 선물",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "카페 기프트카드",
+    price: "1~2만원",
+    reason: "부담 없이 센스 있는 선물이에요.",
+    sk: "스타벅스 기프트카드",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "감성 디저트 세트",
+    price: "1~2만원",
+    reason: "생일의 달콤함을 더해주는 특별한 간식이에요.",
+    sk: "선물용 디저트 세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "이니셜 키링",
+    price: "1~2만원",
+    reason: "세상에 하나뿐인 나만의 소품이에요.",
+    sk: "이니셜 각인 키링",
+    cat: "custom",
+    g: "n"
+  }, {
+    name: "감성 노트+펜 세트",
+    price: "1~2만원",
+    reason: "일상에 영감을 더하는 문구 선물이에요.",
+    sk: "감성 노트 펜 세트",
+    cat: "stationery",
+    g: "n"
+  }, {
+    name: "미니 화분 세트",
+    price: "1~2만원",
+    reason: "책상 위 작은 초록이 주는 힐링이에요.",
+    sk: "미니 화분 선물",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "립밤+핸드크림 미니 세트",
+    price: "1~2만원",
+    reason: "작지만 실용적인 뷰티 선물이에요.",
+    sk: "립밤 핸드크림 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "프리미엄 양말 세트",
+    price: "1~2만원",
+    reason: "매일 쓰는 실용적인 센스 선물이에요.",
+    sk: "프리미엄 양말 선물",
+    cat: "fashion",
+    g: "m"
+  }, {
+    name: "프리미엄 육포 세트",
+    price: "1~2만원",
+    reason: "술안주로도, 간식으로도 좋은 선물이에요.",
+    sk: "프리미엄 육포 선물",
+    cat: "food",
+    g: "m"
+  }],
+  "birthday|b2": [{
+    name: "향수 미니어처 세트",
+    price: "3~5만원",
+    reason: "여러 향을 체험할 수 있어서 센스 있어 보여요.",
+    sk: "향수 미니어처 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "감성 무드등",
+    price: "3~5만원",
+    reason: "공간에 분위기를 더해주는 인테리어 선물이에요.",
+    sk: "감성 무드등",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "원데이 클래스 이용권",
+    price: "3~5만원",
+    reason: "함께 만드는 경험이 최고의 추억이 돼요.",
+    sk: "원데이 클래스 이용권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "이니셜 각인 팔찌",
+    price: "3~5만원",
+    reason: "세상에 하나뿐인 나만의 액세서리예요.",
+    sk: "이니셜 각인 팔찌",
+    cat: "custom",
+    g: "f"
+  }, {
+    name: "폴라로이드 필름 세트",
+    price: "3~4만원",
+    reason: "추억을 즉석으로 담는 아날로그 감성이에요.",
+    sk: "폴라로이드 필름 세트",
+    cat: "hobby",
+    g: "n"
+  }, {
+    name: "프리미엄 드립커피 세트",
+    price: "3~5만원",
+    reason: "홈카페의 시작, 매일 아침이 특별해져요.",
+    sk: "드립커피 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "네일 케어 세트",
+    price: "3~4만원",
+    reason: "집에서 즐기는 프리미엄 셀프 네일이에요.",
+    sk: "네일 케어 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "수제 맥주 세트",
+    price: "3~5만원",
+    reason: "다양한 맛을 즐기는 크래프트 비어 선물이에요.",
+    sk: "수제 맥주 선물세트",
+    cat: "food",
+    g: "m"
+  }, {
+    name: "빈티지 블루투스 스피커",
+    price: "3~5만원",
+    reason: "레트로 감성으로 음악을 즐기는 스피커예요.",
+    sk: "빈티지 블루투스 스피커",
+    cat: "tech",
+    g: "m"
+  }, {
+    name: "가죽 공예 키트",
+    price: "3~4만원",
+    reason: "직접 만드는 세상에 하나뿐인 가죽 소품이에요.",
+    sk: "가죽 공예 키트",
+    cat: "hobby",
+    g: "m"
+  }],
+  "birthday|b3": [{
+    name: "브랜드 지갑·카드홀더",
+    price: "7~10만원",
+    reason: "매일 쓰는 물건이라 오래 기억에 남아요.",
+    sk: "브랜드 카드지갑 선물",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "블루투스 이어폰",
+    price: "8~10만원",
+    reason: "매일 쓰는 아이템이라 실용적이에요.",
+    sk: "블루투스 이어폰",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "고급 레스토랑 식사권",
+    price: "6~10만원",
+    reason: "특별한 날 특별한 경험을 선물해요.",
+    sk: "레스토랑 식사권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "캔들 만들기 키트",
+    price: "5~7만원",
+    reason: "직접 만드는 세상에 하나뿐인 향초예요.",
+    sk: "캔들 만들기 키트",
+    cat: "hobby",
+    g: "f"
+  }, {
+    name: "포토북 제작 바우처",
+    price: "5~8만원",
+    reason: "함께한 순간을 한 권의 책으로 간직해요.",
+    sk: "포토북 제작",
+    cat: "custom",
+    g: "n"
+  }, {
+    name: "프리미엄 홍삼 스틱",
+    price: "7~10만원",
+    reason: "건강을 챙기는 정성 가득한 선물이에요.",
+    sk: "홍삼 스틱 선물",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "데일리 주얼리 세트",
+    price: "5~8만원",
+    reason: "매일 빛나는 세련된 액세서리 선물이에요.",
+    sk: "여성 주얼리 세트",
+    cat: "fashion",
+    g: "f"
+  }, {
+    name: "근막 마사지건",
+    price: "6~9만원",
+    reason: "운동 후 회복을 도와주는 실용 건강 선물이에요.",
+    sk: "마사지건 선물",
+    cat: "health",
+    g: "m"
+  }, {
+    name: "위스키 글라스 세트",
+    price: "5~8만원",
+    reason: "한 잔의 여유를 더 특별하게 만들어줘요.",
+    sk: "위스키 글라스 세트",
+    cat: "hobby",
+    g: "m"
+  }, {
+    name: "스마트 머그",
+    price: "6~8만원",
+    reason: "항상 적정 온도의 음료를 즐기는 스마트 아이템이에요.",
+    sk: "스마트 온도유지 머그",
+    cat: "tech",
+    g: "m"
+  }],
+  "birthday|b4": [{
+    name: "브랜드 가방",
+    price: "15~20만원",
+    reason: "매일 함께하니까 특별한 선물이에요.",
+    sk: "브랜드 가방",
+    cat: "fashion",
+    g: "f"
+  }, {
+    name: "스마트워치",
+    price: "15~20만원",
+    reason: "건강도 챙기는 스마트한 선물이에요.",
+    sk: "스마트워치",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "프리미엄 향수 정품",
+    price: "12~18만원",
+    reason: "향기로 특별한 날을 기억하게 해줘요.",
+    sk: "프리미엄 향수",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "호텔 디너 코스",
+    price: "10~15만원",
+    reason: "특별한 공간에서 특별한 시간이에요.",
+    sk: "호텔 디너",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "미니 빔프로젝터",
+    price: "12~18만원",
+    reason: "집에서 영화관을 즐기는 새로운 경험이에요.",
+    sk: "미니 빔프로젝터",
+    cat: "tech",
+    g: "m"
+  }, {
+    name: "가죽 벨트+카드지갑 세트",
+    price: "10~15만원",
+    reason: "매일 쓰는 남성 필수 아이템이에요.",
+    sk: "남성 가죽 벨트 지갑",
+    cat: "fashion",
+    g: "m"
+  }, {
+    name: "요가 원데이 클래스 5회권",
+    price: "10~15만원",
+    reason: "몸과 마음의 균형을 찾는 경험이에요.",
+    sk: "요가 필라테스 이용권",
+    cat: "experience",
+    g: "f"
+  }],
+  "birthday|b5": [{
+    name: "명품 액세서리",
+    price: "25~40만원",
+    reason: "오래도록 간직할 수 있는 의미 있는 선물이에요.",
+    sk: "명품 액세서리",
+    cat: "fashion",
+    g: "f"
+  }, {
+    name: "프리미엄 전자기기",
+    price: "25~50만원",
+    reason: "정말 갖고 싶었던 걸 선물받는 기쁨이에요.",
+    sk: "에어팟 맥스",
+    cat: "tech",
+    g: "m"
+  }, {
+    name: "호텔 스파 패키지",
+    price: "20~35만원",
+    reason: "잊을 수 없는 경험을 선물하는 거예요.",
+    sk: "호텔 숙박 패키지",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "커스텀 네온사인",
+    price: "25~40만원",
+    reason: "이름을 빛으로 새기는 특별한 인테리어예요.",
+    sk: "커스텀 네온사인",
+    cat: "custom",
+    g: "n"
+  }],
+  "baby|b1": [{
+    name: "오가닉 아기 턱받이 세트",
+    price: "1~2만원",
+    reason: "매일 쓰는 필수템이에요.",
+    sk: "아기 턱받이 세트",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "아기 가제 수건 세트",
+    price: "1~2만원",
+    reason: "매일 여러 장 쓰는 필수품이에요.",
+    sk: "아기 가제수건",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "유기농 아기 입욕제",
+    price: "1~2만원",
+    reason: "아기 피부에 순한 목욕 시간을 선물해요.",
+    sk: "아기 입욕제",
+    cat: "beauty",
+    g: "n"
+  }],
+  "baby|b2": [{
+    name: "유기농 베이비 로션 세트",
+    price: "3~5만원",
+    reason: "아기 피부를 생각하는 세심한 마음이에요.",
+    sk: "유기농 베이비 로션 세트",
+    cat: "beauty",
+    g: "n"
+  }, {
+    name: "이유식 용기 세트",
+    price: "2~4만원",
+    reason: "곧 필요한 센스 있는 선물이에요.",
+    sk: "이유식 용기 세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "프리미엄 기저귀 대용량",
+    price: "3~4만원",
+    reason: "가장 실용적인 출산 선물이에요.",
+    sk: "프리미엄 기저귀",
+    cat: "health",
+    g: "n"
+  }],
+  "baby|b3": [{
+    name: "아기 바운서",
+    price: "7~10만원",
+    reason: "육아 부담을 덜어주는 도움이에요.",
+    sk: "아기 바운서",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "프리미엄 아기띠",
+    price: "8~10만원",
+    reason: "외출 필수템이에요.",
+    sk: "아기띠 힙시트",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "유기농 아기 의류 세트",
+    price: "5~8만원",
+    reason: "프리미엄 브랜드라 특별해요.",
+    sk: "아기옷 선물세트",
+    cat: "fashion",
+    g: "n"
+  }],
+  "wedding|b3": [{
+    name: "프리미엄 침구 세트",
+    price: "7~10만원",
+    reason: "좋은 침구는 삶의 질을 바꿔요.",
+    sk: "프리미엄 침구 세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "커플 향수 세트",
+    price: "8~10만원",
+    reason: "둘만의 향기를 만들어줘요.",
+    sk: "커플 향수 세트",
+    cat: "beauty",
+    g: "n"
+  }, {
+    name: "고급 와인+치즈 세트",
+    price: "7~10만원",
+    reason: "로맨틱한 저녁에 어울려요.",
+    sk: "와인 치즈 세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "웨딩 포토 액자 제작",
+    price: "5~8만원",
+    reason: "두 사람의 순간을 영원히 간직해요.",
+    sk: "웨딩 액자 제작",
+    cat: "custom",
+    g: "n"
+  }],
+  "wedding|b4": [{
+    name: "로봇청소기",
+    price: "15~20만원",
+    reason: "신혼생활을 편리하게 만들어줘요.",
+    sk: "로봇청소기",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "프리미엄 커피머신",
+    price: "15~20만원",
+    reason: "매일 아침 둘만의 카페를 만들어줘요.",
+    sk: "커피머신",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "호텔 스테이 이용권",
+    price: "15~20만원",
+    reason: "일상을 벗어난 둘만의 시간이에요.",
+    sk: "호텔 스테이",
+    cat: "experience",
+    g: "n"
+  }],
+  // ── 감사 인사 ──
+  "thanks|b1": [{
+    name: "프리미엄 티백 세트",
+    price: "1~2만원",
+    reason: "따뜻한 차 한 잔에 감사의 마음을 담아요.",
+    sk: "프리미엄 티백 선물",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "미니 핸드크림 세트",
+    price: "1~2만원",
+    reason: "매일 쓸 때마다 감사한 마음이 전해져요.",
+    sk: "미니 핸드크림 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "감사 메시지 캔들",
+    price: "1~2만원",
+    reason: "향기로 고마운 마음을 전해요.",
+    sk: "메시지 캔들",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "감성 볼펜 세트",
+    price: "1~2만원",
+    reason: "글 쓸 때마다 감사를 떠올리게 해요.",
+    sk: "감성 볼펜 선물",
+    cat: "stationery",
+    g: "m"
+  }, {
+    name: "건강 견과류 세트",
+    price: "1~2만원",
+    reason: "건강까지 챙기는 센스 있는 감사 선물이에요.",
+    sk: "견과류 선물세트",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "프리미엄 양말 세트",
+    price: "1~2만원",
+    reason: "실용적이면서 부담 없는 감사 표현이에요.",
+    sk: "프리미엄 양말 선물",
+    cat: "fashion",
+    g: "m"
+  }],
+  "thanks|b2": [{
+    name: "프리미엄 차 선물 세트",
+    price: "3~5만원",
+    reason: "격식 있으면서 부담 없는 감사의 표현이에요.",
+    sk: "차 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "고급 올리브오일 세트",
+    price: "3~5만원",
+    reason: "건강을 생각하는 고급스러운 감사 선물이에요.",
+    sk: "올리브오일 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "브랜드 핸드크림 세트",
+    price: "3~5만원",
+    reason: "매일 쓸 때마다 감사의 마음이 전해져요.",
+    sk: "브랜드 핸드크림 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "프리미엄 만년필",
+    price: "3~5만원",
+    reason: "글을 쓸 때마다 감사의 마음을 떠올리게 해요.",
+    sk: "프리미엄 만년필",
+    cat: "stationery",
+    g: "m"
+  }, {
+    name: "감성 디퓨저+캔들 세트",
+    price: "3~5만원",
+    reason: "공간에 향기로 감사를 전해요.",
+    sk: "디퓨저 캔들 세트",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "카페 상품권 5만원권",
+    price: "5만원",
+    reason: "편하게 쓸 수 있는 실용적인 감사 선물이에요.",
+    sk: "카페 상품권",
+    cat: "food",
+    g: "n"
+  }],
+  "thanks|b3": [{
+    name: "프리미엄 꿀 선물 세트",
+    price: "7~10만원",
+    reason: "달콤한 감사의 마음을 전해요.",
+    sk: "프리미엄 꿀 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "브랜드 스카프",
+    price: "7~10만원",
+    reason: "격조 있는 감사의 표현이에요.",
+    sk: "브랜드 스카프 선물",
+    cat: "fashion",
+    g: "f"
+  }, {
+    name: "고급 만년필 세트",
+    price: "7~10만원",
+    reason: "품격 있는 필기구로 마음을 전해요.",
+    sk: "고급 만년필 세트",
+    cat: "stationery",
+    g: "m"
+  }, {
+    name: "프리미엄 홍삼 세트",
+    price: "7~10만원",
+    reason: "건강을 챙기는 정성 가득한 감사예요.",
+    sk: "홍삼 선물세트",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "고급 디퓨저 세트",
+    price: "7~10만원",
+    reason: "공간을 격조 있게 채우는 감사 선물이에요.",
+    sk: "고급 디퓨저 선물세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "스파 이용권",
+    price: "7~10만원",
+    reason: "특별한 힐링 시간을 선물하는 감사예요.",
+    sk: "스파 이용권",
+    cat: "experience",
+    g: "f"
+  }],
+  // ── 축하 승진·합격 ──
+  "congrats|b1": [{
+    name: "축하 케이크 쿠폰",
+    price: "1~2만원",
+    reason: "달콤한 축하의 메시지를 전해요.",
+    sk: "케이크 기프티콘",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "감성 다이어리",
+    price: "1~2만원",
+    reason: "새로운 시작을 기록하는 특별한 선물이에요.",
+    sk: "감성 다이어리 선물",
+    cat: "stationery",
+    g: "n"
+  }, {
+    name: "축하 꽃다발 미니",
+    price: "1~2만원",
+    reason: "작지만 화사한 축하의 마음이에요.",
+    sk: "미니 꽃다발",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "넥타이핀·커프스 세트",
+    price: "1~2만원",
+    reason: "새로운 직장에서 빛날 센스 아이템이에요.",
+    sk: "넥타이핀 선물",
+    cat: "fashion",
+    g: "m"
+  }, {
+    name: "에너지바 선물 세트",
+    price: "1~2만원",
+    reason: "바쁜 새 출발에 에너지를 충전해요.",
+    sk: "에너지바 선물세트",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "미니 블루투스 스피커",
+    price: "1~2만원",
+    reason: "새 공간을 음악으로 채워줘요.",
+    sk: "미니 블루투스 스피커",
+    cat: "tech",
+    g: "m"
+  }],
+  "congrats|b2": [{
+    name: "프리미엄 와인",
+    price: "3~5만원",
+    reason: "축하의 건배를 올리기 좋은 선물이에요.",
+    sk: "프리미엄 와인 선물",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "브랜드 명함 지갑",
+    price: "3~5만원",
+    reason: "승진 축하에 딱 맞는 격식 있는 선물이에요.",
+    sk: "명함 지갑 선물",
+    cat: "fashion",
+    g: "m"
+  }, {
+    name: "원데이 클래스 이용권",
+    price: "3~5만원",
+    reason: "새로운 시작에 새로운 경험을 더해요.",
+    sk: "원데이 클래스 이용권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "고급 볼펜+노트 세트",
+    price: "3~5만원",
+    reason: "격조 있는 업무용 문구 선물이에요.",
+    sk: "고급 볼펜 노트 세트",
+    cat: "stationery",
+    g: "n"
+  }, {
+    name: "프리미엄 향수 미니",
+    price: "3~5만원",
+    reason: "새로운 시작에 어울리는 향기예요.",
+    sk: "향수 미니어처 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "데스크 오거나이저",
+    price: "3~5만원",
+    reason: "새 자리를 깔끔하게 정리해줘요.",
+    sk: "데스크 오거나이저",
+    cat: "home",
+    g: "n"
+  }],
+  "congrats|b3": [{
+    name: "브랜드 넥타이",
+    price: "7~10만원",
+    reason: "승진의 품격을 더하는 선물이에요.",
+    sk: "브랜드 넥타이 선물",
+    cat: "fashion",
+    g: "m"
+  }, {
+    name: "고급 레스토랑 식사권",
+    price: "7~10만원",
+    reason: "축하의 자리를 더 특별하게 만들어요.",
+    sk: "레스토랑 식사권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "프리미엄 홍삼 스틱",
+    price: "7~10만원",
+    reason: "바쁜 새 시작에 건강을 챙겨요.",
+    sk: "홍삼 스틱 선물",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "무선 충전 패드+거치대",
+    price: "6~8만원",
+    reason: "새 데스크를 스마트하게 꾸며요.",
+    sk: "무선충전기 거치대",
+    cat: "tech",
+    g: "m"
+  }, {
+    name: "프리미엄 립스틱 세트",
+    price: "7~10만원",
+    reason: "새로운 시작을 빛나게 해줘요.",
+    sk: "프리미엄 립스틱 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "각인 만년필",
+    price: "7~10만원",
+    reason: "이름을 새긴 축하의 의미를 담아요.",
+    sk: "각인 만년필 선물",
+    cat: "custom",
+    g: "n"
+  }],
+  // ── 집들이 ──
+  "housewarming|b1": [{
+    name: "주방 타월 세트",
+    price: "1~2만원",
+    reason: "매일 쓰는 실용적인 집들이 선물이에요.",
+    sk: "주방 타월 세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "프리미엄 핸드워시",
+    price: "1~2만원",
+    reason: "새 집 욕실에 센스를 더해요.",
+    sk: "프리미엄 핸드워시",
+    cat: "beauty",
+    g: "n"
+  }, {
+    name: "미니 화분·다육이 세트",
+    price: "1~2만원",
+    reason: "새 집에 생기를 더해줘요.",
+    sk: "미니 화분 다육이",
+    cat: "hobby",
+    g: "n"
+  }, {
+    name: "고급 수세미 세트",
+    price: "1~2만원",
+    reason: "주방 필수템으로 실용적이에요.",
+    sk: "고급 수세미 세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "커피 드립백 세트",
+    price: "1~2만원",
+    reason: "새 집에서의 첫 커피를 선물해요.",
+    sk: "커피 드립백 세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "이니셜 머그컵",
+    price: "1~2만원",
+    reason: "나만의 특별한 컵으로 새 시작을 축하해요.",
+    sk: "이니셜 머그컵",
+    cat: "custom",
+    g: "n"
+  }],
+  "housewarming|b2": [{
+    name: "프리미엄 디퓨저",
+    price: "3~5만원",
+    reason: "새 집을 좋은 향기로 채워요.",
+    sk: "프리미엄 디퓨저",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "고급 와인+오프너 세트",
+    price: "3~5만원",
+    reason: "집들이 파티에 딱 어울려요.",
+    sk: "와인 오프너 세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "인테리어 액자 세트",
+    price: "3~5만원",
+    reason: "빈 벽을 예쁘게 채워줘요.",
+    sk: "인테리어 액자 세트",
+    cat: "hobby",
+    g: "n"
+  }, {
+    name: "고급 타월 세트",
+    price: "3~5만원",
+    reason: "프리미엄 수건은 매일 쓸수록 좋아요.",
+    sk: "고급 타월 세트",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "무선 충전 무드등",
+    price: "3~5만원",
+    reason: "실용성과 인테리어를 동시에 잡아요.",
+    sk: "무선충전 무드등",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "허브 재배 키트",
+    price: "3~5만원",
+    reason: "주방에서 직접 키우는 신선한 허브예요.",
+    sk: "허브 재배 키트",
+    cat: "health",
+    g: "n"
+  }],
+  "housewarming|b3": [{
+    name: "프리미엄 냄비 세트",
+    price: "7~10만원",
+    reason: "요리의 격을 올리는 집들이 선물이에요.",
+    sk: "프리미엄 냄비 세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "공기청정기 소형",
+    price: "7~10만원",
+    reason: "새 집의 공기를 깨끗하게 지켜요.",
+    sk: "소형 공기청정기",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "고급 올리브오일+발사믹 세트",
+    price: "7~10만원",
+    reason: "주방에 프리미엄을 더해요.",
+    sk: "올리브오일 발사믹 세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "감성 벽시계",
+    price: "6~8만원",
+    reason: "새 집의 분위기를 완성해요.",
+    sk: "감성 벽시계 인테리어",
+    cat: "hobby",
+    g: "n"
+  }, {
+    name: "프리미엄 배스 세트",
+    price: "7~10만원",
+    reason: "집에서 즐기는 스파 같은 목욕 시간이에요.",
+    sk: "프리미엄 배스 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "커스텀 도어매트",
+    price: "5~8만원",
+    reason: "이름을 새긴 세상에 하나뿐인 환영 매트예요.",
+    sk: "커스텀 도어매트",
+    cat: "custom",
+    g: "n"
+  }],
+  // ── 병문안·위로 ──
+  "recovery|b1": [{
+    name: "비타민C 젤리 세트",
+    price: "1~2만원",
+    reason: "맛있게 먹으며 건강을 챙겨요.",
+    sk: "비타민C 젤리",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "따뜻한 차 세트",
+    price: "1~2만원",
+    reason: "따뜻한 차로 몸과 마음을 달래요.",
+    sk: "건강 차 세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "보습 립밤+핸드크림",
+    price: "1~2만원",
+    reason: "건조한 병실에서 촉촉함을 지켜줘요.",
+    sk: "립밤 핸드크림 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "감성 응원 엽서 세트",
+    price: "1~2만원",
+    reason: "손글씨 응원이 큰 힘이 돼요.",
+    sk: "응원 엽서 세트",
+    cat: "stationery",
+    g: "n"
+  }, {
+    name: "수면 안대+귀마개 세트",
+    price: "1~2만원",
+    reason: "편안한 휴식을 도와줘요.",
+    sk: "수면 안대 세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "프리미엄 죽 선물 세트",
+    price: "1~2만원",
+    reason: "속 편하게 먹을 수 있는 회복식이에요.",
+    sk: "죽 선물세트",
+    cat: "food",
+    g: "n"
+  }],
+  "recovery|b2": [{
+    name: "프리미엄 홍삼 젤리",
+    price: "3~5만원",
+    reason: "달콤하게 먹으며 면역력을 높여요.",
+    sk: "홍삼 젤리 선물",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "고급 과일 바구니",
+    price: "3~5만원",
+    reason: "신선한 과일로 영양을 보충해요.",
+    sk: "과일 바구니 선물",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "편안한 수면 양말 세트",
+    price: "3~4만원",
+    reason: "따뜻하게 감싸는 회복의 온기예요.",
+    sk: "수면 양말 세트",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "아로마 디퓨저",
+    price: "3~5만원",
+    reason: "편안한 향기로 회복을 도와요.",
+    sk: "아로마 디퓨저",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "오디오북 구독권 1개월",
+    price: "3만원",
+    reason: "누워서도 즐길 수 있는 마음의 양식이에요.",
+    sk: "오디오북 이용권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "보온 텀블러",
+    price: "3~5만원",
+    reason: "따뜻한 음료를 오래 간직해요.",
+    sk: "보온 텀블러 선물",
+    cat: "tech",
+    g: "m"
+  }],
+  "recovery|b3": [{
+    name: "프리미엄 홍삼 세트",
+    price: "7~10만원",
+    reason: "건강 회복을 도와주는 정성 가득한 선물이에요.",
+    sk: "홍삼 선물세트",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "고급 과일+견과 세트",
+    price: "7~10만원",
+    reason: "영양 가득한 프리미엄 회복 선물이에요.",
+    sk: "프리미엄 과일 견과 세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "실크 파자마 세트",
+    price: "7~10만원",
+    reason: "편안한 휴식을 위한 부드러운 선물이에요.",
+    sk: "실크 파자마 선물",
+    cat: "fashion",
+    g: "f"
+  }, {
+    name: "안마 쿠션",
+    price: "7~10만원",
+    reason: "집에서 편하게 피로를 풀어줘요.",
+    sk: "안마 쿠션 선물",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "프리미엄 유기농 꿀 세트",
+    price: "6~8만원",
+    reason: "자연의 달콤함으로 회복을 응원해요.",
+    sk: "유기농 꿀 선물",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "힐링 캔들 세트",
+    price: "6~8만원",
+    reason: "따뜻한 불빛과 향기로 마음의 안정을 줘요.",
+    sk: "힐링 캔들 세트",
+    cat: "home",
+    g: "n"
+  }],
+  // ── 명절·시즌 ──
+  "holiday|b1": [{
+    name: "전통 한과 세트",
+    price: "1~2만원",
+    reason: "명절의 정을 담은 전통 간식이에요.",
+    sk: "한과 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "고급 손수건 세트",
+    price: "1~2만원",
+    reason: "격식 있으면서 실용적인 명절 선물이에요.",
+    sk: "고급 손수건 세트",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "미니 복주머니 세트",
+    price: "1~2만원",
+    reason: "복을 담아 전하는 의미 있는 선물이에요.",
+    sk: "복주머니 세트",
+    cat: "custom",
+    g: "n"
+  }, {
+    name: "건강 차 세트",
+    price: "1~2만원",
+    reason: "명절에 어른들께 드리기 좋아요.",
+    sk: "건강 차 선물",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "미니 디퓨저",
+    price: "1~2만원",
+    reason: "집안을 명절 향기로 채워요.",
+    sk: "미니 디퓨저",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "감사 카드+펜 세트",
+    price: "1~2만원",
+    reason: "손글씨 인사와 함께 전하는 명절 선물이에요.",
+    sk: "감사 카드 세트",
+    cat: "stationery",
+    g: "n"
+  }],
+  "holiday|b2": [{
+    name: "명절 한우 세트",
+    price: "3~5만원",
+    reason: "고급스러운 명절 대표 선물이에요.",
+    sk: "한우 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "프리미엄 참기름 세트",
+    price: "3~5만원",
+    reason: "주방의 격을 올리는 명절 필수 선물이에요.",
+    sk: "참기름 들기름 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "실크 스카프",
+    price: "3~5만원",
+    reason: "어른들께 드리기 좋은 격조 있는 선물이에요.",
+    sk: "실크 스카프 선물",
+    cat: "fashion",
+    g: "f"
+  }, {
+    name: "프리미엄 비타민 세트",
+    price: "3~5만원",
+    reason: "건강을 챙기는 실용적인 명절 선물이에요.",
+    sk: "비타민 선물세트",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "명절 캔들 세트",
+    price: "3~5만원",
+    reason: "따뜻한 분위기를 전하는 선물이에요.",
+    sk: "명절 캔들 세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "전통 다기 세트",
+    price: "3~5만원",
+    reason: "차 한 잔의 여유를 선물해요.",
+    sk: "전통 다기 세트",
+    cat: "hobby",
+    g: "n"
+  }],
+  "holiday|b3": [{
+    name: "프리미엄 갈비 세트",
+    price: "7~10만원",
+    reason: "명절 식탁을 풍성하게 채워요.",
+    sk: "갈비 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "홍삼 정관장 세트",
+    price: "7~10만원",
+    reason: "건강을 생각하는 격식 있는 명절 선물이에요.",
+    sk: "정관장 홍삼 세트",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "브랜드 머플러",
+    price: "7~10만원",
+    reason: "따뜻함을 감싸는 고급스러운 선물이에요.",
+    sk: "브랜드 머플러 선물",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "고급 도자기 식기 세트",
+    price: "7~10만원",
+    reason: "식탁의 격을 올리는 명절 선물이에요.",
+    sk: "도자기 식기 세트",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "프리미엄 안마기",
+    price: "7~10만원",
+    reason: "어른들의 피로를 풀어드려요.",
+    sk: "프리미엄 안마기 선물",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "프리미엄 전통주 세트",
+    price: "7~10만원",
+    reason: "명절에 함께 나누는 전통의 맛이에요.",
+    sk: "전통주 선물세트",
+    cat: "food",
+    g: "m"
+  }],
+  // ── 사과·화해 ──
+  "apology|b1": [{
+    name: "사과 편지지+봉투 세트",
+    price: "1~2만원",
+    reason: "진심을 글로 전하는 첫 걸음이에요.",
+    sk: "편지지 봉투 세트",
+    cat: "stationery",
+    g: "n"
+  }, {
+    name: "미니 꽃다발",
+    price: "1~2만원",
+    reason: "작은 꽃 한 송이가 마음을 녹여요.",
+    sk: "미니 꽃다발 선물",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "수제 초콜릿 세트",
+    price: "1~2만원",
+    reason: "달콤함으로 미안한 마음을 전해요.",
+    sk: "수제 초콜릿 선물",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "보습 핸드크림",
+    price: "1~2만원",
+    reason: "매일 바를 때마다 화해의 마음이 전해져요.",
+    sk: "핸드크림 선물",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "힐링 허브티 세트",
+    price: "1~2만원",
+    reason: "따뜻한 차로 풀어지는 마음이에요.",
+    sk: "허브티 세트",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "감성 키링",
+    price: "1~2만원",
+    reason: "매일 가지고 다니며 마음을 기억해요.",
+    sk: "감성 키링 선물",
+    cat: "fashion",
+    g: "n"
+  }],
+  "apology|b2": [{
+    name: "프리미엄 꽃다발",
+    price: "3~5만원",
+    reason: "진심 어린 사과를 꽃으로 전해요.",
+    sk: "꽃다발 배달",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "고급 디저트 세트",
+    price: "3~5만원",
+    reason: "달콤한 선물로 어색함을 녹여요.",
+    sk: "고급 디저트 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "브랜드 핸드크림+바디로션 세트",
+    price: "3~5만원",
+    reason: "매일 쓰며 화해의 마음을 느끼게 해요.",
+    sk: "핸드크림 바디로션 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "감성 무드등",
+    price: "3~5만원",
+    reason: "따뜻한 빛으로 마음을 밝혀요.",
+    sk: "감성 무드등",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "카페 상품권 5만원",
+    price: "5만원",
+    reason: "함께 커피 한 잔 하며 이야기 나눠요.",
+    sk: "카페 상품권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "커스텀 메시지 쿠션",
+    price: "3~5만원",
+    reason: "진심을 담은 문구로 마음을 전해요.",
+    sk: "커스텀 메시지 쿠션",
+    cat: "custom",
+    g: "n"
+  }],
+  "apology|b3": [{
+    name: "프리미엄 꽃바구니",
+    price: "7~10만원",
+    reason: "진심 어린 사과를 풍성한 꽃으로 전해요.",
+    sk: "프리미엄 꽃바구니",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "고급 레스토랑 식사권",
+    price: "7~10만원",
+    reason: "함께 식사하며 진심을 전하는 시간이에요.",
+    sk: "레스토랑 식사권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "프리미엄 향수",
+    price: "7~10만원",
+    reason: "향기가 날 때마다 화해의 순간을 기억해요.",
+    sk: "프리미엄 향수 선물",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "브랜드 넥타이",
+    price: "7~10만원",
+    reason: "매일 매는 넥타이에 마음을 담아요.",
+    sk: "브랜드 넥타이 선물",
+    cat: "fashion",
+    g: "m"
+  }, {
+    name: "프리미엄 견과류 세트",
+    price: "7~10만원",
+    reason: "건강을 생각하는 진심 어린 선물이에요.",
+    sk: "프리미엄 견과류 선물",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "각인 팔찌",
+    price: "6~8만원",
+    reason: "이름을 새겨 마음의 약속을 남겨요.",
+    sk: "각인 팔찌 선물",
+    cat: "custom",
+    g: "n"
+  }],
+  // ── 그냥, 마음 전달 ──
+  "justbecause|b1": [{
+    name: "카페 기프티콘",
+    price: "1만원",
+    reason: "부담 없이 마음을 전하는 센스 선물이에요.",
+    sk: "카페 기프티콘",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "감성 엽서+스티커 세트",
+    price: "1~2만원",
+    reason: "아날로그 감성으로 마음을 전해요.",
+    sk: "감성 엽서 스티커 세트",
+    cat: "stationery",
+    g: "n"
+  }, {
+    name: "미니 디퓨저",
+    price: "1~2만원",
+    reason: "작은 향기에 큰 마음을 담아요.",
+    sk: "미니 디퓨저 선물",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "립밤+핸드크림 미니",
+    price: "1~2만원",
+    reason: "일상 속 작은 행복을 선물해요.",
+    sk: "립밤 핸드크림 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "프리미엄 초콜릿",
+    price: "1~2만원",
+    reason: "달콤한 한 조각에 마음을 전해요.",
+    sk: "프리미엄 초콜릿 선물",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "프리미엄 양말",
+    price: "1~2만원",
+    reason: "소소하지만 센스 있는 마음이에요.",
+    sk: "프리미엄 양말 선물",
+    cat: "fashion",
+    g: "m"
+  }],
+  "justbecause|b2": [{
+    name: "감성 캔들+디퓨저 세트",
+    price: "3~5만원",
+    reason: "향기로 전하는 따뜻한 마음이에요.",
+    sk: "캔들 디퓨저 세트",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "프리미엄 드립커피 세트",
+    price: "3~5만원",
+    reason: "매일 아침이 특별해지는 선물이에요.",
+    sk: "드립커피 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "레트로 사진관 이용권",
+    price: "3~5만원",
+    reason: "함께한 순간을 사진으로 남겨요.",
+    sk: "레트로 사진관 이용권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "가죽 공예 키트",
+    price: "3~4만원",
+    reason: "직접 만드는 세상에 하나뿐인 선물이에요.",
+    sk: "가죽 공예 키트",
+    cat: "hobby",
+    g: "m"
+  }, {
+    name: "커스텀 폰케이스",
+    price: "3~4만원",
+    reason: "나만의 감성을 담은 케이스예요.",
+    sk: "커스텀 폰케이스",
+    cat: "custom",
+    g: "n"
+  }, {
+    name: "바디미스트 세트",
+    price: "3~5만원",
+    reason: "가벼운 향기로 일상을 환하게 해줘요.",
+    sk: "바디미스트 세트",
+    cat: "beauty",
+    g: "f"
+  }],
+  "justbecause|b3": [{
+    name: "브랜드 카드지갑",
+    price: "7~10만원",
+    reason: "매일 쓰는 물건에 특별한 마음을 담아요.",
+    sk: "브랜드 카드지갑 선물",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "블루투스 이어폰",
+    price: "7~10만원",
+    reason: "매일 함께하는 실용적인 마음이에요.",
+    sk: "블루투스 이어폰",
+    cat: "tech",
+    g: "n"
+  }, {
+    name: "고급 캔들 세트",
+    price: "7~10만원",
+    reason: "향기로 공간과 마음을 채워요.",
+    sk: "고급 캔들 세트",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "원데이 클래스 2인권",
+    price: "7~10만원",
+    reason: "함께 만드는 추억이 최고의 선물이에요.",
+    sk: "원데이 클래스 2인",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "월간 꽃 구독 1개월",
+    price: "5~7만원",
+    reason: "매주 찾아오는 꽃이 감동이에요.",
+    sk: "꽃 구독 선물",
+    cat: "custom",
+    g: "f"
+  }, {
+    name: "근막 마사지건",
+    price: "6~9만원",
+    reason: "매일의 피로를 풀어주는 마음이에요.",
+    sk: "마사지건 선물",
+    cat: "health",
+    g: "m"
+  }],
+  // ── 기념일 ──
+  "anniversary|b1": [{
+    name: "커플 키링 세트",
+    price: "1~2만원",
+    reason: "둘만의 작은 매칭 아이템이에요.",
+    sk: "커플 키링 세트",
+    cat: "custom",
+    g: "n"
+  }, {
+    name: "감성 디저트 세트",
+    price: "1~2만원",
+    reason: "달콤한 간식으로 기념일을 축하해요.",
+    sk: "디저트 선물세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "미니 꽃다발+편지",
+    price: "1~2만원",
+    reason: "작은 꽃과 진심 어린 편지의 조합이에요.",
+    sk: "미니 꽃다발",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "감성 볼펜",
+    price: "1~2만원",
+    reason: "함께 쓰는 일상의 특별한 아이템이에요.",
+    sk: "감성 볼펜 선물",
+    cat: "stationery",
+    g: "m"
+  }, {
+    name: "프리미엄 입욕제 세트",
+    price: "1~2만원",
+    reason: "편안한 시간을 선물해요.",
+    sk: "입욕제 세트 선물",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "커플 양말 세트",
+    price: "1~2만원",
+    reason: "함께 맞춰 신는 소소한 행복이에요.",
+    sk: "커플 양말 세트",
+    cat: "fashion",
+    g: "n"
+  }],
+  "anniversary|b2": [{
+    name: "커플 향수 미니 세트",
+    price: "3~5만원",
+    reason: "둘만의 향기를 만들어요.",
+    sk: "커플 향수 미니세트",
+    cat: "beauty",
+    g: "n"
+  }, {
+    name: "고급 레터링 케이크 쿠폰",
+    price: "3~5만원",
+    reason: "이름을 새긴 특별한 축하 케이크예요.",
+    sk: "레터링 케이크 주문",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "프리미엄 무드등",
+    price: "3~5만원",
+    reason: "둘만의 공간을 로맨틱하게 만들어요.",
+    sk: "감성 무드등",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "레트로 사진관 커플 촬영",
+    price: "3~5만원",
+    reason: "둘의 순간을 빈티지 사진으로 남겨요.",
+    sk: "레트로 사진관 커플",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "커스텀 폰케이스 2개",
+    price: "4~5만원",
+    reason: "나만의 커플 케이스를 만들어요.",
+    sk: "커플 폰케이스 커스텀",
+    cat: "custom",
+    g: "n"
+  }, {
+    name: "프리미엄 초콜릿 세트",
+    price: "3~5만원",
+    reason: "달콤한 순간을 함께 나눠요.",
+    sk: "프리미엄 초콜릿 세트",
+    cat: "food",
+    g: "n"
+  }],
+  "anniversary|b3": [{
+    name: "커플 액세서리 세트",
+    price: "7~10만원",
+    reason: "함께 착용하는 특별한 기념 아이템이에요.",
+    sk: "커플 팔찌 세트",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "호텔 레스토랑 식사권",
+    price: "7~10만원",
+    reason: "특별한 날 특별한 공간에서의 식사예요.",
+    sk: "호텔 레스토랑 식사권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "각인 반지·팔찌",
+    price: "7~10만원",
+    reason: "둘의 이름을 새긴 세상에 하나뿐인 선물이에요.",
+    sk: "각인 반지 팔찌 커플",
+    cat: "custom",
+    g: "n"
+  }, {
+    name: "프리미엄 향수",
+    price: "7~10만원",
+    reason: "기념일의 향기를 함께 기억해요.",
+    sk: "프리미엄 향수 선물",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "포토북 제작 바우처",
+    price: "5~8만원",
+    reason: "함께한 순간을 한 권의 책으로 간직해요.",
+    sk: "포토북 제작 바우처",
+    cat: "hobby",
+    g: "n"
+  }, {
+    name: "스마트 체중계+밴드 세트",
+    price: "7~10만원",
+    reason: "함께 건강을 챙기는 커플 아이템이에요.",
+    sk: "스마트 체중계 밴드",
+    cat: "health",
+    g: "n"
+  }]
+};
+const FD = {
+  b1: [{
+    name: "프리미엄 핸드크림 세트",
+    price: "1~2만원",
+    reason: "매일 쓸 때마다 마음이 전해져요.",
+    sk: "핸드크림 선물 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "카페 기프티콘",
+    price: "1만원",
+    reason: "편하게 쓸 수 있는 실용적인 선물이에요.",
+    sk: "카페 기프티콘",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "감성 미니 디퓨저",
+    price: "1~2만원",
+    reason: "향기를 남기는 작지만 특별한 선물이에요.",
+    sk: "미니 디퓨저",
+    cat: "home",
+    g: "n"
+  }, {
+    name: "감성 엽서+스티커",
+    price: "1만원",
+    reason: "손글씨와 함께 전하는 아날로그 감성이에요.",
+    sk: "감성 엽서 세트",
+    cat: "stationery",
+    g: "n"
+  }, {
+    name: "비타민 젤리 세트",
+    price: "1~2만원",
+    reason: "맛있게 건강을 챙기는 선물이에요.",
+    sk: "비타민 젤리 선물",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "프리미엄 육포 세트",
+    price: "1~2만원",
+    reason: "든든한 간식 선물이에요.",
+    sk: "프리미엄 육포",
+    cat: "food",
+    g: "m"
+  }],
+  b2: [{
+    name: "프리미엄 디퓨저 세트",
+    price: "3~5만원",
+    reason: "향기가 날 때마다 마음이 전해져요.",
+    sk: "프리미엄 디퓨저 세트",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "고급 차 선물 세트",
+    price: "3~5만원",
+    reason: "매일 마실 때마다 생각나는 따뜻한 선물이에요.",
+    sk: "차 선물 세트",
+    cat: "food",
+    g: "n"
+  }, {
+    name: "레트로 사진관 이용권",
+    price: "3~5만원",
+    reason: "특별한 순간을 빈티지 사진으로 남겨요.",
+    sk: "레트로 사진관",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "가죽 공예 키트",
+    price: "3~4만원",
+    reason: "직접 만드는 가죽 소품이에요.",
+    sk: "가죽 공예 키트",
+    cat: "hobby",
+    g: "m"
+  }, {
+    name: "커스텀 폰케이스",
+    price: "2~4만원",
+    reason: "나만의 케이스예요.",
+    sk: "커스텀 폰케이스 제작",
+    cat: "custom",
+    g: "n"
+  }, {
+    name: "브랜드 손수건",
+    price: "3~5만원",
+    reason: "격식 있는 선물이에요.",
+    sk: "브랜드 손수건 선물",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "수제 맥주 세트",
+    price: "3~5만원",
+    reason: "크래프트 비어의 다양한 맛을 선물해요.",
+    sk: "수제 맥주 선물세트",
+    cat: "food",
+    g: "m"
+  }, {
+    name: "바디미스트 세트",
+    price: "3~4만원",
+    reason: "가볍고 상쾌한 향기를 선물해요.",
+    sk: "바디미스트 선물세트",
+    cat: "beauty",
+    g: "f"
+  }],
+  b3: [{
+    name: "브랜드 지갑·카드홀더",
+    price: "7~10만원",
+    reason: "매일 쓰는 물건이라 오래 기억에 남아요.",
+    sk: "브랜드 카드지갑",
+    cat: "fashion",
+    g: "n"
+  }, {
+    name: "고급 캔들 세트",
+    price: "8~10만원",
+    reason: "은은한 향으로 공간을 채워요.",
+    sk: "고급 캔들 세트",
+    cat: "home",
+    g: "f"
+  }, {
+    name: "블루투스 스피커",
+    price: "7~10만원",
+    reason: "일상에 음악을 더해요.",
+    sk: "블루투스 스피커",
+    cat: "tech",
+    g: "m"
+  }, {
+    name: "스파 이용권",
+    price: "7~10만원",
+    reason: "몸과 마음의 힐링이에요.",
+    sk: "스파 이용권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "프리미엄 만년필",
+    price: "7~10만원",
+    reason: "글을 쓸 때마다 특별해요.",
+    sk: "프리미엄 만년필",
+    cat: "stationery",
+    g: "m"
+  }, {
+    name: "월간 꽃 구독 3개월",
+    price: "6~9만원",
+    reason: "매달 찾아오는 감동이에요.",
+    sk: "꽃 정기구독",
+    cat: "custom",
+    g: "f"
+  }, {
+    name: "골프공 세트",
+    price: "5~8만원",
+    reason: "골퍼에게 가장 실용적인 선물이에요.",
+    sk: "프리미엄 골프공 세트",
+    cat: "hobby",
+    g: "m"
+  }, {
+    name: "근막 마사지건",
+    price: "6~9만원",
+    reason: "운동 후 회복을 도와줘요.",
+    sk: "마사지건",
+    cat: "health",
+    g: "m"
+  }],
+  b4: [{
+    name: "브랜드 가방",
+    price: "12~18만원",
+    reason: "매일 함께하는 특별한 아이템이에요.",
+    sk: "브랜드 가방",
+    cat: "fashion",
+    g: "f"
+  }, {
+    name: "프리미엄 향수",
+    price: "12~18만원",
+    reason: "향기로 마음을 전해요.",
+    sk: "프리미엄 향수",
+    cat: "beauty",
+    g: "f"
+  }, {
+    name: "고급 레스토랑 식사권",
+    price: "10~15만원",
+    reason: "특별한 경험을 함께 나눠요.",
+    sk: "레스토랑 식사권",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "스마트 체중계+밴드",
+    price: "10~15만원",
+    reason: "건강을 스마트하게 관리해요.",
+    sk: "스마트 체중계",
+    cat: "health",
+    g: "n"
+  }, {
+    name: "미니 빔프로젝터",
+    price: "12~18만원",
+    reason: "집에서 영화관을 즐겨요.",
+    sk: "미니 빔프로젝터",
+    cat: "tech",
+    g: "m"
+  }],
+  b5: [{
+    name: "명품 액세서리",
+    price: "25~40만원",
+    reason: "오래도록 간직할 수 있는 선물이에요.",
+    sk: "명품 액세서리",
+    cat: "fashion",
+    g: "f"
+  }, {
+    name: "프리미엄 전자기기",
+    price: "25~50만원",
+    reason: "갖고 싶었던 걸 선물받는 기쁨이에요.",
+    sk: "프리미엄 전자기기",
+    cat: "tech",
+    g: "m"
+  }, {
+    name: "호텔 스파 패키지",
+    price: "20~35만원",
+    reason: "몸과 마음 모두 쉴 수 있는 경험이에요.",
+    sk: "호텔 스파 패키지",
+    cat: "experience",
+    g: "n"
+  }, {
+    name: "커스텀 네온사인",
+    price: "25~40만원",
+    reason: "이름을 빛으로 새기는 인테리어예요.",
+    sk: "커스텀 네온사인",
+    cat: "custom",
+    g: "n"
+  }]
 };
 
 // ── 태그→키워드 매핑 (OR 조건용) ──
-const TAG_KW={
-  cafe:["커피","카페","기프트","드립","머그","텀블러"],fashion:["패션","가방","지갑","액세서리","명품","시계"],
-  fitness:["운동","건강","비타민","홍삼","스마트워치"],travel:["여행","캐리어","카메라","호텔"],
-  interior:["무드등","디퓨저","캔들","화분","쿠션","액자"],tech:["전자","이어폰","스피커","보조배터리","카메라"],
-  pet:["반려","강아지","고양이"],book:["독서","책","노트","다이어리","만년필"],
-  game:["게임","닌텐도"],music:["음악","스피커","이어폰","LP","턴테이블"],
-  cooking:["요리","냄비","식기","오일","레스토랑"],camping:["캠핑","아웃도어","텀블러","담요"],
-  idol:["아이돌","굿즈","캐릭터","포토"],selfcare:["힐링","스파","핸드크림","향수","아로마","파자마"],
-  photo:["사진","카메라","폴라로이드","액자","포토"],alcohol:["와인","샴페인","위스키"],
-  character:["캐릭터","굿즈","피규어"],retro:["레트로","빈티지","LP","폴라로이드"],
-  funny:["웃긴","장난감","유머"],practical:["실용","청소기","수건","정리"],
+const TAG_KW = {
+  cafe: ["커피", "카페", "기프트", "드립", "머그", "텀블러"],
+  fashion: ["패션", "가방", "지갑", "액세서리", "명품", "시계"],
+  fitness: ["운동", "건강", "비타민", "홍삼", "스마트워치"],
+  travel: ["여행", "캐리어", "카메라", "호텔"],
+  interior: ["무드등", "디퓨저", "캔들", "화분", "쿠션", "액자"],
+  tech: ["전자", "이어폰", "스피커", "보조배터리", "카메라"],
+  pet: ["반려", "강아지", "고양이"],
+  book: ["독서", "책", "노트", "다이어리", "만년필"],
+  game: ["게임", "닌텐도"],
+  music: ["음악", "스피커", "이어폰", "LP", "턴테이블"],
+  cooking: ["요리", "냄비", "식기", "오일", "레스토랑"],
+  camping: ["캠핑", "아웃도어", "텀블러", "담요"],
+  idol: ["아이돌", "굿즈", "캐릭터", "포토"],
+  selfcare: ["힐링", "스파", "핸드크림", "향수", "아로마", "파자마"],
+  photo: ["사진", "카메라", "폴라로이드", "액자", "포토"],
+  alcohol: ["와인", "샴페인", "위스키"],
+  character: ["캐릭터", "굿즈", "피규어"],
+  retro: ["레트로", "빈티지", "LP", "폴라로이드"],
+  funny: ["웃긴", "장난감", "유머"],
+  practical: ["실용", "청소기", "수건", "정리"]
 };
 
 // ── 태그 점수 (OR 조건 + 매칭 수 가산) ──
-function calcTagScore(item,tags){
-  if(!tags||tags.length===0) return 10;
-  const text=`${item.name} ${item.reason} ${item.sk||''}`.toLowerCase();
-  let mc=0;
-  tags.forEach(tag=>{const kws=TAG_KW[tag]||[];if(kws.some(kw=>text.includes(kw)))mc++;});
-  if(mc===0) return 0;
-  if(mc===1) return 15;
-  if(mc===2) return 25;
+function calcTagScore(item, tags) {
+  if (!tags || tags.length === 0) return 10;
+  const text = `${item.name} ${item.reason} ${item.sk || ''}`.toLowerCase();
+  let mc = 0;
+  tags.forEach(tag => {
+    const kws = TAG_KW[tag] || [];
+    if (kws.some(kw => text.includes(kw))) mc++;
+  });
+  if (mc === 0) return 0;
+  if (mc === 1) return 15;
+  if (mc === 2) return 25;
   return 35;
 }
 
 // ── 관계×상황×성별 카테고리 가중치 ──
-function getCatWeights(rel,occ,gender){
-  const w={food:1,beauty:1,fashion:1,home:1,experience:1,tech:1,stationery:1,health:1,hobby:1,custom:1};
+function getCatWeights(rel, occ, gender) {
+  const w = {
+    food: 1,
+    beauty: 1,
+    fashion: 1,
+    home: 1,
+    experience: 1,
+    tech: 1,
+    stationery: 1,
+    health: 1,
+    hobby: 1,
+    custom: 1
+  };
   // 관계×상황 가중치
-  if(['lover','spouse'].includes(rel)){
-    if(['thanks','anniversary','birthday'].includes(occ)){w.experience=2.5;w.fashion=2;w.custom=2.2;w.hobby=1.5;w.food=0.5;w.stationery=0.4;}
+  if (['lover', 'spouse'].includes(rel)) {
+    if (['thanks', 'anniversary', 'birthday'].includes(occ)) {
+      w.experience = 2.5;
+      w.fashion = 2;
+      w.custom = 2.2;
+      w.hobby = 1.5;
+      w.food = 0.5;
+      w.stationery = 0.4;
+    }
   }
-  if(['parent','inlaw'].includes(rel)){w.health=2.5;w.food=1.8;w.experience=1.5;w.tech=1.3;w.fashion=0.7;w.hobby=0.5;}
-  if(rel==='friend'){w.beauty=1.8;w.hobby=2;w.custom=1.8;w.experience=1.5;w.health=0.5;}
-  if(['colleague','mentor'].includes(rel)){w.food=2;w.stationery=1.8;w.beauty=1.5;w.experience=0.3;w.custom=0.3;w.fashion=0.5;}
+  if (['parent', 'inlaw'].includes(rel)) {
+    w.health = 2.5;
+    w.food = 1.8;
+    w.experience = 1.5;
+    w.tech = 1.3;
+    w.fashion = 0.7;
+    w.hobby = 0.5;
+  }
+  if (rel === 'friend') {
+    w.beauty = 1.8;
+    w.hobby = 2;
+    w.custom = 1.8;
+    w.experience = 1.5;
+    w.health = 0.5;
+  }
+  if (['colleague', 'mentor'].includes(rel)) {
+    w.food = 2;
+    w.stationery = 1.8;
+    w.beauty = 1.5;
+    w.experience = 0.3;
+    w.custom = 0.3;
+    w.fashion = 0.5;
+  }
   // 성별 보정
-  if(gender==='female'){w.beauty*=1.8;w.fashion*=1.6;w.custom*=1.4;w.home*=1.3;w.experience*=1.2;w.tech*=0.6;w.hobby*=0.8;}
-  if(gender==='male'){w.tech*=2;w.hobby*=1.8;w.food*=1.5;w.fashion*=1.2;w.health*=1.3;w.beauty*=0.5;w.custom*=0.8;}
+  if (gender === 'female') {
+    w.beauty *= 1.8;
+    w.fashion *= 1.6;
+    w.custom *= 1.4;
+    w.home *= 1.3;
+    w.experience *= 1.2;
+    w.tech *= 0.6;
+    w.hobby *= 0.8;
+  }
+  if (gender === 'male') {
+    w.tech *= 2;
+    w.hobby *= 1.8;
+    w.food *= 1.5;
+    w.fashion *= 1.2;
+    w.health *= 1.3;
+    w.beauty *= 0.5;
+    w.custom *= 0.8;
+  }
   return w;
 }
 
 // ── Round-Robin Slot-Filling 다양성 알고리즘 (성별 반영) ──
-function gfb(o,b,userTags,relId,gender){
-  let pool=[...(FB[`${o}|${b}`]||[]),...(FD[b]||FD.b2)];
-  const catW=getCatWeights(relId,o,gender);
-  pool=pool.map(item=>{
-    let score=calcTagScore(item,userTags);
-    score*=(catW[item.cat]||1);
+function gfb(o, b, userTags, relId, gender) {
+  let pool = [...(FB[`${o}|${b}`] || []), ...(FD[b] || FD.b2)];
+  const catW = getCatWeights(relId, o, gender);
+  pool = pool.map(item => {
+    let score = calcTagScore(item, userTags);
+    score *= catW[item.cat] || 1;
     // 성별 매칭 가산
-    if(gender&&gender!=='neutral'){
-      if(item.g===gender[0]) score+=15; // 일치
-      else if(item.g==='n') score+=8;   // 범용
+    if (gender && gender !== 'neutral') {
+      if (item.g === gender[0]) score += 15; // 일치
+      else if (item.g === 'n') score += 8; // 범용
       // 불일치=+0 (제외하지 않고 순위만 낮춤)
-    } else { score+=8; } // neutral/미선택은 범용 보너스
-    score+=Math.random()*8;
-    return{...item,_s:score};
+    } else {
+      score += 8;
+    } // neutral/미선택은 범용 보너스
+    score += Math.random() * 8;
+    return {
+      ...item,
+      _s: score
+    };
   });
-  pool.sort((a,b)=>b._s-a._s);
-  const result=[],usedCats=new Set();
-  for(const item of pool){if(result.length>=3)break;if(usedCats.has(item.cat))continue;result.push(item);usedCats.add(item.cat);}
-  if(result.length<3){for(const item of pool){if(result.length>=3)break;if(!result.includes(item))result.push(item);}}
-  return result.map(({_s,...item})=>item);
+  pool.sort((a, b) => b._s - a._s);
+  const result = [],
+    usedCats = new Set();
+  for (const item of pool) {
+    if (result.length >= 3) break;
+    if (usedCats.has(item.cat)) continue;
+    result.push(item);
+    usedCats.add(item.cat);
+  }
+  if (result.length < 3) {
+    for (const item of pool) {
+      if (result.length >= 3) break;
+      if (!result.includes(item)) result.push(item);
+    }
+  }
+  return result.map(({
+    _s,
+    ...item
+  }) => item);
 }
-function parsePrice(s){if(!s)return null;const n=s.match(/[\d.]+/g);if(!n)return null;const m=s.includes("만")?10000:1;return n.length>=2?{min:Math.round(n[0]*m),max:Math.round(n[1]*m)}:{min:Math.round(n[0]*m*.7),max:Math.round(n[0]*m*1.3)};}
-function mkUrl(kw,pr){const b=`https://www.coupang.com/np/search?component=&q=${encodeURIComponent(kw)}&channel=user&traid=${PARTNER_ID}&subid=maro-app`;const p=parsePrice(pr);return p?`${b}&minPrice=${p.min}&maxPrice=${p.max}`:b;}
-
-const card={background:"rgba(255,255,255,.78)",border:"1.5px solid #e8dfd4",borderRadius:14,cursor:"pointer",textAlign:"left",backdropFilter:"blur(8px)",position:"relative",overflow:"hidden"};
-
-function Btn({onClick,children,style={},ms=220}){
-  const[d,setD]=useState(false);const[ok,setOk]=useState(false);const t=useRef(null);
-  const go=()=>{setD(false);setOk(true);t.current=setTimeout(()=>onClick?.(),ms);};
-  useEffect(()=>()=>clearTimeout(t.current),[]);
-  return(
-    <button onPointerDown={()=>setD(true)} onPointerUp={go} onPointerLeave={()=>setD(false)} onPointerCancel={()=>setD(false)}
-      style={{...style,transform:d?"scale(0.94)":ok?"scale(0.97)":"scale(1)",transition:d?"transform .06s":"all .2s cubic-bezier(.2,0,.2,1)",outline:"none",WebkitTapHighlightColor:"transparent",userSelect:"none",position:"relative",overflow:"hidden",...(ok?{borderColor:P,background:`${P}10`,boxShadow:`0 0 0 3px ${P}18`}:{})}} className="maro-btn">
-      {children}
-      {ok&&<div style={{position:"absolute",top:7,right:7,width:22,height:22,borderRadius:"50%",background:`linear-gradient(135deg,${P},${P2})`,display:"flex",alignItems:"center",justifyContent:"center",animation:"pop .18s cubic-bezier(.34,1.56,.64,1)"}}><span style={{color:"#fff",fontSize:12,fontWeight:800}}>✓</span></div>}
-    </button>
-  );
+function parsePrice(s) {
+  if (!s) return null;
+  const n = s.match(/[\d.]+/g);
+  if (!n) return null;
+  const m = s.includes("만") ? 10000 : 1;
+  return n.length >= 2 ? {
+    min: Math.round(n[0] * m),
+    max: Math.round(n[1] * m)
+  } : {
+    min: Math.round(n[0] * m * .7),
+    max: Math.round(n[0] * m * 1.3)
+  };
 }
-
-function ProductThumb({name}){
-  const s={width:64,height:64,borderRadius:14,flexShrink:0,overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center"};
-  return(<div style={{...s,background:`${P}10`,fontSize:28}}>{(name||"").includes("커피")||name.includes("드립")?"☕":name.includes("향수")||name.includes("디퓨저")?"🌸":name.includes("지갑")||name.includes("가방")?"👛":name.includes("이어폰")||name.includes("스피커")?"🎧":"🎁"}</div>);
+function mkUrl(kw, pr) {
+  const b = `https://www.coupang.com/np/search?component=&q=${encodeURIComponent(kw)}&channel=user&traid=${PARTNER_ID}&subid=maro-app`;
+  const p = parsePrice(pr);
+  return p ? `${b}&minPrice=${p.min}&maxPrice=${p.max}` : b;
 }
-
-function ResultCard({g,i,rank,compat,url,P,P2,TX,TX2,TX3}){
-  const[open,setOpen]=useState(false);
-  return(
-    <div style={{background:"rgba(255,255,255,.95)",borderRadius:16,boxShadow:"0 4px 6px rgba(0,0,0,0.07)",padding:18,position:"relative",overflow:"hidden",animation:`up .35s ease ${i*.1}s both`}}>
-      {/* 배지 */}
-      <div style={{display:"flex",gap:6,marginBottom:12}}>
-        <span style={{background:"#5B7B9A",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>AI pick</span>
-        <span style={{background:i===0?`linear-gradient(135deg,${P},${P2})`:"rgba(0,0,0,.4)",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>{rank}</span>
-      </div>
-      {/* 상품 정보 */}
-      <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
-        <ProductThumb name={g.name}/>
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",fontSize:15,fontWeight:700,color:TX,marginBottom:4,lineHeight:1.3}}>{g.name}</div>
-          <div style={{fontSize:13,color:TX2,fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif"}}>{g.price}</div>
-        </div>
-      </div>
-      {/* 궁합 바 */}
-      <div style={{display:"flex",alignItems:"center",gap:8,margin:"12px 0 10px"}}>
-        <div style={{flex:1,height:6,background:"#ebe4dc",borderRadius:3,overflow:"hidden"}}>
-          <div style={{width:`${compat}%`,height:"100%",background:"#4A8C6F",borderRadius:3,transition:"width .5s ease"}}/>
-        </div>
-        <span style={{fontSize:11,color:"#4A8C6F",fontWeight:600,whiteSpace:"nowrap"}}>궁합 {compat}%</span>
-      </div>
-      {/* 왜 이 선물? 토글 */}
-      <button onClick={()=>setOpen(!open)} style={{background:"none",border:"none",cursor:"pointer",fontSize:12,color:"#5B7B9A",fontWeight:600,padding:"4px 0",marginBottom:open?8:12,display:"flex",alignItems:"center",gap:4}}>
-        왜 이 선물? <span style={{transition:"transform .2s",display:"inline-block",transform:open?"rotate(90deg)":"none"}}>▸</span>
-      </button>
-      {open&&<div style={{fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",fontSize:12,color:"#5a4a3a",lineHeight:1.75,fontStyle:"italic",marginBottom:12,padding:"10px 12px",background:"rgba(91,123,154,.05)",borderRadius:10,borderLeft:"3px solid #5B7B9A"}}>"{g.reason}"</div>}
-      {/* CTA */}
-      <a href={url} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,padding:"10px 14px",background:"#2B7A78",color:"#fff",borderRadius:12,textDecoration:"none",fontSize:13,fontWeight:600}}>
-        쿠팡 최저가 보기 →
-      </a>
-    </div>
-  );
+const card = {
+  background: "rgba(255,255,255,.78)",
+  border: "1.5px solid #e8dfd4",
+  borderRadius: 14,
+  cursor: "pointer",
+  textAlign: "left",
+  backdropFilter: "blur(8px)",
+  position: "relative",
+  overflow: "hidden"
+};
+function Btn({
+  onClick,
+  children,
+  style = {},
+  ms = 220
+}) {
+  const [d, setD] = useState(false);
+  const [ok, setOk] = useState(false);
+  const t = useRef(null);
+  const go = () => {
+    setD(false);
+    setOk(true);
+    t.current = setTimeout(() => onClick?.(), ms);
+  };
+  useEffect(() => () => clearTimeout(t.current), []);
+  return /*#__PURE__*/React.createElement("button", {
+    onPointerDown: () => setD(true),
+    onPointerUp: go,
+    onPointerLeave: () => setD(false),
+    onPointerCancel: () => setD(false),
+    style: {
+      ...style,
+      transform: d ? "scale(0.94)" : ok ? "scale(0.97)" : "scale(1)",
+      transition: d ? "transform .06s" : "all .2s cubic-bezier(.2,0,.2,1)",
+      outline: "none",
+      WebkitTapHighlightColor: "transparent",
+      userSelect: "none",
+      position: "relative",
+      overflow: "hidden",
+      ...(ok ? {
+        borderColor: P,
+        background: `${P}10`,
+        boxShadow: `0 0 0 3px ${P}18`
+      } : {})
+    },
+    className: "maro-btn"
+  }, children, ok && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      top: 7,
+      right: 7,
+      width: 22,
+      height: 22,
+      borderRadius: "50%",
+      background: `linear-gradient(135deg,${P},${P2})`,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      animation: "pop .18s cubic-bezier(.34,1.56,.64,1)"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#fff",
+      fontSize: 12,
+      fontWeight: 800
+    }
+  }, "\u2713")));
 }
-function SH({n,title,sub,onBack}){
-  return(
-    <div style={{marginBottom:20}}>
-      {onBack&&<button onClick={onBack} style={{display:"inline-flex",alignItems:"center",gap:4,background:"none",border:"none",cursor:"pointer",fontSize:13,color:TX3,padding:"4px 0",marginBottom:10,transition:"color .15s"}} onPointerDown={e=>e.currentTarget.style.color=TX2} onPointerUp={e=>e.currentTarget.style.color=TX3}>← 이전으로</button>}
-      <div style={{fontSize:11,color:P,fontWeight:700,letterSpacing:2,marginBottom:6}}>STEP {n}</div>
-      <h2 style={{fontSize:19,fontWeight:600,color:TX,margin:"0 0 5px",lineHeight:1.4}}>{title}</h2>
-      <p style={{fontSize:13,color:TX3,margin:0}}>{sub}</p>
-    </div>
-  );
+function ProductThumb({
+  name
+}) {
+  const s = {
+    width: 64,
+    height: 64,
+    borderRadius: 14,
+    flexShrink: 0,
+    overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...s,
+      background: `${P}10`,
+      fontSize: 28
+    }
+  }, (name || "").includes("커피") || name.includes("드립") ? "☕" : name.includes("향수") || name.includes("디퓨저") ? "🌸" : name.includes("지갑") || name.includes("가방") ? "👛" : name.includes("이어폰") || name.includes("스피커") ? "🎧" : "🎁");
 }
-
-function App(){
-  const[step,setStep]=useState(0);const[rel,setRel]=useState(null);const[gender,setGender]=useState(null);const[dep,setDep]=useState("");
-  const[occ,setOcc]=useState(null);const[bud,setBud]=useState(null);const[intent,setIntent]=useState("");
-  const[tags,setTags]=useState([]);const[results,setResults]=useState([]);const[loading,setLoading]=useState(false);
-  const[lm,setLm]=useState(0);const[fade,setFade]=useState(true);const box=useRef(null);
-
-  const LM=["관계를 분석하고 있어요...","의도에 맞는 선물을 찾고 있어요...","감정 메시지를 해석하고 있어요...","최적의 선물을 선별하고 있어요..."];
-  useEffect(()=>{if(!loading)return;const i=setInterval(()=>setLm(p=>(p+1)%LM.length),2000);return()=>clearInterval(i);},[loading]);
-  const go=n=>{setFade(false);setTimeout(()=>{setStep(n);setFade(true);box.current?.scrollTo({top:0,behavior:"smooth"});},280);};
-  const toggleTag=id=>setTags(p=>p.includes(id)?p.filter(x=>x!==id):p.length<5?[...p,id]:p);
-  const tagLabels=tags.map(id=>TAGS.find(t=>t.id===id)?.label).filter(Boolean);
-  const genderLabel=gender==='female'?'👩 여성':gender==='male'?'👨 남성':'🎁 상관없음';
-  const anaText=rel&&occ?`${rel.label}${dep?` (${dep})`:""}에게 ${occ.label} 상황에서`:"";
-
-  const analyze=async()=>{
-    setLoading(true);go(7);
-    const season=["봄","봄","여름","여름","가을","가을","겨울","겨울","봄","봄","겨울","겨울"][new Date().getMonth()];
-    try{
-      const r=await fetch("/api/recommend",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({relation:rel?.label,depth:dep,occasion:occ?.label,budget:bud?.label,intent,tags,season,gender})});
-      const d=await r.json();
-      if(!r.ok||!d.gifts?.length){throw d;}
+function ResultCard({
+  g,
+  i,
+  rank,
+  compat,
+  url,
+  P,
+  P2,
+  TX,
+  TX2,
+  TX3
+}) {
+  const [open, setOpen] = useState(false);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "rgba(255,255,255,.95)",
+      borderRadius: 16,
+      boxShadow: "0 4px 6px rgba(0,0,0,0.07)",
+      padding: 18,
+      position: "relative",
+      overflow: "hidden",
+      animation: `up .35s ease ${i * .1}s both`
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      background: "#5B7B9A",
+      color: "#fff",
+      fontSize: 10,
+      fontWeight: 700,
+      padding: "3px 10px",
+      borderRadius: 20
+    }
+  }, "AI pick"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      background: i === 0 ? `linear-gradient(135deg,${P},${P2})` : "rgba(0,0,0,.4)",
+      color: "#fff",
+      fontSize: 10,
+      fontWeight: 700,
+      padding: "3px 10px",
+      borderRadius: 20
+    }
+  }, rank)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 14,
+      alignItems: "flex-start"
+    }
+  }, /*#__PURE__*/React.createElement(ProductThumb, {
+    name: g.name
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      minWidth: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
+      fontSize: 15,
+      fontWeight: 700,
+      color: TX,
+      marginBottom: 4,
+      lineHeight: 1.3
+    }
+  }, g.name), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: TX2,
+      fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif"
+    }
+  }, g.price))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      margin: "12px 0 10px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      height: 6,
+      background: "#ebe4dc",
+      borderRadius: 3,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: `${compat}%`,
+      height: "100%",
+      background: "#4A8C6F",
+      borderRadius: 3,
+      transition: "width .5s ease"
+    }
+  })), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      color: "#4A8C6F",
+      fontWeight: 600,
+      whiteSpace: "nowrap"
+    }
+  }, "\uAD81\uD569 ", compat, "%")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setOpen(!open),
+    style: {
+      background: "none",
+      border: "none",
+      cursor: "pointer",
+      fontSize: 12,
+      color: "#5B7B9A",
+      fontWeight: 600,
+      padding: "4px 0",
+      marginBottom: open ? 8 : 12,
+      display: "flex",
+      alignItems: "center",
+      gap: 4
+    }
+  }, "\uC65C \uC774 \uC120\uBB3C? ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      transition: "transform .2s",
+      display: "inline-block",
+      transform: open ? "rotate(90deg)" : "none"
+    }
+  }, "\u25B8")), open && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
+      fontSize: 12,
+      color: "#5a4a3a",
+      lineHeight: 1.75,
+      fontStyle: "italic",
+      marginBottom: 12,
+      padding: "10px 12px",
+      background: "rgba(91,123,154,.05)",
+      borderRadius: 10,
+      borderLeft: "3px solid #5B7B9A"
+    }
+  }, "\"", g.reason, "\""), /*#__PURE__*/React.createElement("a", {
+    href: url,
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 6,
+      padding: "10px 14px",
+      background: "#2B7A78",
+      color: "#fff",
+      borderRadius: 12,
+      textDecoration: "none",
+      fontSize: 13,
+      fontWeight: 600
+    }
+  }, "\uCFE0\uD321 \uCD5C\uC800\uAC00 \uBCF4\uAE30 \u2192"));
+}
+function SH({
+  n,
+  title,
+  sub,
+  onBack
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 20
+    }
+  }, onBack && /*#__PURE__*/React.createElement("button", {
+    onClick: onBack,
+    style: {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 4,
+      background: "none",
+      border: "none",
+      cursor: "pointer",
+      fontSize: 13,
+      color: TX3,
+      padding: "4px 0",
+      marginBottom: 10,
+      transition: "color .15s"
+    },
+    onPointerDown: e => e.currentTarget.style.color = TX2,
+    onPointerUp: e => e.currentTarget.style.color = TX3
+  }, "\u2190 \uC774\uC804\uC73C\uB85C"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: P,
+      fontWeight: 700,
+      letterSpacing: 2,
+      marginBottom: 6
+    }
+  }, "STEP ", n), /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 19,
+      fontWeight: 600,
+      color: TX,
+      margin: "0 0 5px",
+      lineHeight: 1.4
+    }
+  }, title), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 13,
+      color: TX3,
+      margin: 0
+    }
+  }, sub));
+}
+function App() {
+  const [step, setStep] = useState(0);
+  const [rel, setRel] = useState(null);
+  const [gender, setGender] = useState(null);
+  const [dep, setDep] = useState("");
+  const [occ, setOcc] = useState(null);
+  const [bud, setBud] = useState(null);
+  const [intent, setIntent] = useState("");
+  const [tags, setTags] = useState([]);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [lm, setLm] = useState(0);
+  const [fade, setFade] = useState(true);
+  const box = useRef(null);
+  const LM = ["관계를 분석하고 있어요...", "의도에 맞는 선물을 찾고 있어요...", "감정 메시지를 해석하고 있어요...", "최적의 선물을 선별하고 있어요..."];
+  useEffect(() => {
+    if (!loading) return;
+    const i = setInterval(() => setLm(p => (p + 1) % LM.length), 2000);
+    return () => clearInterval(i);
+  }, [loading]);
+  const go = n => {
+    setFade(false);
+    setTimeout(() => {
+      setStep(n);
+      setFade(true);
+      box.current?.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }, 280);
+  };
+  const toggleTag = id => setTags(p => p.includes(id) ? p.filter(x => x !== id) : p.length < 5 ? [...p, id] : p);
+  const tagLabels = tags.map(id => TAGS.find(t => t.id === id)?.label).filter(Boolean);
+  const genderLabel = gender === 'female' ? '👩 여성' : gender === 'male' ? '👨 남성' : '🎁 상관없음';
+  const anaText = rel && occ ? `${rel.label}${dep ? ` (${dep})` : ""}에게 ${occ.label} 상황에서` : "";
+  const analyze = async () => {
+    setLoading(true);
+    go(7);
+    const season = ["봄", "봄", "여름", "여름", "가을", "가을", "겨울", "겨울", "봄", "봄", "겨울", "겨울"][new Date().getMonth()];
+    try {
+      const r = await fetch("/api/recommend", {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          relation: rel?.label,
+          depth: dep,
+          occasion: occ?.label,
+          budget: bud?.label,
+          intent,
+          tags,
+          season,
+          gender
+        })
+      });
+      const d = await r.json();
+      if (!r.ok || !d.gifts?.length) {
+        throw d;
+      }
       setResults(d.gifts);
-      try{const p=new URLSearchParams({r:rel?.id,g:gender,d:dep,o:occ?.id,b:bud?.id});history.replaceState(null,'','/app?'+p.toString());}catch{}
-    }catch{
-      setResults(gfb(occ?.id,bud?.id,tags,rel?.id,gender));
+      try {
+        const p = new URLSearchParams({
+          r: rel?.id,
+          g: gender,
+          d: dep,
+          o: occ?.id,
+          b: bud?.id
+        });
+        history.replaceState(null, '', '/app?' + p.toString());
+      } catch {}
+    } catch {
+      setResults(gfb(occ?.id, bud?.id, tags, rel?.id, gender));
     }
     setLoading(false);
   };
-
-  const restart=()=>{setRel(null);setGender(null);setDep("");setOcc(null);setBud(null);setIntent("");setTags([]);setResults([]);setLoading(false);go(0);};
-  const prog=Math.min(step,6);
-
-  return(
-    <div style={{minHeight:"100vh",background:"linear-gradient(160deg,#faf8f4 0%,#f5f0e8 30%,#faf6ef 60%,#f0ebe0 100%)",fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",color:TX}}>
-      {/* 헤더 */}
-      <div style={{position:"sticky",top:0,zIndex:50,background:"rgba(250,248,244,.92)",backdropFilter:"blur(12px)",borderBottom:"1px solid rgba(232,223,212,.5)",padding:"12px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <a href="/" style={{display:"flex",alignItems:"center",gap:8,textDecoration:"none"}}>
-          <div style={{width:28,height:28,borderRadius:8,background:`linear-gradient(135deg,${P},${P2})`,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:12,fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",fontWeight:700}}>마</div>
-          <span style={{fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",fontSize:16,fontWeight:700,color:P2}}>마로</span>
-        </a>
-        <span style={{fontSize:11,color:TX3,letterSpacing:1}}>마음을 새기는 선물</span>
-      </div>
-
-      <div ref={box} style={{maxWidth:480,margin:"0 auto",padding:"20px 20px 40px",minHeight:"calc(100vh - 53px)"}}>
-        <div style={{textAlign:"center",padding:"24px 0 12px"}}>
-          <div style={{fontSize:11,letterSpacing:4,color:"#b0a48e",textTransform:"uppercase",marginBottom:8}}>Relationship Intent Engine</div>
-          <h1 style={{fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",fontSize:20,fontWeight:600,color:TX,margin:0,lineHeight:1.4}}>AI가 분석하는<br/>관계 중심 선물 추천</h1>
-        </div>
-
-        {step>=1&&step<=7&&(
-          <div style={{margin:"14px 0 20px"}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
-              {["관계","성별","깊이","상황","예산","마음"].map((l,i)=>(
-                <span key={i} onClick={()=>{if(i<prog)go(i+1)}} style={{fontSize:10,color:i<prog?TX2:TX3,fontWeight:i<prog?600:400,cursor:i<prog?"pointer":"default",textDecoration:i<prog?"underline":"none",textUnderlineOffset:3}}>{l}</span>
-              ))}
-            </div>
-            <div style={{height:4,background:"#E8DCD8",borderRadius:3,overflow:"hidden"}}>
-              <div style={{height:"100%",width:`${Math.max((prog/6)*100,8)}%`,background:`linear-gradient(90deg,${P},${P2})`,borderRadius:3,transition:"width .5s cubic-bezier(.4,0,.2,1)"}}/>
-            </div>
-          </div>
-        )}
-
-        <div style={{opacity:fade?1:0,transform:fade?"translateY(0)":"translateY(12px)",transition:"all .28s ease"}}>
-          {step===0&&(
-            <div style={{textAlign:"center",padding:"40px 0"}}>
-              <div style={{fontSize:52,marginBottom:20}}>🎁</div>
-              <h2 style={{fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",fontSize:20,fontWeight:600,color:TX,marginBottom:10}}>어떤 마음을 전하고 싶으세요?</h2>
-              <p style={{fontSize:14,color:TX3,lineHeight:1.7,marginBottom:36}}>선물이 아니라, 관계에서 전하고 싶은<br/>마음을 먼저 정리해드릴게요.</p>
-              <Btn onClick={()=>go(1)} ms={280} style={{background:"#2B7A78",color:"#fff",border:"none",borderRadius:14,padding:"16px 48px",fontSize:15,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 20px rgba(43,122,120,.25)",minHeight:52,width:"100%",maxWidth:320}}>지금 시작하기 →</Btn>
-              <p style={{fontSize:11,color:"#c0b5a4",marginTop:20}}>약 30초면 완료돼요</p>
-            </div>
-          )}
-          {step===1&&(
-            <div>
-              <SH n="01" title="누구에게 선물하나요?" sub="관계에 따라 적절한 선물이 달라져요" onBack={()=>go(0)}/>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                {RELATIONS.map(r=>(
-                  <Btn key={r.id} onClick={()=>{setRel(r);go(2)}} style={{...card,padding:"16px 12px"}}>
-                    <span style={{fontSize:24}}>{r.icon}</span>
-                    <div style={{fontSize:14,fontWeight:600,color:TX,marginTop:6}}>{r.label}</div>
-                    <div style={{fontSize:11,color:TX3,marginTop:2}}>{r.desc}</div>
-                  </Btn>
-                ))}
-              </div>
-            </div>
-          )}
-          {step===2&&(
-            <div>
-              <SH n="02" title="선물 받으실 분은?" sub="성별에 따라 더 적합한 선물을 추천해드려요" onBack={()=>go(1)}/>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
-                {[{id:"female",icon:"👩",label:"여성"},{id:"male",icon:"👨",label:"남성"},{id:"neutral",icon:"🎁",label:"상관없음"}].map(g=>(
-                  <Btn key={g.id} onClick={()=>{setGender(g.id);go(3)}} style={{...card,padding:"18px 10px",textAlign:"center"}}>
-                    <span style={{fontSize:28}}>{g.icon}</span>
-                    <div style={{fontSize:14,fontWeight:600,color:TX,marginTop:8}}>{g.label}</div>
-                  </Btn>
-                ))}
-              </div>
-            </div>
-          )}
-          {step===3&&(
-            <div>
-              <SH n="03" title={`${rel?.icon} ${rel?.label}과의 관계 깊이는?`} sub="관계의 깊이에 따라 선물의 무게감이 달라져요" onBack={()=>go(2)}/>
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {(rel?.depth||[]).map((d,i)=>(
-                  <Btn key={i} onClick={()=>{setDep(d);go(4)}} style={{...card,padding:"14px 18px",fontSize:14,color:TX,fontWeight:500}}>
-                    <span style={{marginRight:10,opacity:.4,fontWeight:700}}>{i+1}</span>{d}
-                  </Btn>
-                ))}
-              </div>
-            </div>
-          )}
-          {step===4&&(
-            <div>
-              <SH n="04" title="어떤 상황인가요?" sub="상황에 따라 선물의 의미가 완전히 달라져요" onBack={()=>go(3)}/>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                {OCCASIONS.map(o=>(
-                  <Btn key={o.id} onClick={()=>{setOcc(o);go(5)}} style={{...card,padding:"14px 12px",textAlign:"center"}}>
-                    <span style={{fontSize:22}}>{o.icon}</span>
-                    <div style={{fontSize:13,fontWeight:600,color:TX,marginTop:5}}>{o.label}</div>
-                  </Btn>
-                ))}
-              </div>
-            </div>
-          )}
-          {step===5&&(
-            <div>
-              <SH n="05" title="예산은 얼마 정도 생각하세요?" sub="예산에 맞는 최적의 선물을 찾아드릴게요" onBack={()=>go(4)}/>
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>
-                {BUDGETS.map(b=>(
-                  <Btn key={b.id} onClick={()=>{setBud(b);go(6)}} style={{...card,padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                    <span style={{fontSize:14,fontWeight:600,color:TX}}>{b.label}</span>
-                    <span style={{fontSize:11,color:P,background:`${P}10`,padding:"3px 10px",borderRadius:20,fontWeight:500}}>{b.tag}</span>
-                  </Btn>
-                ))}
-              </div>
-            </div>
-          )}
-          {step===6&&!loading&&results.length===0&&(
-            <div>
-              <SH n="06" title="어떤 마음을 전하고 싶으세요?" sub="이 한마디가 선물의 방향을 결정해요 (선택)" onBack={()=>go(5)}/>
-              <textarea value={intent} onChange={e=>setIntent(e.target.value)} placeholder="예) 항상 곁에 있어줘서 고마워..."
-                style={{width:"100%",minHeight:80,background:"rgba(255,255,255,.8)",border:"1.5px solid #e6dfd4",borderRadius:12,padding:"14px 16px",fontSize:14,color:TX,resize:"none",outline:"none",fontFamily:"inherit",lineHeight:1.6,boxSizing:"border-box",transition:"border-color .2s"}}
-                onFocus={e=>e.target.style.borderColor=P} onBlur={e=>e.target.style.borderColor="#e6dfd4"}/>
-              <div style={{display:"flex",flexWrap:"wrap",gap:6,margin:"10px 0 20px"}}>
-                {(INTENT_HINTS[rel?.id]||INTENT_HINTS.friend).map((s,i)=>(
-                  <button key={i} onClick={()=>setIntent(s)} style={{background:intent===s?`${P}20`:"rgba(255,255,255,.6)",border:`1px solid ${intent===s?P:"#e2dbd0"}`,borderRadius:20,padding:"5px 13px",fontSize:12,color:intent===s?P:TX3,cursor:"pointer",transition:"all .15s",fontWeight:intent===s?600:400}}>{s}</button>
-                ))}
-              </div>
-              <div style={{marginBottom:18}}>
-                <div style={{fontSize:12,fontWeight:600,color:TX2,marginBottom:8}}>🔍 이 사람 관심사 <span style={{fontWeight:400,color:TX3}}>(선택, 최대 5개)</span></div>
-                <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                  {TAGS.map(t=>{const on=tags.includes(t.id);return(
-                    <button key={t.id} onClick={()=>toggleTag(t.id)} style={{background:on?`${P}14`:"rgba(255,255,255,.6)",border:`1px solid ${on?P:"#e2dbd0"}`,borderRadius:20,padding:"4px 11px",fontSize:11,color:on?P:TX3,cursor:"pointer",transition:"all .15s",fontWeight:on?600:400}}>{t.em} {t.label}</button>
-                  );})}
-                </div>
-                {tags.length>0&&<div style={{fontSize:11,color:P,marginTop:6}}>{tags.length}개 선택됨</div>}
-              </div>
-              <div style={{background:"rgba(255,255,255,.6)",border:"1px solid #e6dfd4",borderRadius:12,padding:"12px 16px",marginBottom:18}}>
-                <div style={{fontSize:11,color:P,fontWeight:600,marginBottom:6,letterSpacing:1}}>분석 요약</div>
-                <div style={{fontSize:13,color:TX2,lineHeight:1.7}}>{rel?.icon} {rel?.label} ({dep}) · {occ?.icon} {occ?.label} · {bud?.label}</div>
-              </div>
-              <Btn onClick={analyze} ms={300} style={{width:"100%",background:"#2B7A78",color:"#fff",border:"none",borderRadius:14,padding:16,fontSize:15,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 20px rgba(43,122,120,.25)",minHeight:52}}>AI 분석 시작하기 ✨</Btn>
-              <button onClick={()=>{setIntent("");analyze();}} style={{width:"100%",background:"transparent",border:"none",color:TX3,fontSize:13,padding:12,cursor:"pointer",marginTop:4}}>건너뛰기 — AI가 알아서 판단할게요</button>
-            </div>
-          )}
-          {loading&&(
-            <div style={{textAlign:"center",padding:"60px 0"}}>
-              <div style={{width:56,height:56,margin:"0 auto 24px",border:"3px solid #e6dfd4",borderTop:`3px solid ${P}`,borderRadius:"50%",animation:"spin 1s linear infinite"}}/>
-              <p style={{fontSize:15,color:TX2,fontWeight:500,marginBottom:6}}>{LM[lm]}</p>
-              <p style={{fontSize:12,color:TX3}}>{anaText} 최적의 선물을 찾고 있어요</p>
-            </div>
-          )}
-          {!loading&&results.length>0&&(()=>{
-            const compats=[Math.floor(92+Math.random()*7),0,0];
-            compats[1]=compats[0]-Math.floor(3+Math.random()*5);
-            compats[2]=compats[1]-Math.floor(3+Math.random()*5);
-            return(
-            <div>
-              {/* 제목 */}
-              <div style={{textAlign:"center",marginBottom:20}}>
-                <h2 style={{fontFamily:"'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",fontSize:20,fontWeight:700,color:TX,margin:"0 0 6px"}}>이런 선물은 어떨까요?</h2>
-                <p style={{fontSize:13,color:TX2,margin:0}}>💖 {rel?.label}{dep?` (${dep})`:""} · {genderLabel} · {occ?.label} · {bud?.label}</p>
-              </div>
-
-              {/* 카드 3장 */}
-              <div style={{display:"flex",flexDirection:"column",gap:12}}>
-                {results.map((g,i)=>{
-                  const sk=g.searchKeyword||g.sk||g.name;
-                  const url=mkUrl(sk,g.price);
-                  const compat=compats[i];
-                  const rank=["1st","2nd","3rd"][i];
-                  return(
-                    <ResultCard key={i} g={g} i={i} rank={rank} compat={compat} url={url} P={P} P2={P2} TX={TX} TX2={TX2} TX3={TX3}/>
-                  );
-                })}
-              </div>
-
-              {/* 팁 */}
-              <div style={{background:`${P}06`,border:`1px dashed ${P}25`,borderRadius:12,padding:"12px 16px",marginTop:16}}>
-                <div style={{fontSize:12,color:"#6a5a4a",lineHeight:1.7}}>💡 <strong>TIP</strong> — 선물과 함께 짧은 손편지를 곁들이면 마음이 더 잘 전달돼요.{intent&&` "${intent}" 이 마음을 직접 적어보는 건 어떨까요?`}</div>
-              </div>
-
-              {/* 쿠팡 파트너스 고지 */}
-              <div style={{background:"rgba(0,0,0,.03)",border:"1px solid rgba(0,0,0,.07)",borderRadius:10,padding:"10px 14px",marginTop:10}}>
-                <div style={{fontSize:11,color:TX3,lineHeight:1.7}}>📢 위 상품 링크는 <strong>쿠팡 파트너스</strong> 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
-              </div>
-
-              {/* SNS 공유 */}
-              <div style={{marginTop:18}}>
-                <div style={{fontSize:12,fontWeight:600,color:TX2,marginBottom:8,textAlign:"center"}}>추천 결과 공유하기</div>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-                  {typeof navigator!=="undefined"&&navigator.share&&(
-                    <button onClick={()=>{try{navigator.share({title:"마로 - AI 선물 추천",text:`${rel?.label}에게 ${occ?.label} 선물로 ${results[0]?.name}을(를) 추천받았어요!`,url:"https://maro.ai.kr/app"})}catch{}}} style={{border:".5px solid #E8DCD8",borderRadius:12,padding:10,background:"rgba(255,255,255,.7)",cursor:"pointer",fontSize:12,color:TX2,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-                      <span style={{fontSize:18}}>📤</span>공유하기
-                    </button>
-                  )}
-                  <button onClick={()=>{const t=encodeURIComponent(`${rel?.label}에게 ${occ?.label} 선물 추천받았어요!`);const u=encodeURIComponent("https://maro.ai.kr/app");window.open(`https://story.kakao.com/share?url=${u}&text=${t}`,"_blank")}} style={{border:".5px solid #E8DCD8",borderRadius:12,padding:10,background:"rgba(255,255,255,.7)",cursor:"pointer",fontSize:12,color:TX2,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-                    <span style={{fontSize:18}}>💬</span>카카오
-                  </button>
-                  <button onClick={async()=>{try{await navigator.clipboard.writeText("https://maro.ai.kr/app");alert("✅ 링크가 복사되었어요!")}catch{}}} style={{border:".5px solid #E8DCD8",borderRadius:12,padding:10,background:"rgba(255,255,255,.7)",cursor:"pointer",fontSize:12,color:TX2,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-                    <span style={{fontSize:18}}>🔗</span>링크 복사
-                  </button>
-                </div>
-              </div>
-
-              {/* 액션 버튼 */}
-              <div style={{marginTop:18,display:"flex",flexDirection:"column",gap:10}}>
-                <Btn onClick={()=>{setResults([]);analyze()}} style={{width:"100%",background:"rgba(255,255,255,.8)",border:"1.5px solid #e6dfd4",borderRadius:12,padding:14,fontSize:14,color:TX,fontWeight:600,cursor:"pointer"}}>↻ 다른 추천 보기</Btn>
-                <div style={{display:"flex",gap:10}}>
-                  <Btn onClick={restart} style={{flex:1,background:"rgba(255,255,255,.6)",border:"1.5px solid #e6dfd4",borderRadius:12,padding:13,fontSize:13,color:TX2,fontWeight:500,cursor:"pointer"}}>처음부터</Btn>
-                  <Btn onClick={()=>{setResults([]);setIntent("");go(6)}} style={{flex:1,background:"rgba(255,255,255,.6)",border:"1.5px solid #e6dfd4",borderRadius:12,padding:13,fontSize:13,color:TX2,fontWeight:500,cursor:"pointer"}}>마음 바꿔서</Btn>
-                </div>
-              </div>
-
-              <div style={{textAlign:"center",marginTop:28,paddingBottom:16}}>
-                <div style={{display:"inline-flex",alignItems:"center",gap:6,marginBottom:4}}>
-                  <div style={{width:18,height:18,borderRadius:6,background:`linear-gradient(135deg,${P},${P2})`,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:9}}>♥</span></div>
-                  <span style={{fontSize:13,fontWeight:600,color:TX}}>마로</span>
-                </div>
-                <div style={{fontSize:10,letterSpacing:2,color:TX3}}>마음을 새기는 선물</div>
-              </div>
-            </div>
-          );})()}
-        </div>
-      </div>
-    </div>
-  );
+  const restart = () => {
+    setRel(null);
+    setGender(null);
+    setDep("");
+    setOcc(null);
+    setBud(null);
+    setIntent("");
+    setTags([]);
+    setResults([]);
+    setLoading(false);
+    go(0);
+  };
+  const prog = Math.min(step, 6);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      minHeight: "100vh",
+      background: "linear-gradient(160deg,#faf8f4 0%,#f5f0e8 30%,#faf6ef 60%,#f0ebe0 100%)",
+      fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
+      color: TX
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "sticky",
+      top: 0,
+      zIndex: 50,
+      background: "rgba(250,248,244,.92)",
+      backdropFilter: "blur(12px)",
+      borderBottom: "1px solid rgba(232,223,212,.5)",
+      padding: "12px 20px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between"
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "/",
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      textDecoration: "none"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 28,
+      height: 28,
+      borderRadius: 8,
+      background: `linear-gradient(135deg,${P},${P2})`,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "#fff",
+      fontSize: 12,
+      fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
+      fontWeight: 700
+    }
+  }, "\uB9C8"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
+      fontSize: 16,
+      fontWeight: 700,
+      color: P2
+    }
+  }, "\uB9C8\uB85C")), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      color: TX3,
+      letterSpacing: 1
+    }
+  }, "\uB9C8\uC74C\uC744 \uC0C8\uAE30\uB294 \uC120\uBB3C")), /*#__PURE__*/React.createElement("div", {
+    ref: box,
+    style: {
+      maxWidth: 480,
+      margin: "0 auto",
+      padding: "20px 20px 40px",
+      minHeight: "calc(100vh - 53px)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: "24px 0 12px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      letterSpacing: 4,
+      color: "#b0a48e",
+      textTransform: "uppercase",
+      marginBottom: 8
+    }
+  }, "Relationship Intent Engine"), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
+      fontSize: 20,
+      fontWeight: 600,
+      color: TX,
+      margin: 0,
+      lineHeight: 1.4
+    }
+  }, "AI\uAC00 \uBD84\uC11D\uD558\uB294", /*#__PURE__*/React.createElement("br", null), "\uAD00\uACC4 \uC911\uC2EC \uC120\uBB3C \uCD94\uCC9C")), step >= 1 && step <= 7 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      margin: "14px 0 20px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      marginBottom: 6
+    }
+  }, ["관계", "성별", "깊이", "상황", "예산", "마음"].map((l, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    onClick: () => {
+      if (i < prog) go(i + 1);
+    },
+    style: {
+      fontSize: 10,
+      color: i < prog ? TX2 : TX3,
+      fontWeight: i < prog ? 600 : 400,
+      cursor: i < prog ? "pointer" : "default",
+      textDecoration: i < prog ? "underline" : "none",
+      textUnderlineOffset: 3
+    }
+  }, l))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 4,
+      background: "#E8DCD8",
+      borderRadius: 3,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: "100%",
+      width: `${Math.max(prog / 6 * 100, 8)}%`,
+      background: `linear-gradient(90deg,${P},${P2})`,
+      borderRadius: 3,
+      transition: "width .5s cubic-bezier(.4,0,.2,1)"
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      opacity: fade ? 1 : 0,
+      transform: fade ? "translateY(0)" : "translateY(12px)",
+      transition: "all .28s ease"
+    }
+  }, step === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: "40px 0"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 52,
+      marginBottom: 20
+    }
+  }, "\uD83C\uDF81"), /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
+      fontSize: 20,
+      fontWeight: 600,
+      color: TX,
+      marginBottom: 10
+    }
+  }, "\uC5B4\uB5A4 \uB9C8\uC74C\uC744 \uC804\uD558\uACE0 \uC2F6\uC73C\uC138\uC694?"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 14,
+      color: TX3,
+      lineHeight: 1.7,
+      marginBottom: 36
+    }
+  }, "\uC120\uBB3C\uC774 \uC544\uB2C8\uB77C, \uAD00\uACC4\uC5D0\uC11C \uC804\uD558\uACE0 \uC2F6\uC740", /*#__PURE__*/React.createElement("br", null), "\uB9C8\uC74C\uC744 \uBA3C\uC800 \uC815\uB9AC\uD574\uB4DC\uB9B4\uAC8C\uC694."), /*#__PURE__*/React.createElement(Btn, {
+    onClick: () => go(1),
+    ms: 280,
+    style: {
+      background: "#2B7A78",
+      color: "#fff",
+      border: "none",
+      borderRadius: 14,
+      padding: "16px 48px",
+      fontSize: 15,
+      fontWeight: 600,
+      cursor: "pointer",
+      boxShadow: "0 4px 20px rgba(43,122,120,.25)",
+      minHeight: 52,
+      width: "100%",
+      maxWidth: 320
+    }
+  }, "\uC9C0\uAE08 \uC2DC\uC791\uD558\uAE30 \u2192"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 11,
+      color: "#c0b5a4",
+      marginTop: 20
+    }
+  }, "\uC57D 30\uCD08\uBA74 \uC644\uB8CC\uB3FC\uC694")), step === 1 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
+    n: "01",
+    title: "\uB204\uAD6C\uC5D0\uAC8C \uC120\uBB3C\uD558\uB098\uC694?",
+    sub: "\uAD00\uACC4\uC5D0 \uB530\uB77C \uC801\uC808\uD55C \uC120\uBB3C\uC774 \uB2EC\uB77C\uC838\uC694",
+    onBack: () => go(0)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10
+    }
+  }, RELATIONS.map(r => /*#__PURE__*/React.createElement(Btn, {
+    key: r.id,
+    onClick: () => {
+      setRel(r);
+      go(2);
+    },
+    style: {
+      ...card,
+      padding: "16px 12px"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 24
+    }
+  }, r.icon), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 600,
+      color: TX,
+      marginTop: 6
+    }
+  }, r.label), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: TX3,
+      marginTop: 2
+    }
+  }, r.desc))))), step === 2 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
+    n: "02",
+    title: "\uC120\uBB3C \uBC1B\uC73C\uC2E4 \uBD84\uC740?",
+    sub: "\uC131\uBCC4\uC5D0 \uB530\uB77C \uB354 \uC801\uD569\uD55C \uC120\uBB3C\uC744 \uCD94\uCC9C\uD574\uB4DC\uB824\uC694",
+    onBack: () => go(1)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr 1fr",
+      gap: 10
+    }
+  }, [{
+    id: "female",
+    icon: "👩",
+    label: "여성"
+  }, {
+    id: "male",
+    icon: "👨",
+    label: "남성"
+  }, {
+    id: "neutral",
+    icon: "🎁",
+    label: "상관없음"
+  }].map(g => /*#__PURE__*/React.createElement(Btn, {
+    key: g.id,
+    onClick: () => {
+      setGender(g.id);
+      go(3);
+    },
+    style: {
+      ...card,
+      padding: "18px 10px",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 28
+    }
+  }, g.icon), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 600,
+      color: TX,
+      marginTop: 8
+    }
+  }, g.label))))), step === 3 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
+    n: "03",
+    title: `${rel?.icon} ${rel?.label}과의 관계 깊이는?`,
+    sub: "\uAD00\uACC4\uC758 \uAE4A\uC774\uC5D0 \uB530\uB77C \uC120\uBB3C\uC758 \uBB34\uAC8C\uAC10\uC774 \uB2EC\uB77C\uC838\uC694",
+    onBack: () => go(2)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 8
+    }
+  }, (rel?.depth || []).map((d, i) => /*#__PURE__*/React.createElement(Btn, {
+    key: i,
+    onClick: () => {
+      setDep(d);
+      go(4);
+    },
+    style: {
+      ...card,
+      padding: "14px 18px",
+      fontSize: 14,
+      color: TX,
+      fontWeight: 500
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      marginRight: 10,
+      opacity: .4,
+      fontWeight: 700
+    }
+  }, i + 1), d)))), step === 4 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
+    n: "04",
+    title: "\uC5B4\uB5A4 \uC0C1\uD669\uC778\uAC00\uC694?",
+    sub: "\uC0C1\uD669\uC5D0 \uB530\uB77C \uC120\uBB3C\uC758 \uC758\uBBF8\uAC00 \uC644\uC804\uD788 \uB2EC\uB77C\uC838\uC694",
+    onBack: () => go(3)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10
+    }
+  }, OCCASIONS.map(o => /*#__PURE__*/React.createElement(Btn, {
+    key: o.id,
+    onClick: () => {
+      setOcc(o);
+      go(5);
+    },
+    style: {
+      ...card,
+      padding: "14px 12px",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 22
+    }
+  }, o.icon), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      fontWeight: 600,
+      color: TX,
+      marginTop: 5
+    }
+  }, o.label))))), step === 5 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
+    n: "05",
+    title: "\uC608\uC0B0\uC740 \uC5BC\uB9C8 \uC815\uB3C4 \uC0DD\uAC01\uD558\uC138\uC694?",
+    sub: "\uC608\uC0B0\uC5D0 \uB9DE\uB294 \uCD5C\uC801\uC758 \uC120\uBB3C\uC744 \uCC3E\uC544\uB4DC\uB9B4\uAC8C\uC694",
+    onBack: () => go(4)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 8
+    }
+  }, BUDGETS.map(b => /*#__PURE__*/React.createElement(Btn, {
+    key: b.id,
+    onClick: () => {
+      setBud(b);
+      go(6);
+    },
+    style: {
+      ...card,
+      padding: "14px 18px",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 14,
+      fontWeight: 600,
+      color: TX
+    }
+  }, b.label), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      color: P,
+      background: `${P}10`,
+      padding: "3px 10px",
+      borderRadius: 20,
+      fontWeight: 500
+    }
+  }, b.tag))))), step === 6 && !loading && results.length === 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
+    n: "06",
+    title: "\uC5B4\uB5A4 \uB9C8\uC74C\uC744 \uC804\uD558\uACE0 \uC2F6\uC73C\uC138\uC694?",
+    sub: "\uC774 \uD55C\uB9C8\uB514\uAC00 \uC120\uBB3C\uC758 \uBC29\uD5A5\uC744 \uACB0\uC815\uD574\uC694 (\uC120\uD0DD)",
+    onBack: () => go(5)
+  }), /*#__PURE__*/React.createElement("textarea", {
+    value: intent,
+    onChange: e => setIntent(e.target.value),
+    placeholder: "\uC608) \uD56D\uC0C1 \uACC1\uC5D0 \uC788\uC5B4\uC918\uC11C \uACE0\uB9C8\uC6CC...",
+    style: {
+      width: "100%",
+      minHeight: 80,
+      background: "rgba(255,255,255,.8)",
+      border: "1.5px solid #e6dfd4",
+      borderRadius: 12,
+      padding: "14px 16px",
+      fontSize: 14,
+      color: TX,
+      resize: "none",
+      outline: "none",
+      fontFamily: "inherit",
+      lineHeight: 1.6,
+      boxSizing: "border-box",
+      transition: "border-color .2s"
+    },
+    onFocus: e => e.target.style.borderColor = P,
+    onBlur: e => e.target.style.borderColor = "#e6dfd4"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 6,
+      margin: "10px 0 20px"
+    }
+  }, (INTENT_HINTS[rel?.id] || INTENT_HINTS.friend).map((s, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    onClick: () => setIntent(s),
+    style: {
+      background: intent === s ? `${P}20` : "rgba(255,255,255,.6)",
+      border: `1px solid ${intent === s ? P : "#e2dbd0"}`,
+      borderRadius: 20,
+      padding: "5px 13px",
+      fontSize: 12,
+      color: intent === s ? P : TX3,
+      cursor: "pointer",
+      transition: "all .15s",
+      fontWeight: intent === s ? 600 : 400
+    }
+  }, s))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 18
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      fontWeight: 600,
+      color: TX2,
+      marginBottom: 8
+    }
+  }, "\uD83D\uDD0D \uC774 \uC0AC\uB78C \uAD00\uC2EC\uC0AC ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 400,
+      color: TX3
+    }
+  }, "(\uC120\uD0DD, \uCD5C\uB300 5\uAC1C)")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 5
+    }
+  }, TAGS.map(t => {
+    const on = tags.includes(t.id);
+    return /*#__PURE__*/React.createElement("button", {
+      key: t.id,
+      onClick: () => toggleTag(t.id),
+      style: {
+        background: on ? `${P}14` : "rgba(255,255,255,.6)",
+        border: `1px solid ${on ? P : "#e2dbd0"}`,
+        borderRadius: 20,
+        padding: "4px 11px",
+        fontSize: 11,
+        color: on ? P : TX3,
+        cursor: "pointer",
+        transition: "all .15s",
+        fontWeight: on ? 600 : 400
+      }
+    }, t.em, " ", t.label);
+  })), tags.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: P,
+      marginTop: 6
+    }
+  }, tags.length, "\uAC1C \uC120\uD0DD\uB428")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "rgba(255,255,255,.6)",
+      border: "1px solid #e6dfd4",
+      borderRadius: 12,
+      padding: "12px 16px",
+      marginBottom: 18
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: P,
+      fontWeight: 600,
+      marginBottom: 6,
+      letterSpacing: 1
+    }
+  }, "\uBD84\uC11D \uC694\uC57D"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: TX2,
+      lineHeight: 1.7
+    }
+  }, rel?.icon, " ", rel?.label, " (", dep, ") \xB7 ", occ?.icon, " ", occ?.label, " \xB7 ", bud?.label)), /*#__PURE__*/React.createElement(Btn, {
+    onClick: analyze,
+    ms: 300,
+    style: {
+      width: "100%",
+      background: "#2B7A78",
+      color: "#fff",
+      border: "none",
+      borderRadius: 14,
+      padding: 16,
+      fontSize: 15,
+      fontWeight: 600,
+      cursor: "pointer",
+      boxShadow: "0 4px 20px rgba(43,122,120,.25)",
+      minHeight: 52
+    }
+  }, "AI \uBD84\uC11D \uC2DC\uC791\uD558\uAE30 \u2728"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setIntent("");
+      analyze();
+    },
+    style: {
+      width: "100%",
+      background: "transparent",
+      border: "none",
+      color: TX3,
+      fontSize: 13,
+      padding: 12,
+      cursor: "pointer",
+      marginTop: 4
+    }
+  }, "\uAC74\uB108\uB6F0\uAE30 \u2014 AI\uAC00 \uC54C\uC544\uC11C \uD310\uB2E8\uD560\uAC8C\uC694")), loading && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: "60px 0"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 56,
+      height: 56,
+      margin: "0 auto 24px",
+      border: "3px solid #e6dfd4",
+      borderTop: `3px solid ${P}`,
+      borderRadius: "50%",
+      animation: "spin 1s linear infinite"
+    }
+  }), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 15,
+      color: TX2,
+      fontWeight: 500,
+      marginBottom: 6
+    }
+  }, LM[lm]), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 12,
+      color: TX3
+    }
+  }, anaText, " \uCD5C\uC801\uC758 \uC120\uBB3C\uC744 \uCC3E\uACE0 \uC788\uC5B4\uC694")), !loading && results.length > 0 && (() => {
+    const compats = [Math.floor(92 + Math.random() * 7), 0, 0];
+    compats[1] = compats[0] - Math.floor(3 + Math.random() * 5);
+    compats[2] = compats[1] - Math.floor(3 + Math.random() * 5);
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: "center",
+        marginBottom: 20
+      }
+    }, /*#__PURE__*/React.createElement("h2", {
+      style: {
+        fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
+        fontSize: 20,
+        fontWeight: 700,
+        color: TX,
+        margin: "0 0 6px"
+      }
+    }, "\uC774\uB7F0 \uC120\uBB3C\uC740 \uC5B4\uB5A8\uAE4C\uC694?"), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: 13,
+        color: TX2,
+        margin: 0
+      }
+    }, "\uD83D\uDC96 ", rel?.label, dep ? ` (${dep})` : "", " \xB7 ", genderLabel, " \xB7 ", occ?.label, " \xB7 ", bud?.label)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 12
+      }
+    }, results.map((g, i) => {
+      const sk = g.searchKeyword || g.sk || g.name;
+      const url = mkUrl(sk, g.price);
+      const compat = compats[i];
+      const rank = ["1st", "2nd", "3rd"][i];
+      return /*#__PURE__*/React.createElement(ResultCard, {
+        key: i,
+        g: g,
+        i: i,
+        rank: rank,
+        compat: compat,
+        url: url,
+        P: P,
+        P2: P2,
+        TX: TX,
+        TX2: TX2,
+        TX3: TX3
+      });
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: `${P}06`,
+        border: `1px dashed ${P}25`,
+        borderRadius: 12,
+        padding: "12px 16px",
+        marginTop: 16
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: "#6a5a4a",
+        lineHeight: 1.7
+      }
+    }, "\uD83D\uDCA1 ", /*#__PURE__*/React.createElement("strong", null, "TIP"), " \u2014 \uC120\uBB3C\uACFC \uD568\uAED8 \uC9E7\uC740 \uC190\uD3B8\uC9C0\uB97C \uACC1\uB4E4\uC774\uBA74 \uB9C8\uC74C\uC774 \uB354 \uC798 \uC804\uB2EC\uB3FC\uC694.", intent && ` "${intent}" 이 마음을 직접 적어보는 건 어떨까요?`)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: "rgba(0,0,0,.03)",
+        border: "1px solid rgba(0,0,0,.07)",
+        borderRadius: 10,
+        padding: "10px 14px",
+        marginTop: 10
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: TX3,
+        lineHeight: 1.7
+      }
+    }, "\uD83D\uDCE2 \uC704 \uC0C1\uD488 \uB9C1\uD06C\uB294 ", /*#__PURE__*/React.createElement("strong", null, "\uCFE0\uD321 \uD30C\uD2B8\uB108\uC2A4"), " \uD65C\uB3D9\uC758 \uC77C\uD658\uC73C\uB85C, \uC774\uC5D0 \uB530\uB978 \uC77C\uC815\uC561\uC758 \uC218\uC218\uB8CC\uB97C \uC81C\uACF5\uBC1B\uC2B5\uB2C8\uB2E4.")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: 18
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        fontWeight: 600,
+        color: TX2,
+        marginBottom: 8,
+        textAlign: "center"
+      }
+    }, "\uCD94\uCC9C \uACB0\uACFC \uACF5\uC720\uD558\uAE30"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+        gap: 8
+      }
+    }, typeof navigator !== "undefined" && navigator.share && /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        try {
+          navigator.share({
+            title: "마로 - AI 선물 추천",
+            text: `${rel?.label}에게 ${occ?.label} 선물로 ${results[0]?.name}을(를) 추천받았어요!`,
+            url: "https://maro.ai.kr/app"
+          });
+        } catch {}
+      },
+      style: {
+        border: ".5px solid #E8DCD8",
+        borderRadius: 12,
+        padding: 10,
+        background: "rgba(255,255,255,.7)",
+        cursor: "pointer",
+        fontSize: 12,
+        color: TX2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 4
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 18
+      }
+    }, "\uD83D\uDCE4"), "\uACF5\uC720\uD558\uAE30"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        const t = encodeURIComponent(`${rel?.label}에게 ${occ?.label} 선물 추천받았어요!`);
+        const u = encodeURIComponent("https://maro.ai.kr/app");
+        window.open(`https://story.kakao.com/share?url=${u}&text=${t}`, "_blank");
+      },
+      style: {
+        border: ".5px solid #E8DCD8",
+        borderRadius: 12,
+        padding: 10,
+        background: "rgba(255,255,255,.7)",
+        cursor: "pointer",
+        fontSize: 12,
+        color: TX2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 4
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 18
+      }
+    }, "\uD83D\uDCAC"), "\uCE74\uCE74\uC624"), /*#__PURE__*/React.createElement("button", {
+      onClick: async () => {
+        try {
+          await navigator.clipboard.writeText("https://maro.ai.kr/app");
+          alert("✅ 링크가 복사되었어요!");
+        } catch {}
+      },
+      style: {
+        border: ".5px solid #E8DCD8",
+        borderRadius: 12,
+        padding: 10,
+        background: "rgba(255,255,255,.7)",
+        cursor: "pointer",
+        fontSize: 12,
+        color: TX2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 4
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 18
+      }
+    }, "\uD83D\uDD17"), "\uB9C1\uD06C \uBCF5\uC0AC"))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: 18,
+        display: "flex",
+        flexDirection: "column",
+        gap: 10
+      }
+    }, /*#__PURE__*/React.createElement(Btn, {
+      onClick: () => {
+        setResults([]);
+        analyze();
+      },
+      style: {
+        width: "100%",
+        background: "rgba(255,255,255,.8)",
+        border: "1.5px solid #e6dfd4",
+        borderRadius: 12,
+        padding: 14,
+        fontSize: 14,
+        color: TX,
+        fontWeight: 600,
+        cursor: "pointer"
+      }
+    }, "\u21BB \uB2E4\uB978 \uCD94\uCC9C \uBCF4\uAE30"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 10
+      }
+    }, /*#__PURE__*/React.createElement(Btn, {
+      onClick: restart,
+      style: {
+        flex: 1,
+        background: "rgba(255,255,255,.6)",
+        border: "1.5px solid #e6dfd4",
+        borderRadius: 12,
+        padding: 13,
+        fontSize: 13,
+        color: TX2,
+        fontWeight: 500,
+        cursor: "pointer"
+      }
+    }, "\uCC98\uC74C\uBD80\uD130"), /*#__PURE__*/React.createElement(Btn, {
+      onClick: () => {
+        setResults([]);
+        setIntent("");
+        go(6);
+      },
+      style: {
+        flex: 1,
+        background: "rgba(255,255,255,.6)",
+        border: "1.5px solid #e6dfd4",
+        borderRadius: 12,
+        padding: 13,
+        fontSize: 13,
+        color: TX2,
+        fontWeight: 500,
+        cursor: "pointer"
+      }
+    }, "\uB9C8\uC74C \uBC14\uAFD4\uC11C"))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: "center",
+        marginTop: 28,
+        paddingBottom: 16
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        marginBottom: 4
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 18,
+        height: 18,
+        borderRadius: 6,
+        background: `linear-gradient(135deg,${P},${P2})`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "#fff",
+        fontSize: 9
+      }
+    }, "\u2665")), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 13,
+        fontWeight: 600,
+        color: TX
+      }
+    }, "\uB9C8\uB85C")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        letterSpacing: 2,
+        color: TX3
+      }
+    }, "\uB9C8\uC74C\uC744 \uC0C8\uAE30\uB294 \uC120\uBB3C")));
+  })())));
 }
-
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 </script>
 <footer style="text-align:center;padding:16px;font-size:11px;color:#a09585;line-height:1.7;border-top:1px solid #ebe4dc;margin-top:24px">
