@@ -9,6 +9,7 @@
     { "source": "/vote", "destination": "/vote.html" },
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/blog", "destination": "/blog.html" }
+    { "source": "/blog", "destination": "/blog.html" },
+    { "source": "/ops", "destination": "/ops.html" }
   ]
 }

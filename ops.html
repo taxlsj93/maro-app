@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마로 운영 대시보드 — 선재용</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:#f8f6f3;color:#2d2018;padding:20px;max-width:800px;margin:0 auto}
+h1{font-size:24px;font-weight:700;margin-bottom:8px}
+.subtitle{font-size:13px;color:#9a8a7a;margin-bottom:24px}
+.section{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:1px solid #ebe4dc}
+.section h2{font-size:16px;font-weight:700;color:#c4756e;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.task{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f5f0eb}
+.task:last-child{border-bottom:none}
+.task-check{width:20px;height:20px;border:2px solid #c4756e;border-radius:6px;cursor:pointer;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;transition:all .15s}
+.task-check.done{background:#c4756e}
+.task-body{flex:1}
+.task-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.task-desc{font-size:12px;color:#9a8a7a;line-height:1.6}
+.copy-btn{display:inline-flex;align-items:center;gap:4px;background:#c4756e;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;transition:all .15s}
+.copy-btn:hover{background:#a85e58}
+.copy-btn.copied{background:#4A8C6F}
+.expand-btn{background:none;border:1px solid #ebe4dc;border-radius:8px;padding:6px 14px;font-size:12px;color:#5a4a3a;cursor:pointer;margin-top:8px;margin-left:6px}
+.content-box{display:none;margin-top:12px;background:#faf6ee;border:1px solid #ebe4dc;border-radius:12px;padding:16px;font-size:13px;line-height:1.8;max-height:400px;overflow-y:auto;white-space:pre-wrap}
+.content-box.show{display:block}
+.tag{display:inline-block;background:rgba(196,117,110,.1);color:#c4756e;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-right:4px}
+.progress-bar{height:8px;background:#ebe4dc;border-radius:4px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,#c4756e,#a85e58);border-radius:4px;transition:width .3s}
+.counter{font-size:13px;color:#5a4a3a;font-weight:600}
+</style>
+</head>
+<body>
+
+<h1>🎁 마로 운영 대시보드</h1>
+<div class="subtitle">선재용 · 클릭 한 번으로 복사 → 붙여넣기</div>
+
+<div class="section">
+  <h2>📊 진행 현황</h2>
+  <div class="counter">완료: <span id="doneCount">0</span> / <span id="totalCount">0</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<!-- 네이버 블로그 -->
+<div class="section">
+  <h2>📝 네이버 블로그 발행 (13개)</h2>
+  <p style="font-size:12px;color:#9a8a7a;margin-bottom:12px">네이버 블로그 → 글쓰기 → HTML 모드 → 아래 복사 버튼 클릭 → 붙여넣기</p>
+  <div id="blogTasks"></div>
+</div>
+
+<!-- 인스타 게시물 -->
+<div class="section">
+  <h2>📸 인스타그램 게시물</h2>
+  <p style="font-size:12px;color:#9a8a7a;margin-bottom:12px">캡션 복사 → 인스타 새 게시물 → 캡션에 붙여넣기</p>
+  <div id="instaTasks"></div>
+</div>
+
+<!-- 디스쿼어 -->
+<div class="section">
+  <h2>🚀 디스쿼어 런칭</h2>
+  <div class="task">
+    <div class="task-check" onclick="toggleTask(this)"></div>
+    <div class="task-body">
+      <div class="task-title">disquiet.io에 마로 런칭 글 올리기</div>
+      <div class="task-desc">아래 글을 복사 → disquiet.io → 메이커 로그 → 붙여넣기</div>
+      <button class="copy-btn" onclick="copyText(this,'disquietText')">📋 런칭 글 복사</button>
+      <button class="expand-btn" onclick="toggleContent('disquietText')">미리보기</button>
+      <div class="content-box" id="disquietText">🎁 마로(Maro) — AI가 관계를 분석해서 선물을 추천해드려요
+
+"선물 뭐 사지?" 이 고민, 매번 반복되지 않나요?
+
+마로는 관계 유형(연인/부모/친구/직장), 관계 깊이(썸/3년차), 상황(생일/감사/집들이), 예산, 취향까지 분석해서 딱 맞는 선물 Top 3을 추천하는 AI 서비스입니다.
+
+✅ 핵심 기능
+• 6단계 위저드: 관계→성별→깊이→상황→예산→마음
+• AI 추천 + "왜 이 선물인지" 이유 설명
+• 궁합 점수(%)로 적합도 시각화
+• 쿠팡 최저가 연결
+• 30초, 무료, 로그인 불필요
+
+🔧 기술 스택
+• React 18 (인라인) + Vercel Edge Function
+• Claude API (Haiku, prefill 기법 → 100% 성공률)
+• 10개 카테고리 스코어링 + Round-Robin 다양성 알고리즘
+• 성별/관계깊이/계절 기반 가중치
+
+💡 만든 이유
+기존 선물 추천은 "카테고리 필터 → 인기 상품 나열"이잖아요.
+마로는 "이 관계에서 어떤 마음을 전할지"부터 시작해요.
+같은 5만원이라도 썸 상대와 3년 연인에게 맞는 선물은 완전히 달라요.
+
+👉 https://maro.ai.kr
+
+피드백 환영합니다! 🙏</div>
+    </div>
+  </div>
+</div>
+
+<!-- 개인 네트워크 공유 -->
+<div class="section">
+  <h2>💬 개인 네트워크 공유 메시지</h2>
+  <p style="font-size:12px;color:#9a8a7a;margin-bottom:12px">카톡/문자로 보낼 메시지 — 상황별 3종</p>
+
+  <div class="task">
+    <div class="task-check" onclick="toggleTask(this)"></div>
+    <div class="task-body">
+      <div class="task-title">친구/지인용 (캐주얼)</div>
+      <button class="copy-btn" onclick="copyText(this,'msgCasual')">📋 복사</button>
+      <div class="content-box show" id="msgCasual" style="display:block;max-height:none">야 나 선물 추천 서비스 만들었는데 한번 써볼래? ㅋㅋ
+관계랑 상황 넣으면 AI가 선물 3개 골라줌
+30초면 끝이고 무료야
+
+https://maro.ai.kr
+
+써보고 솔직하게 피드백 좀 줘! 🙏</div>
+    </div>
+  </div>
+
+  <div class="task">
+    <div class="task-check" onclick="toggleTask(this)"></div>
+    <div class="task-body">
+      <div class="task-title">직장 동료/선후배용 (정중)</div>
+      <button class="copy-btn" onclick="copyText(this,'msgFormal')">📋 복사</button>
+      <div class="content-box show" id="msgFormal" style="display:block;max-height:none">안녕하세요! 사이드 프로젝트로 AI 선물 추천 서비스를 만들었는데요,
+관계와 상황을 분석해서 맞춤 선물을 추천해주는 서비스입니다.
+한번 사용해보시고 피드백 주시면 큰 도움이 될 것 같아요!
+
+https://maro.ai.kr
+
+무료이고 로그인 없이 바로 사용 가능합니다 😊</div>
+    </div>
+  </div>
+
+  <div class="task">
+    <div class="task-check" onclick="toggleTask(this)"></div>
+    <div class="task-body">
+      <div class="task-title">SNS/단체 채팅용 (짧고 임팩트)</div>
+      <button class="copy-btn" onclick="copyText(this,'msgShort')">📋 복사</button>
+      <div class="content-box show" id="msgShort" style="display:block;max-height:none">선물 고민될 때 이거 써봐
+AI가 관계+상황 분석해서 딱 맞는 선물 3개 추천해줌
+30초, 무료 👉 https://maro.ai.kr</div>
+    </div>
+  </div>
+</div>
+
+<!-- 인스타 하이라이트 -->
+<div class="section">
+  <h2>✨ 인스타 하이라이트 5개</h2>
+  <p style="font-size:12px;color:#9a8a7a;margin-bottom:8px">스토리 올린 후 하이라이트에 추가</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+    <span class="tag">🎁 마로 소개</span>
+    <span class="tag">💡 사용법</span>
+    <span class="tag">💝 추천 후기</span>
+    <span class="tag">📊 선물 꿀팁</span>
+    <span class="tag">🗳️ 선물 투표</span>
+  </div>
+</div>
+
+<script>
+// 블로그 목록
+const blogs = [
+  {file:'naver-blog-1.html', title:'3만원대 여자친구 생일선물 추천 TOP 7', keyword:'여자친구 생일선물 3만원'},
+  {file:'naver-blog-2.html', title:'50대 아버지 생신 선물, AI로 찾는 법', keyword:'50대 아버지 생신 선물'},
+  {file:'naver-blog-3.html', title:'2026 어버이날 선물 추천 TOP 10', keyword:'어버이날 선물 추천 2026'},
+  {file:'blog-parents-gift-2026.html', title:'부모님 선물 추천 2026', keyword:'부모님 선물 추천'},
+  {file:'blog-parents-day-50k.html', title:'어버이날 선물 5만원', keyword:'어버이날 선물 5만원'},
+  {file:'blog-inlaw-gift.html', title:'시부모님 선물 추천', keyword:'시부모님 선물 추천'},
+  {file:'blog-mom-50s-birthday.html', title:'50대 엄마 생일선물', keyword:'50대 엄마 생일선물'},
+  {file:'blog-dad-60s-gift.html', title:'60대 아버지 선물', keyword:'60대 아버지 선물'},
+  {file:'blog-filial-piety-gift.html', title:'효도선물 추천', keyword:'효도선물 추천'},
+  {file:'blog-parents-health-gift.html', title:'부모님 건강선물', keyword:'부모님 건강선물'},
+  {file:'blog-instead-of-carnation.html', title:'어버이날 카네이션 대신', keyword:'어버이날 카네이션 대신'},
+  {file:'blog-mother-in-law-gift.html', title:'시어머니 선물 센스', keyword:'시어머니 선물 센스'},
+  {file:'blog-father-in-law-gift.html', title:'장인어른 선물', keyword:'장인어른 선물'},
+];
+
+const blogContainer = document.getElementById('blogTasks');
+blogs.forEach((b,i) => {
+  const path = b.file.startsWith('naver') ? `content/${b.file}` : `content/${b.file}`;
+  blogContainer.innerHTML += `
+    <div class="task">
+      <div class="task-check" onclick="toggleTask(this)"></div>
+      <div class="task-body">
+        <div class="task-title">${i+1}. ${b.title}</div>
+        <div class="task-desc"><span class="tag">${b.keyword}</span></div>
+        <button class="copy-btn" onclick="copyBlog(this,'${path}')">📋 HTML 복사</button>
+        <button class="expand-btn" onclick="previewBlog('${path}',this)">미리보기</button>
+      </div>
+    </div>`;
+});
+
+// 인스타 캡션
+const instaCaption = [
+  {title:'게시물 2번 (선물 관계별)', caption:`같은 5만원이라도\n관계에 따라 선물이 달라야 해요\n\n썸 상대 → 부담 없는 센스\n3년 연인 → 취향 저격\n부모님 → 건강+실용\n직장 상사 → 격식+무난\n\n관계에 맞는 선물, AI가 30초 만에 골라줌\n\n프로필 링크에서 시작 ☺\n\n#마로 #선물추천 #AI선물추천 #관계별선물 #선물고민 #생일선물 #기념일선물 #부모님선물 #센스있는선물 #선물가이드`},
+  {title:'게시물 3번 (어버이날)', caption:`어버이날 D-27\n\n아직 시간 있다고요?\n인기 선물은 일주일 전부터 품절이에요\n\n부모님이 진짜 좋아하시는 선물\nAI가 관계 깊이까지 분석해서 추천해줌\n\n함께 사는 부모님 vs 따로 사시는 부모님\n선물이 달라야 하거든요\n\n프로필 링크에서 30초면 끝\n\n#어버이날 #어버이날선물 #부모님선물 #효도선물 #마로 #AI추천 #선물추천 #5월8일 #카네이션대신 #감사선물`},
+];
+
+const instaContainer = document.getElementById('instaTasks');
+instaCaption.forEach((c,i) => {
+  instaContainer.innerHTML += `
+    <div class="task">
+      <div class="task-check" onclick="toggleTask(this)"></div>
+      <div class="task-body">
+        <div class="task-title">${c.title}</div>
+        <button class="copy-btn" onclick="copyText(this,'insta${i}')">📋 캡션 복사</button>
+        <div class="content-box show" id="insta${i}" style="display:block;max-height:120px">${c.caption}</div>
+      </div>
+    </div>`;
+});
+
+// 기능
+function toggleTask(el) {
+  el.classList.toggle('done');
+  el.textContent = el.classList.contains('done') ? '✓' : '';
+  updateProgress();
+  // localStorage 저장
+  const tasks = document.querySelectorAll('.task-check');
+  const state = [...tasks].map(t => t.classList.contains('done'));
+  localStorage.setItem('maro_ops', JSON.stringify(state));
+}
+
+function updateProgress() {
+  const tasks = document.querySelectorAll('.task-check');
+  const done = document.querySelectorAll('.task-check.done').length;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalCount').textContent = tasks.length;
+  document.getElementById('progressFill').style.width = `${(done/tasks.length)*100}%`;
+}
+
+function copyText(btn, id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    btn.textContent = '✅ 복사됨!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 복사'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function toggleContent(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+
+async function copyBlog(btn, path) {
+  try {
+    const res = await fetch('/' + path);
+    const html = await res.text();
+    await navigator.clipboard.writeText(html);
+    btn.textContent = '✅ 복사됨!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 HTML 복사'; btn.classList.remove('copied'); }, 2000);
+  } catch(e) {
+    // fallback: 로컬 파일 경로
+    btn.textContent = '❌ 파일 접근 실패';
+    setTimeout(() => { btn.textContent = '📋 HTML 복사'; }, 2000);
+  }
+}
+
+async function previewBlog(path, btn) {
+  const next = btn.nextElementSibling || btn.parentElement.querySelector('.content-box');
+  if (next && next.classList.contains('content-box')) {
+    next.classList.toggle('show');
+    return;
+  }
+  try {
+    const res = await fetch('/' + path);
+    const html = await res.text();
+    const div = document.createElement('div');
+    div.className = 'content-box show';
+    div.innerHTML = html;
+    btn.after(div);
+  } catch(e) {}
+}
+
+// 저장된 상태 복원
+window.addEventListener('DOMContentLoaded', () => {
+  updateProgress();
+  try {
+    const saved = JSON.parse(localStorage.getItem('maro_ops') || '[]');
+    const tasks = document.querySelectorAll('.task-check');
+    saved.forEach((done, i) => {
+      if (done && tasks[i]) { tasks[i].classList.add('done'); tasks[i].textContent = '✓'; }
+    });
+    updateProgress();
+  } catch {}
+});
+</script>
+</body>
+</html>
