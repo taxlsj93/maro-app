@@ -14,18 +14,21 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="마로 — 마음을 새기는 선물">
 <meta name="twitter:description" content="관계 중심 AI 선물 추천. 어떤 마음을 전할지부터 정리해드려요.">
+<meta name="twitter:image" content="https://maro.ai.kr/og-image.png">
+<meta property="og:site_name" content="마로">
 <link rel="canonical" href="https://maro.ai.kr/">
 <meta name="theme-color" content="#c4756e">
 <link rel="manifest" href="/manifest.json">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Y94YY9WP"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3Y94YY9WP');</script>
-<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --terra:#c4756e;--terra2:#a85e58;--terra3:#e8a09a;
   --cream:#faf6ee;--cream2:#f5ede3;--cream3:#ede0d0;
-  --brown:#2d2018;--brown2:#5a4a3a;--brown3:#9a8a7a;--brown4:#c8b8a8;
+  --brown:#2d2018;--brown2:#5a4a3a;--brown3:#7a6a5a;--brown4:#a89888;
   --white:#fffdf9;
 }
 html{scroll-behavior:smooth}
@@ -190,9 +193,16 @@ footer{background:var(--brown);color:rgba(250,246,238,.45);padding:48px 5% 32px}
   .daily-banner{flex-direction:column;text-align:center;padding:20px;margin-top:72px}
   .daily-banner-gifts{justify-content:center}
 }
+a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offset:2px}
+.skip-link{position:absolute;top:-100%;left:50%;transform:translateX(-50%);background:var(--terra);color:#fff;padding:8px 20px;border-radius:0 0 8px 8px;z-index:999;font-size:13px;text-decoration:none}
+.skip-link:focus{top:0}
 </style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"마로","alternateName":"Maro","url":"https://maro.ai.kr","description":"관계 중심 AI 선물 추천. 어떤 마음을 전할지부터 정리해드려요.","inLanguage":"ko","potentialAction":{"@type":"SearchAction","target":"https://maro.ai.kr/app","query-input":"required"}}
+</script>
 </head>
 <body>
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
 
 <nav id="nav">
   <div class="nav-brand">
@@ -208,6 +218,7 @@ footer{background:var(--brown);color:rgba(250,246,238,.45);padding:48px 5% 32px}
   <span id="seasonText">🎁 어버이날·어린이날 선물, AI가 골라줄게요</span> <span style="color:var(--terra)">→</span>
 </a>
 
+<main id="main">
 <section class="hero" style="min-height:calc(100svh - 100px);padding:40px 5% 32px;justify-content:center">
   <div class="hero-bg"></div>
   <span class="fl">🎁</span><span class="fl">💌</span><span class="fl">🌿</span><span class="fl">✨</span>
@@ -365,6 +376,7 @@ footer{background:var(--brown);color:rgba(250,246,238,.45);padding:48px 5% 32px}
   <a href="/app" class="btn-primary reveal">마로 시작하기 ✨</a>
   <p class="cta-note reveal">완전 무료 · 30초 · 로그인 불필요</p>
 </section>
+</main>
 
 <footer>
   <div class="footer-inner">

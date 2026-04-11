@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#c4756e" />
+  <title>페이지를 찾을 수 없어요 — 마로</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Y94YY9WP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S3Y94YY9WP');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+      background-color: #faf6f1;
+      color: #2d2d2d;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    a { text-decoration: none; color: inherit; }
+    a:focus-visible { outline: 2px solid #c4756e; outline-offset: 3px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <main style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;max-width:480px;width:100%;">
+
+    <!-- 404 number -->
+    <p style="font-size:clamp(5rem,25vw,9rem);font-weight:800;line-height:1;color:#c4756e;letter-spacing:-0.03em;user-select:none;">
+      404
+    </p>
+
+    <!-- heading -->
+    <h1 style="font-size:clamp(1.25rem,4.5vw,1.625rem);font-weight:700;line-height:1.5;color:#2d2d2d;">
+      찾으시는 페이지가 없어요
+    </h1>
+
+    <!-- sub-message -->
+    <p style="font-size:clamp(0.875rem,3.5vw,1rem);font-weight:400;line-height:1.75;color:#6b6b6b;">
+      선물 추천이 필요하시다면 아래 버튼을 눌러주세요
+    </p>
+
+    <!-- divider -->
+    <div style="width:40px;height:2px;background:#c4756e;border-radius:2px;opacity:0.5;"></div>
+
+    <!-- CTA buttons -->
+    <div style="display:flex;flex-direction:column;gap:0.75rem;width:100%;max-width:320px;">
+      <a href="/"
+         style="display:block;width:100%;padding:0.875rem 1.5rem;background:#c4756e;color:#fff;font-size:1rem;font-weight:600;border-radius:12px;text-align:center;transition:opacity 0.15s ease;"
+         onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        마로 홈으로 돌아가기 →
+      </a>
+      <a href="/app"
+         style="display:block;width:100%;padding:0.875rem 1.5rem;background:transparent;color:#c4756e;font-size:1rem;font-weight:600;border-radius:12px;text-align:center;border:1.5px solid #c4756e;transition:background 0.15s ease,color 0.15s ease;"
+         onmouseover="this.style.background='#c4756e';this.style.color='#fff';"
+         onmouseout="this.style.background='transparent';this.style.color='#c4756e';">
+        선물 추천받기 →
+      </a>
+    </div>
+
+  </main>
+
+  <!-- footer -->
+  <footer style="margin-top:3rem;font-size:0.8125rem;color:#aaa;font-weight:400;letter-spacing:0.01em;">
+    마로 — 마음을 새기는 선물
+  </footer>
+</body>
+</html>
