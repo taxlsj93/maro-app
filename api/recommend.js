@@ -104,16 +104,15 @@ JSON:
 {"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"}]}`;
 
     const HAIKU = 'claude-haiku-4-5-20251001';
-    const SONNET = 'claude-sonnet-4-5-20250514';
 
-    // ── 3단계 재시도 전략 ──
-    // 1차: haiku temp 0.7
-    // 2차 (파싱 실패): haiku temp 0.5
-    // 3차 (파싱 실패): sonnet temp 0.5
+    // ── 3단계 재시도 전략 (같은 모델, temperature 점진 하강) ──
+    // 1차: temp 0.7 (다양성 유지)
+    // 2차: temp 0.5 (안정적 JSON)
+    // 3차: temp 0.3 (최대 안정)
     const attempts = [
       { model: HAIKU, temp: 0.7 },
       { model: HAIKU, temp: 0.5 },
-      { model: SONNET, temp: 0.5 },
+      { model: HAIKU, temp: 0.3 },
     ];
 
     let lastError = '';
