@@ -105,14 +105,55 @@ export default async function handler(req) {
       });
     }
 
-    const text = data.content?.[0]?.text || '';
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('JSON parse failed');
+    // JSON 파싱 (강건한 추출)
+    function extractGifts(apiData) {
+      const text = apiData.content?.[0]?.text || '';
+      // 1차: {"gifts":[...]} 패턴 매칭
+      const m1 = text.match(/\{"gifts"\s*:\s*\[[\s\S]*?\]\s*\}/);
+      if (m1) {
+        const p = JSON.parse(m1[0]);
+        if (p.gifts?.length) return p.gifts;
+      }
+      // 2차: 가장 바깥 {...} 매칭
+      const m2 = text.match(/\{[\s\S]*\}/);
+      if (m2) {
+        const p = JSON.parse(m2[0]);
+        if (p.gifts?.length) return p.gifts;
+      }
+      // 3차: [...] 배열만 있는 경우
+      const m3 = text.match(/\[[\s\S]*\]/);
+      if (m3) {
+        const arr = JSON.parse(m3[0]);
+        if (Array.isArray(arr) && arr.length && arr[0].name) return arr;
+      }
+      return null;
+    }
 
-    const parsed = JSON.parse(match[0]);
-    if (!parsed.gifts?.length) throw new Error('No gifts');
+    let gifts = extractGifts(data);
 
-    return new Response(JSON.stringify({ gifts: parsed.gifts }), {
+    // 파싱 실패 시 1회 재시도 (temperature가 높아서 간헐적 실패 가능)
+    if (!gifts) {
+      const retryModel = models[0]; // 가장 빠른 모델로 재시도
+      try {
+        const retryRes = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+          body: JSON.stringify({ model: retryModel, max_tokens: 500, temperature: 0.7, messages: [{ role: 'user', content: prompt }] }),
+        });
+        if (retryRes.ok) {
+          const retryData = await retryRes.json();
+          gifts = extractGifts(retryData);
+        }
+      } catch {}
+    }
+
+    if (!gifts) {
+      return new Response(JSON.stringify({ error: '추천 생성 실패', detail: 'JSON 파싱 실패 (재시도 포함)' }), {
+        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    return new Response(JSON.stringify({ gifts }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'no-store, no-cache, must-revalidate' }
     });
 
