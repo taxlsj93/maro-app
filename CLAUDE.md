@@ -56,7 +56,9 @@ Only the `/app` route uses the React/Vite build. Other pages are standalone HTML
 
 ## Styling
 
-All styles are inline CSS objects within React components. Design uses a warm cream/terra palette (`#c4756e` primary, cream gradients background, brown text shades) with glassmorphic card effects.
+All styles are inline CSS objects within React components. **상세 디자인 원칙은 `MARO_UI_BRAND_GUIDE.md` 참조** (학술 근거 기반 색채/타이포/모바일/접근성/디자인 토큰 가이드).
+
+핵심: 1차 CTA `#2B7A78`(딥 틸), `#c4756e`는 본문 텍스트 금지(≥24px만), 터치 타깃 ≥48px, 한글 line-height 1.75, transform/opacity만 애니메이션.
 
 ## 에이전트 자동 워크플로우
 

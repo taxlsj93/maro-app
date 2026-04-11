@@ -60,12 +60,23 @@ You are the MARO gift data specialist. Your job is to manage gift recommendation
 // 파라미터: traid=AF3339921 (파트너 ID), subid=maro-{페이지명} (유입 추적)
 ```
 
-### AI 프롬프트 템플릿 (압축형, ~180자)
+### AI 프롬프트 템플릿 (api/recommend.js)
 ```
+현재 시간: {ISO timestamp}
 선물추천 JSON만 출력. 관계:{rel}({depth}) 상황:{occ} 예산:{bud} 마음:"{intent}" 취향:{tags} 계절:{season}
 규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용
+다양성:반드시 이전과 다른 새로운 상품 추천. 같은 상품 반복 금지. 다양한 카테고리에서 골라줘.
+추가규칙:①수혜자관점 실용성 ②관계깊이전략 ③김영란법 ④세대별가중
 {"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},...(3개)]}
 ```
+- temperature: 0.9
+- 모델: claude-haiku-4-5-20251001 → claude-sonnet-4-5-20250514 (fallback)
+
+### 추천 카드 UX 규칙 (MARO_UI_BRAND_GUIDE.md 섹션 4 근거)
+- 추천에 반드시 **이유 한 줄** 포함 (XAI 신뢰도 M=3.2→4.1, 구매율 49→68%)
+- **감동 + 실용** 양면 프레이밍: "열었을 때 기쁨 + 오래 쓸 수 있는 실용성"
+- "완벽한 선물" 금지 → "이런 선물은 어떨까요?" 제안형 어조
+- 정확히 3장만 표시 (선택 과부하 방지 — Iyengar 연구)
 
 ### 기념일 목록 (SPECIAL_PICKS + LUNAR_DATES)
 ```

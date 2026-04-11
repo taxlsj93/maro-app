@@ -86,15 +86,30 @@ You are the MARO QA gatekeeper. Your job is to review code and content changes m
 - [ ] 푸터 링크: href="/" (index.html 아님)
 - [ ] GA4 이벤트: 주요 액션에 gtag event 호출 포함
 
-### 접근성(a11y) 체크리스트
-- [ ] 인터랙티브 요소에 `aria-label` 또는 의미 있는 텍스트 포함
-- [ ] 이미지/아이콘에 `alt` 텍스트 (장식용은 `alt=""`)
+### 접근성(a11y) 체크리스트 — WCAG AA + KWCAG 2.1 (MARO_UI_BRAND_GUIDE.md 섹션 7 근거)
+- [ ] `<html lang="ko">`
+- [ ] 본문 텍스트 대비 ≥4.5:1, 대형(≥24px) ≥3:1
+- [ ] `#c4756e` 본문 텍스트 사용 금지 (대비 3.43:1 미달) → 브랜드 텍스트는 `#8B4A44` 사용
+- [ ] 비텍스트 요소(버튼 테두리, 아이콘) ≥3:1 (WCAG 1.4.11)
+- [ ] 입력 폰트 ≥16px (iOS 자동 확대 방지)
+- [ ] 터치 타깃 ≥48px (Material Design), 1차 CTA 52px
+- [ ] 포커스 표시기: `outline: 2px solid #2B7A78; outline-offset: 2px`
+- [ ] 아이콘 버튼에 `aria-label` 한글 제공
+- [ ] AI 처리 상태에 `aria-live="polite"`
+- [ ] 시맨틱 HTML: `<nav>`, `<main>`, `<header>`, `<footer>`
+- [ ] 모든 `<input>`에 명시적 `<label>` 연결
+- [ ] `prefers-reduced-motion` 지원
+- [ ] 320px 너비에서 가로 스크롤 없음 (SC 1.4.10 Reflow)
+- [ ] 200% 텍스트 확대 시 기능 손실 없음
 - [ ] 키보드 네비게이션: Tab으로 모든 버튼/링크 접근 가능
-- [ ] focus 스타일: `:focus-visible` 또는 `outline` 유지 (제거 금지)
-- [ ] 색상 대비: 텍스트/배경 WCAG AA 기준 (4.5:1) 충족
-- [ ] 폼 입력: `<label>` 연결 또는 `aria-label` 포함
-- [ ] 버튼: `<button>` 태그 사용 (div/span에 onclick 대신)
 - [ ] 스크린리더: 의미 있는 heading 구조 (h1→h2→h3 순서)
+
+### UI 가이드 체크리스트 (MARO_UI_BRAND_GUIDE.md 근거)
+- [ ] 1차 CTA 색상: `#2B7A78` (딥 틸) — `#c4756e` 사용 시 BLOCKER
+- [ ] 애니메이션: transform/opacity만 사용, 레이아웃 속성 금지
+- [ ] 한글 line-height: 1.75
+- [ ] 추천 카드 정확히 3장
+- [ ] 추천 카드에 AI 이유 한 줄 포함
 
 ### 심각도 분류 기준
 ```
