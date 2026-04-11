@@ -518,7 +518,7 @@ function SH({n,title,sub,onBack}){return(<div style={{marginBottom:20}}>{onBack&
 // ── App ──
 export default function App(){
   const[step,setStep]=useState(0);const[rel,setRel]=useState(null);const[dep,setDep]=useState("");const[occ,setOcc]=useState(null);const[bud,setBud]=useState(null);
-  const[intent,setIntent]=useState("");const[tags,setTags]=useState([]);const[results,setResults]=useState([]);const[loading,setLoading]=useState(false);const[lm,setLm]=useState(0);const[fade,setFade]=useState(true);const box=useRef(null);
+  const[intent,setIntent]=useState("");const[tags,setTags]=useState([]);const[results,setResults]=useState([]);const[loading,setLoading]=useState(false);const[lm,setLm]=useState(0);const[fade,setFade]=useState(true);const box=useRef(null);const[src,setSrc]=useState("");
 
   const TAGS=[{id:"cafe",label:"카페·맛집",em:"☕"},{id:"fashion",label:"패션·뷰티",em:"👗"},{id:"fitness",label:"운동·건강",em:"💪"},{id:"travel",label:"여행",em:"✈️"},{id:"interior",label:"집꾸미기",em:"🏠"},{id:"tech",label:"테크·가전",em:"📱"},{id:"pet",label:"반려동물",em:"🐶"},{id:"book",label:"독서·문화",em:"📚"},{id:"game",label:"게임",em:"🎮"},{id:"music",label:"음악",em:"🎵"},{id:"cooking",label:"요리·베이킹",em:"🍳"},{id:"camping",label:"캠핑·아웃도어",em:"⛺"},{id:"idol",label:"아이돌·덕질",em:"🎤"},{id:"selfcare",label:"셀프케어·힐링",em:"🧖"},{id:"photo",label:"사진·영상",em:"📸"},{id:"alcohol",label:"술·와인",em:"🍷"},{id:"character",label:"캐릭터·굿즈",em:"🧸"},{id:"retro",label:"레트로·빈티지",em:"📻"},{id:"funny",label:"웃긴선물·장난감",em:"🤣"},{id:"practical",label:"극한의 실용템",em:"🧹"}];
   const toggleTag=id=>setTags(p=>p.includes(id)?p.filter(x=>x!==id):p.length<5?[...p,id]:p);
@@ -551,11 +551,11 @@ export default function App(){
         throw d;
       }
       console.log("[마로] AI API 응답 성공",d.gifts.map(g=>g.name));
-      setResults(d.gifts);
+      setResults(d.gifts);setSrc("ai");
       ga('recommend_complete',{source:'ai',count:d.gifts.length});
     }catch(err){
       console.warn("[마로] fallback DB 사용",err);
-      setResults(gfb(occ?.id,bud?.id,tags,rel?.id,dep));
+      setResults(gfb(occ?.id,bud?.id,tags,rel?.id,dep));setSrc("fallback");
       ga('recommend_complete',{source:'fallback',count:3});
     }
     setLoading(false);
@@ -672,7 +672,7 @@ export default function App(){
           {/* Results */}
           {!loading&&results.length>0&&(<div>
             <div style={{background:`linear-gradient(135deg,${P}08,${P}0c)`,borderRadius:16,padding:20,marginBottom:18,border:`1px solid ${P}18`}}>
-              <div style={{fontSize:11,letterSpacing:2,color:P,fontWeight:700,marginBottom:8}}>AI 분석 완료</div>
+              <div style={{fontSize:11,letterSpacing:2,color:P,fontWeight:700,marginBottom:8}}>{src==="ai"?"AI 분석 완료":"추천 결과"}{src==="fallback"&&<span style={{marginLeft:8,fontSize:10,color:TX3,fontWeight:400}}>(오프라인 DB)</span>}</div>
               <div style={{fontSize:15,color:TX,fontWeight:600,lineHeight:1.6,marginBottom:4}}>{anaText}</div>
               {intent&&<div style={{fontSize:13,color:TX2,fontStyle:"italic"}}>"{intent}"</div>}
               <div style={{fontSize:12,color:TX3,marginTop:6}}>예산 {bud?.label} · {bud?.tag} 선물</div>
