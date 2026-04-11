@@ -92,3 +92,32 @@ All styles are inline CSS objects within React components. Design uses a warm cr
 - 비주얼 콘텐츠 제작 흐름: `@marketing`(기획/카피) → `@ui-brand`(HTML/CSS 구현) → 결과물 PNG 캡처.
 - **`@backend-api`**: API 프록시, 서버 사이드 로직만 담당. 프론트엔드 코드는 `@gift-data` 또는 `@ui-brand`가 수정.
 - **`@content-seo`**: 블로그 글 작성 + 메타태그 최적화. 블로그 코드 구조(`blog.html`)는 `@ui-brand`가 수정.
+
+## 상호 검증 체계
+
+### 위계질서
+- Tier 1 (의사결정): @planner — 전략/방향 최종 판단
+- Tier 2 (품질관리): @qa-review — 모든 코드/콘텐츠 배포 전 검증
+- Tier 3 (실행): @ui-brand, @gift-data, @marketing, @content-seo, @backend-api — 각 전문 영역 실행
+- Tier 4 (배포): @deploy-test — 커밋/푸시/배포만 담당
+- Tier 5 (분석): @analytics — 결과 측정/리포트
+
+### 크로스체크 규칙
+1. 코드 수정 후 반드시 @qa-review가 검증. BLOCKER 있으면 배포 불가.
+2. @gift-data가 AI 프롬프트 수정 시 → @backend-api가 Edge Function 호환성 확인
+3. @marketing이 카피 작성 시 → @planner가 브랜드 톤 확인
+4. @content-seo가 SEO 수정 시 → @qa-review가 메타태그 무결성 확인
+5. @backend-api가 API 수정 시 → @deploy-test가 배포 후 상태코드 확인 + @qa-review가 프론트엔드 연동 확인
+
+### 주간 시스템 점검 (매주 토요일)
+@qa-review가 다음을 자동 실행:
+1. 전체 페이지 HTTP 상태코드 확인
+2. API 엔드포인트 정상 응답 확인
+3. Console 에러 유무 확인
+4. CHANGELOG.md와 실제 코드 일치 여부
+5. 결과를 SYSTEM-CHECK.md에 기록
+
+### 에러 에스컬레이션
+- WARNING: 해당 에이전트가 자체 수정
+- BLOCKER: @qa-review가 원인 분석 → 해당 에이전트에 수정 지시
+- CRITICAL: @planner가 개입하여 전략적 판단
