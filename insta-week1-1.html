@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>마로 인스타그램 카드 1</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1080px;
+      height: 1080px;
+      background: #faf6f1;
+      font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Decorative background elements */
+    .bg-circle-1 {
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: rgba(196, 117, 110, 0.08);
+    }
+    .bg-circle-2 {
+      position: absolute;
+      bottom: -60px;
+      left: -60px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(196, 117, 110, 0.06);
+    }
+    .bg-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: #c4756e;
+    }
+
+    /* Logo */
+    .logo {
+      position: absolute;
+      top: 52px;
+      left: 64px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #c4756e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1px;
+    }
+    .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      color: #3a2e2b;
+      letter-spacing: -0.5px;
+    }
+
+    /* Series badge */
+    .series-badge {
+      position: absolute;
+      top: 56px;
+      right: 64px;
+      background: rgba(196, 117, 110, 0.12);
+      color: #c4756e;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 20px;
+      letter-spacing: 0.2px;
+    }
+
+    /* Main content */
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 80px;
+      gap: 0;
+    }
+
+    .eyebrow {
+      font-size: 18px;
+      font-weight: 500;
+      color: #c4756e;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+
+    .title-line1 {
+      font-size: 58px;
+      font-weight: 800;
+      color: #2a1f1c;
+      line-height: 1.2;
+      letter-spacing: -2px;
+      margin-bottom: 12px;
+    }
+    .title-line2 {
+      font-size: 46px;
+      font-weight: 700;
+      color: #2a1f1c;
+      line-height: 1.3;
+      letter-spacing: -1.5px;
+      margin-bottom: 56px;
+    }
+    .title-line2 .highlight {
+      color: #c4756e;
+      position: relative;
+    }
+
+    /* Divider */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: #c4756e;
+      border-radius: 2px;
+      margin: 0 auto 56px;
+    }
+
+    /* Formula block */
+    .formula-block {
+      background: #fff;
+      border: 2px solid rgba(196, 117, 110, 0.2);
+      border-radius: 24px;
+      padding: 44px 72px;
+      margin-bottom: 0;
+      position: relative;
+    }
+    .formula-block::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 40px;
+      right: 40px;
+      height: 4px;
+      background: #c4756e;
+      border-radius: 0 0 4px 4px;
+      top: 0;
+      border-radius: 24px 24px 0 0;
+    }
+    .formula-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+    .formula-row:last-child {
+      margin-bottom: 0;
+    }
+    .formula-tag {
+      background: rgba(196, 117, 110, 0.1);
+      color: #c4756e;
+      font-size: 28px;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 50px;
+      letter-spacing: -0.5px;
+    }
+    .formula-op {
+      font-size: 32px;
+      font-weight: 300;
+      color: #c4b8a8;
+    }
+    .formula-result-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .formula-eq {
+      font-size: 36px;
+      font-weight: 700;
+      color: #2a1f1c;
+    }
+    .formula-result {
+      font-size: 30px;
+      font-weight: 700;
+      color: #2a1f1c;
+      letter-spacing: -0.5px;
+    }
+    .formula-result .accent {
+      color: #c4756e;
+    }
+
+    /* CTA bottom */
+    .cta-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background: #c4756e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .cta-main {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .cta-sep {
+      width: 1px;
+      height: 28px;
+      background: rgba(255,255,255,0.4);
+    }
+    .cta-url {
+      font-size: 20px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-line"></div>
+  <div class="bg-circle-1"></div>
+  <div class="bg-circle-2"></div>
+
+  <div class="logo">
+    <div class="logo-icon">마</div>
+    <span class="logo-text">마로</span>
+  </div>
+
+  <div class="series-badge">빌딩로그 #01</div>
+
+  <div class="content">
+    <div class="eyebrow">Building Log</div>
+    <div class="title-line1">코딩 1도 모르는 문과생이</div>
+    <div class="title-line2"><span class="highlight">AI한테 전부 시켜서</span><br>선물 서비스를 만들었다</div>
+
+    <div class="divider"></div>
+
+    <div class="formula-block">
+      <div class="formula-row">
+        <span class="formula-tag">관계</span>
+        <span class="formula-op">×</span>
+        <span class="formula-tag">상황</span>
+        <span class="formula-op">×</span>
+        <span class="formula-tag">예산</span>
+      </div>
+      <div class="formula-result-row">
+        <span class="formula-eq">=</span>
+        <span class="formula-result">딱 맞는 선물 <span class="accent">Top 3</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <span class="cta-main">마로 — 마음을 새기는 선물</span>
+    <div class="cta-sep"></div>
+    <span class="cta-url">maro.ai.kr</span>
+  </div>
+</body>
+</html>
