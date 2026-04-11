@@ -52,7 +52,7 @@ export default async function handler(req) {
 {"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},...(3개)]}`;
 
     // 모델 fallback: haiku(빠름) → sonnet 순서로 시도
-    const models = ['claude-haiku-4-5-20251001', 'claude-sonnet-4-5-20241022'];
+    const models = ['claude-haiku-4-5-20251001', 'claude-sonnet-4-5-20250514'];
     let data = null;
     let lastStatus = 0;
     let lastError = '';
