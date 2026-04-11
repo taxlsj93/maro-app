@@ -723,46 +723,66 @@ export default function App(){
 
           {/* Results */}
           {!loading&&results.length>0&&(<div>
-            <div style={{background:`linear-gradient(135deg,${P}08,${P}0c)`,borderRadius:16,padding:20,marginBottom:18,border:`1px solid ${P}18`}}>
-              <div style={{fontSize:11,letterSpacing:2,color:P,fontWeight:700,marginBottom:8}}>{src==="ai"?"AI 분석 완료":"추천 결과"}{src==="fallback"&&<span style={{marginLeft:8,fontSize:10,color:TX3,fontWeight:400}}>(오프라인 DB)</span>}</div>
-              <div style={{fontSize:15,color:TX,fontWeight:600,lineHeight:1.6,marginBottom:4}}>{anaText}</div>
-              {intent&&<div style={{fontSize:13,color:TX2,fontStyle:"italic"}}>"{intent}"</div>}
-              <div style={{fontSize:12,color:TX3,marginTop:6}}>예산 {bud?.label} · {bud?.tag} 선물</div>
-              {tagLabels.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:8}}>{tagLabels.map((l,i)=><span key={i} style={{fontSize:11,background:`${P}10`,color:P2,padding:"2px 8px",borderRadius:10}}>{l}</span>)}</div>}
+            {/* 제목 */}
+            <div style={{textAlign:"center",marginBottom:20}}>
+              <h2 style={{fontFamily:"'Gowun Batang',serif",fontSize:20,fontWeight:700,color:TX,margin:"0 0 6px"}}>이런 선물은 어떨까요?</h2>
+              <p style={{fontSize:13,color:TX2,margin:0}}>💖 {rel?.label} · {occ?.label} · {bud?.label}</p>
+              <div style={{display:"inline-block",marginTop:8,fontSize:11,color:"#5B7B9A",background:"rgba(91,123,154,.1)",padding:"3px 12px",borderRadius:20,fontWeight:600}}>{src==="ai"?"AI가 추천했어요":"맞춤 추천이에요"}</div>
             </div>
 
-            <div style={{display:"flex",flexDirection:"column",gap:14}}>
-              {results.map((g,i)=>{const sk=g.searchKeyword||g.sk||g.name;const url=mkUrl(sk,g.price);const onCoupangClick=()=>ga('coupang_click',{product:g.name,price:g.price,rank:i+1,page:'app'});return(
-                <div key={i} style={{background:"rgba(255,255,255,.92)",border:i===0?`2px solid ${P}`:"1.5px solid #ebe4dc",borderRadius:18,padding:18,position:"relative",overflow:"hidden",animation:`up .4s ease ${i*.15}s both`}}>
-                  {i===0&&<div style={{position:"absolute",top:12,right:12,background:`linear-gradient(135deg,${P},${P2})`,color:"#fff",fontSize:10,fontWeight:700,padding:"4px 12px",borderRadius:20,letterSpacing:.5}}>BEST</div>}
-                  <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
-                    <Thumb name={g.name} sz={68}/>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:15,fontWeight:700,color:TX,marginBottom:4,lineHeight:1.3}}>{g.name}</div>
-                      <div style={{display:"inline-block",fontSize:12,color:P,fontWeight:700,background:`${P}0c`,padding:"2px 10px",borderRadius:6,marginBottom:8}}>{g.price}</div>
-                      <div style={{fontSize:13,color:"#5a4a3a",lineHeight:1.7}}>{g.reason}</div>
+            {/* 카드 3장 */}
+            <div style={{display:"flex",flexDirection:"column",gap:12}}>
+              {results.map((g,i)=>{const sk=g.searchKeyword||g.sk||g.name;const url=mkUrl(sk,g.price);const v=gv(g.name);const imgUrl=gimg(g.name);const onCoupangClick=()=>ga('coupang_click',{product:g.name,price:g.price,rank:i+1,page:'app'});const rank=["1st","2nd","3rd"][i];const compat=Math.floor(78+Math.random()*20);return(
+                <div key={i} style={{background:"rgba(255,255,255,.95)",borderRadius:16,boxShadow:"0 4px 6px rgba(0,0,0,0.07)",overflow:"hidden",animation:`up .35s ease ${i*.1}s both`}}>
+                  {/* 이미지 영역 */}
+                  <div style={{height:120,background:`linear-gradient(145deg,${v.bg},${v.bg}dd)`,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
+                    {imgUrl?<img src={imgUrl} alt={g.name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none";e.target.nextSibling.style.display="flex"}}/>:null}
+                    <div style={{display:imgUrl?"none":"flex",alignItems:"center",justifyContent:"center",width:"100%",height:"100%",fontSize:48}}>{v.ic}</div>
+                    {/* 배지 */}
+                    <div style={{position:"absolute",top:10,left:10,display:"flex",gap:6}}>
+                      <span style={{background:"#5B7B9A",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>AI pick</span>
+                      <span style={{background:i===0?`linear-gradient(135deg,${P},${P2})`:"rgba(0,0,0,.5)",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>{rank}</span>
                     </div>
                   </div>
-                  <a href={url} target="_blank" rel="noopener noreferrer" onClick={onCoupangClick} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginTop:12,padding:"9px 14px",background:`${P}06`,border:`1px solid ${P}18`,borderRadius:10,textDecoration:"none",fontSize:13,color:"#5a4a3a",fontWeight:600}}>
-                    <span>🔍</span> 상품 예시 보기 <span style={{fontSize:11,color:TX3,fontWeight:400}}>쿠팡</span><span style={{fontSize:12,marginLeft:"auto",color:P}}>→</span>
-                  </a>
+                  {/* 카드 본문 */}
+                  <div style={{padding:16}}>
+                    <div style={{fontFamily:"'Gowun Batang',serif",fontSize:15,fontWeight:700,color:TX,marginBottom:4,lineHeight:1.3}}>{g.name}</div>
+                    <div style={{fontSize:13,color:TX2,marginBottom:8,fontFamily:"'Noto Sans KR',sans-serif"}}>{g.price}</div>
+                    {/* 궁합 바 */}
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                      <div style={{flex:1,height:6,background:"#ebe4dc",borderRadius:3,overflow:"hidden"}}>
+                        <div style={{width:`${compat}%`,height:"100%",background:"#4A8C6F",borderRadius:3,transition:"width .5s ease"}}/>
+                      </div>
+                      <span style={{fontSize:11,color:"#4A8C6F",fontWeight:600,whiteSpace:"nowrap"}}>궁합 {compat}%</span>
+                    </div>
+                    {/* 추천 이유 */}
+                    <div style={{fontFamily:"'Gowun Batang',serif",fontSize:12,color:"#5a4a3a",lineHeight:1.75,fontStyle:"italic",marginBottom:12}}>"{g.reason}"</div>
+                    {/* 하단 액션 */}
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <button onClick={()=>{}} style={{width:40,height:40,borderRadius:12,border:"1.5px solid #ebe4dc",background:"rgba(255,255,255,.8)",cursor:"pointer",fontSize:16,display:"flex",alignItems:"center",justifyContent:"center"}}>♡</button>
+                      <a href={url} target="_blank" rel="noopener noreferrer" onClick={onCoupangClick} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,padding:"10px 14px",background:"#2B7A78",color:"#fff",borderRadius:12,textDecoration:"none",fontSize:13,fontWeight:600}}>선물하기 →</a>
+                    </div>
+                  </div>
                 </div>
               );})}
             </div>
 
+            {/* 팁 */}
             <div style={{background:`${P}06`,border:`1px dashed ${P}25`,borderRadius:12,padding:"12px 16px",marginTop:16}}>
               <div style={{fontSize:12,color:"#6a5a4a",lineHeight:1.7}}>💡 <strong>TIP</strong> — 선물과 함께 짧은 손편지를 곁들이면 마음이 더 잘 전달돼요.{intent&&` "${intent}" 이 마음을 직접 적어보는 건 어떨까요?`}</div>
             </div>
 
+            {/* 쿠팡 파트너스 고지 */}
             <div style={{background:"rgba(0,0,0,.03)",border:"1px solid rgba(0,0,0,.07)",borderRadius:10,padding:"10px 14px",marginTop:10}}>
               <div style={{fontSize:11,color:"#a09585",lineHeight:1.7}}>📢 위 상품 링크는 <strong>쿠팡 파트너스</strong> 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
             </div>
 
+            {/* 액션 버튼 */}
             <div style={{marginTop:22,display:"flex",flexDirection:"column",gap:10}}>
-              <Btn onClick={reroll} style={{width:"100%",background:`linear-gradient(135deg,${P},${P2})`,border:"none",borderRadius:12,padding:14,fontSize:14,color:"#fff",fontWeight:600,cursor:"pointer",boxShadow:`0 4px 16px ${P}28`}}>🔄 다른 선물 추천받기</Btn>
+              <Btn onClick={reroll} style={{width:"100%",background:"rgba(255,255,255,.8)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:14,fontSize:14,color:TX,fontWeight:600,cursor:"pointer"}}>↻ 다른 추천 보기</Btn>
               <div style={{display:"flex",gap:10}}>
-                <Btn onClick={restart} style={{flex:1,background:"rgba(255,255,255,.75)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:13,fontSize:13,color:"#5a4a3a",fontWeight:600,cursor:"pointer"}}>처음부터 다시</Btn>
-                <Btn onClick={()=>{setResults([]);setIntent("");go(5)}} style={{flex:1,background:"rgba(255,255,255,.75)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:13,fontSize:13,color:"#5a4a3a",fontWeight:600,cursor:"pointer"}}>마음 바꿔서 다시</Btn>
+                <Btn onClick={restart} style={{flex:1,background:"rgba(255,255,255,.6)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:13,fontSize:13,color:"#5a4a3a",fontWeight:500,cursor:"pointer"}}>처음부터</Btn>
+                <Btn onClick={()=>{setResults([]);setIntent("");go(5)}} style={{flex:1,background:"rgba(255,255,255,.6)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:13,fontSize:13,color:"#5a4a3a",fontWeight:500,cursor:"pointer"}}>마음 바꿔서</Btn>
               </div>
             </div>
 

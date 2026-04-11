@@ -202,27 +202,36 @@ footer{background:var(--brown);color:rgba(250,246,238,.45);padding:48px 5% 32px}
   <a href="/app" class="nav-cta">선물 추천받기 →</a>
 </nav>
 
-<div class="daily-banner" id="dailyBanner">
-  <div class="daily-banner-icon" id="dailyIcon">🎁</div>
-  <div class="daily-banner-body">
-    <div class="daily-banner-date" id="dailyDate"></div>
-    <div class="daily-banner-title" id="dailyTitle">오늘의 선물 추천을 불러오고 있어요<span class="daily-banner-dot">...</span></div>
-    <div class="daily-banner-desc" id="dailyDesc"></div>
-    <div class="daily-banner-gifts" id="dailyGifts"></div>
-    <a href="/today-pick.html" class="daily-banner-cta" id="dailyCta" style="display:none">오늘의 추천 보기 →</a>
-  </div>
-</div>
+<!-- 시즌 슬림 배너 -->
+<a href="/today" id="seasonBar" style="display:flex;align-items:center;justify-content:center;gap:8px;height:36px;background:#FFF8F5;border-bottom:1px solid rgba(196,117,110,.12);font-size:13px;color:var(--brown2);text-decoration:none;margin-top:64px">
+  <span style="width:6px;height:6px;border-radius:50%;background:var(--terra);flex-shrink:0"></span>
+  <span id="seasonText">오늘의 추천 보기</span> <span style="color:var(--terra)">→</span>
+</a>
 
-<section class="hero" style="min-height:100svh;padding:80px 5% 40px;justify-content:center">
+<section class="hero" style="min-height:calc(100svh - 100px);padding:40px 5% 32px;justify-content:center">
   <div class="hero-bg"></div>
   <span class="fl">🎁</span><span class="fl">💌</span><span class="fl">🌿</span><span class="fl">✨</span>
-  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>AI 기반 관계 중심 선물 추천</div>
-  <h1 class="hero-h1">관계에 맞는<br><em>AI 선물 추천</em></h1>
-  <p class="hero-h2">3분이면 완벽한 선물 찾기</p>
-  <p class="hero-desc" style="margin-bottom:36px"><strong>이 관계에서 어떤 선물이 맞는지</strong> 몰라서 고민이셨죠?<br>마로가 관계·상황·마음을 분석해 딱 맞는 선물을 찾아줘요.</p>
+  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>30초 무료 AI 선물 추천</div>
+  <h1 class="hero-h1">선물 고민,<br><em>마로</em>가 대신 해드려요</h1>
+  <p class="hero-h2">관계·상황·마음을 분석해 딱 맞는 선물 Top 3을 추천해드려요</p>
   <div class="hero-actions">
     <a href="/app" class="btn-primary" style="padding:18px 52px;font-size:17px">지금 시작하기 →</a>
-    <p class="hero-note">완전 무료 · 로그인 불필요</p>
+    <p class="hero-note">로그인 불필요 · 완전 무료 · 30초</p>
+  </div>
+  <!-- 가치 3칩 -->
+  <div style="display:flex;gap:10px;margin-top:36px;animation:fadeUp .7s ease .3s both">
+    <div style="flex:1;text-align:center;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border:1px solid rgba(196,117,110,.12);border-radius:14px;padding:14px 8px">
+      <div style="font-size:22px;margin-bottom:6px">🧠</div>
+      <div style="font-size:12px;font-weight:600;color:var(--brown)">고민 해결</div>
+    </div>
+    <div style="flex:1;text-align:center;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border:1px solid rgba(196,117,110,.12);border-radius:14px;padding:14px 8px">
+      <div style="font-size:22px;margin-bottom:6px">🛡️</div>
+      <div style="font-size:12px;font-weight:600;color:var(--brown)">실수 방지</div>
+    </div>
+    <div style="flex:1;text-align:center;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border:1px solid rgba(196,117,110,.12);border-radius:14px;padding:14px 8px">
+      <div style="font-size:22px;margin-bottom:6px">💌</div>
+      <div style="font-size:12px;font-weight:600;color:var(--brown)">마음 전달</div>
+    </div>
   </div>
 </section>
 
@@ -387,91 +396,17 @@ window.addEventListener('scroll',()=>{
     window.scrollY > 40 ? '0 4px 24px rgba(45,32,24,.07)' : 'none';
 });
 
-(async function(){
-  const HOLIDAYS=[
-    {m:1,d:14,name:"다이어리데이",icon:"📔",desc:"새해 다이어리를 선물하는 날"},
-    {m:2,d:14,name:"발렌타인데이",icon:"🍫",desc:"사랑하는 사람에게 초콜릿을 전하는 날"},
-    {m:3,d:3,name:"삼겹살데이",icon:"🥩",desc:"맛있는 고기를 함께 나누는 날"},
-    {m:3,d:14,name:"화이트데이",icon:"🍬",desc:"사탕과 함께 마음을 전하는 날"},
-    {m:4,d:14,name:"블랙데이",icon:"🍜",desc:"짜장면으로 위로하는 날"},
-    {m:5,d:5,name:"어린이날",icon:"🧸",desc:"아이들에게 특별한 하루를 선물하는 날"},
-    {m:5,d:8,name:"어버이날",icon:"🌹",desc:"부모님께 감사의 마음을 전하는 날"},
-    {m:5,d:15,name:"스승의날",icon:"🎓",desc:"선생님께 감사를 표현하는 날"},
-    {m:6,d:14,name:"키스데이",icon:"💋",desc:"연인과 사랑을 확인하는 날"},
-    {m:7,d:14,name:"실버데이",icon:"💍",desc:"연인에게 은 액세서리를 선물하는 날"},
-    {m:8,d:14,name:"그린데이",icon:"🌿",desc:"자연 속에서 함께하는 날"},
-    {m:9,d:14,name:"포토데이",icon:"📸",desc:"함께한 순간을 사진으로 남기는 날"},
-    {m:10,d:14,name:"와인데이",icon:"🍷",desc:"와인과 함께 로맨틱한 저녁을 보내는 날"},
-    {m:10,d:31,name:"할로윈",icon:"🎃",desc:"재미있는 선물로 분위기를 띄우는 날"},
-    {m:11,d:11,name:"빼빼로데이",icon:"🍫",desc:"빼빼로와 마음을 나누는 날"},
-    {m:11,d:14,name:"무비데이",icon:"🎬",desc:"영화와 함께하는 데이트를 선물하는 날"},
-    {m:12,d:14,name:"허그데이",icon:"🤗",desc:"따뜻한 포옹과 선물을 나누는 날"},
-    {m:12,d:25,name:"크리스마스",icon:"🎄",desc:"소중한 사람들과 선물을 나누는 날"},
-  ];
-
-  const today=new Date();
-  const tm=today.getMonth()+1, td=today.getDate();
-
-  let holiday=HOLIDAYS.find(h=>h.m===tm&&h.d===td);
-  let isToday=!!holiday;
-  if(!holiday){
-    for(let i=1;i<=7;i++){
-      const future=new Date(today);future.setDate(today.getDate()+i);
-      const fm=future.getMonth()+1,fd=future.getDate();
-      holiday=HOLIDAYS.find(h=>h.m===fm&&h.d===fd);
-      if(holiday){holiday._daysUntil=i;break;}
-    }
+// 시즌 슬림 배너 자동 업데이트
+(function(){
+  const HL=[{m:4,d:14,n:"블랙데이"},{m:5,d:5,n:"어린이날"},{m:5,d:8,n:"어버이날"},{m:5,d:15,n:"스승의날"},{m:11,d:11,n:"빼빼로데이"},{m:12,d:25,n:"크리스마스"}];
+  const t=new Date(),tm=t.getMonth()+1,td=t.getDate();
+  let h=null;
+  for(const e of HL){
+    const diff=(new Date(t.getFullYear(),e.m-1,e.d)-t)/(1000*60*60*24);
+    if(diff>=0&&diff<=7){h={...e,d:Math.ceil(diff)};break;}
   }
-
-  const banner=document.getElementById("dailyBanner");
-  if(!holiday){
-    holiday={name:"오늘",icon:"✨",desc:"특별한 이유 없이 전하는 마음이 가장 감동이에요",m:tm,d:td};
-  }
-
-  banner.classList.add("show");
-  document.getElementById("dailyIcon").textContent=holiday.icon;
-
-  const dateStr=isToday?`오늘 ${tm}월 ${td}일은 ${holiday.name}이에요`
-    :holiday._daysUntil?`${holiday._daysUntil}일 뒤 ${holiday.m}월 ${holiday.d}일은 ${holiday.name}이에요`
-    :`오늘 ${tm}월 ${td}일`;
-  document.getElementById("dailyDate").textContent=dateStr;
-
-  try{
-    const prompt=`오늘은 ${tm}월 ${td}일이고 ${holiday.name}${isToday?"이에요":"이 다가오고 있어요"}.
-${holiday.desc}
-
-이 날에 어울리는 선물 아이디어 3가지를 추천해주세요.
-각 선물은 상품명과 이모지만 간단히.
-그리고 이 날에 대한 한 줄 감성 멘트도 작성해주세요.
-
-JSON만 출력: {"title":"감성 한 줄 멘트","gifts":[{"name":"상품명","emoji":"이모지"},{"name":"상품명","emoji":"이모지"},{"name":"상품명","emoji":"이모지"}]}`;
-
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,messages:[{role:"user",content:prompt}]})
-    });
-    const data=await res.json();
-    const text=data.content?.[0]?.text||"";
-    const match=text.match(/\{[\s\S]*\}/);
-    if(match){
-      const r=JSON.parse(match[0]);
-      document.getElementById("dailyTitle").textContent=r.title||holiday.desc;
-      document.getElementById("dailyDesc").textContent=holiday.desc;
-      const giftsEl=document.getElementById("dailyGifts");
-      giftsEl.innerHTML="";
-      (r.gifts||[]).forEach(g=>{
-        const chip=document.createElement("div");
-        chip.className="daily-gift-chip";
-        chip.textContent=`${g.emoji} ${g.name}`;
-        giftsEl.appendChild(chip);
-      });
-      document.getElementById("dailyCta").style.display="inline-flex";
-    }
-  }catch(e){
-    document.getElementById("dailyTitle").textContent=holiday.desc;
-    document.getElementById("dailyDesc").textContent=`${holiday.name}에 어울리는 선물을 마로가 추천해드려요`;
-    document.getElementById("dailyCta").style.display="inline-flex";
-  }
+  const el=document.getElementById("seasonText");
+  if(h&&el) el.textContent=h.d===0?`${h.n} 당일 — 오늘의 추천 보기`:`${h.n} D-${h.d} — 오늘의 추천 보기`;
 })();
 </script>
 </body>
