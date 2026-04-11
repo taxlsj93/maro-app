@@ -44,8 +44,12 @@ export default async function handler(req) {
     const tl = Array.isArray(tags) && tags.length > 0 ? ` 취향:${tags.slice(0, 5).map(t => safe(t, 20)).join(',')}` : '';
     const fm = Array.isArray(tags) && tags.includes('funny');
 
-    const prompt = `선물추천 JSON만 출력. 관계:${safe(relation)}(${safe(depth) || '일반'}) 상황:${safe(occasion)} 예산:${safe(budget)} 마음:"${safe(intent, 100) || '없음'}"${tl} 계절:${safe(season, 10)}
+    // 랜덤 시드로 매번 다른 결과 유도
+    const seed = Math.random().toString(36).slice(2, 6);
+
+    const prompt = `선물추천 JSON만 출력. 관계:${safe(relation)}(${safe(depth) || '일반'}) 상황:${safe(occasion)} 예산:${safe(budget)} 마음:"${safe(intent, 100) || '없음'}"${tl} 계절:${safe(season, 10)} seed:${seed}
 규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용${fm ? ' B급감성 웃긴선물' : ''}
+다양성:이전추천과 중복되지않는 새로운선물 추천,매번 다양한 카테고리에서 선택,흔한추천(양말/머그컵/기프티콘) 지양하고 구체적 브랜드/상품명 제시
 추가규칙:①수혜자관점 실용성가중(받는사람이 실제쓸지 판단)②관계깊이전략:먼관계(아는사이/다른팀/기타인척)→무난안전한선물,가까운관계(절친/3년이상/시부모)→대담특별한선물③김영란법:직장관계중 공직자/교사일때 식품5만원/선물5만원/경조사10만원 한도엄수,초과시 반드시 한도내 대안제시④세대별가중:20대Z세대→경험형/디지털/구독서비스선호,50대이상시니어→건강식품/실용품/전통선물선호
 {"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},...(3개)]}`;
 

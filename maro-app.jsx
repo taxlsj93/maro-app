@@ -419,9 +419,38 @@ const TAG_KEYWORDS = {
   practical:["실용","청소기","수건","타올","정리","세제","양말"],
 };
 
-// ── Get fallback: tag-aware shuffle & pick 3 ──
-function gfb(o, b, userTags, relId) {
-  const pool = (relId === 'inlaw' && FB[`${o}|${b}|inlaw`]) || FB[`${o}|${b}`] || FD[b] || FD.b2;
+// ── 관계 깊이 → 가벼운/특별한 분류 ──
+const LIGHT_DEPTHS = ["썸 단계","3개월 미만","아는 사이","가끔 만나는 친구","다른 팀","졸업 후 인연","사촌","기타 인척","시누이·처남"];
+const DEEP_DEPTHS = ["3년 이상","10년 이상","절친","시부모·장인장모","함께 사는","3~10년차"];
+
+// ── Get fallback: tag-aware shuffle & pick 3 (관계깊이 반영) ──
+function gfb(o, b, userTags, relId, depth) {
+  // 관계별 전용 풀 우선 → 일반 풀 → 예산 기본 풀
+  let pool = (relId === 'inlaw' && FB[`${o}|${b}|inlaw`]) || FB[`${o}|${b}`] || FD[b] || FD.b2;
+  pool = [...pool]; // 원본 보호용 복사
+
+  // 관계 깊이에 따라 가격 필터링으로 풀 조정
+  const isLight = LIGHT_DEPTHS.includes(depth);
+  const isDeep = DEEP_DEPTHS.includes(depth);
+  if (isLight && pool.length > 4) {
+    // 가벼운 관계: 가격이 낮은 쪽 우선 (price 문자열에서 첫 숫자 기준)
+    pool.sort((a,b) => {
+      const pa = parseInt((a.price||"").match(/\d+/)?.[0]||"50");
+      const pb = parseInt((b.price||"").match(/\d+/)?.[0]||"50");
+      return pa - pb;
+    });
+    pool = pool.slice(0, Math.max(4, Math.ceil(pool.length * 0.6)));
+  } else if (isDeep && pool.length > 4) {
+    // 깊은 관계: 가격이 높은 쪽(특별한 선물) 우선
+    pool.sort((a,b) => {
+      const pa = parseInt((a.price||"").match(/\d+/)?.[0]||"50");
+      const pb = parseInt((b.price||"").match(/\d+/)?.[0]||"50");
+      return pb - pa;
+    });
+    pool = pool.slice(0, Math.max(4, Math.ceil(pool.length * 0.6)));
+  }
+
+  // 태그 없으면 셔플 후 3개
   if (!userTags || userTags.length === 0) return shuffle(pool).slice(0, 3);
 
   // Build keyword set from user tags
@@ -434,19 +463,18 @@ function gfb(o, b, userTags, relId) {
     return { ...item, _score: score };
   });
 
-  // Sort by score desc, then shuffle within same score for variety
-  scored.sort((a, b) => b._score - a._score);
-
-  // Pick: at least 1 tag-matched if available, rest shuffled for diversity
-  const matched = scored.filter(x => x._score > 0);
+  const matched = shuffle(scored.filter(x => x._score > 0));
   const unmatched = shuffle(scored.filter(x => x._score === 0));
 
+  // 태그 매칭 강제: 최소 1개는 반드시 태그 매칭 상품 포함
   let picks;
   if (matched.length >= 3) {
-    picks = shuffle(matched).slice(0, 3);
-  } else if (matched.length > 0) {
-    picks = [...shuffle(matched), ...unmatched].slice(0, 3);
+    picks = matched.slice(0, 3);
+  } else if (matched.length >= 1) {
+    // 매칭 1~2개 확보 + 나머지는 unmatched에서 채움
+    picks = [...matched, ...unmatched].slice(0, 3);
   } else {
+    // 매칭 0개: 셔플만
     picks = shuffle(scored).slice(0, 3);
   }
 
@@ -504,9 +532,9 @@ export default function App(){
   // ══════════════════════════════════════
   // ── IMPROVED AI Analysis ──
   // ══════════════════════════════════════
-  // ── localStorage 캐시 헬퍼 ──
+  // ── localStorage 캐시 헬퍼 (같은 조합이라도 1시간 지나면 새 결과) ──
   const CACHE_PREFIX="maro_rec_";
-  const CACHE_TTL=1000*60*60*24; // 24시간
+  const CACHE_TTL=1000*60*60; // 1시간 (같은 조합 재요청 시 다양한 결과 보장)
   function cacheKey(r,d,o,b,t){return CACHE_PREFIX+[r,d,o,b,...[...t].sort()].join("|");}
   function getCache(key){try{const c=JSON.parse(localStorage.getItem(key));if(c&&Date.now()-c.ts<CACHE_TTL)return c.data;localStorage.removeItem(key);}catch{}return null;}
   function setCache(key,data){try{localStorage.setItem(key,JSON.stringify({ts:Date.now(),data}));}catch{}}
@@ -519,7 +547,7 @@ export default function App(){
     ga('recommend_start',{relation:rel?.label,occasion:occ?.label,budget:bud?.label,tags:tags.join(',')});
     setLoading(true);go(6);
 
-    // 캐시 확인
+    // 캐시 확인 (1시간 이내 동일 조합만 캐시 사용)
     const ck=cacheKey(rel?.id,dep,occ?.id,bud?.id,tags);
     const cached=getCache(ck);
     if(cached){setResults(cached);setLoading(false);return;}
@@ -535,10 +563,17 @@ export default function App(){
       setCache(ck,d.gifts);
       ga('recommend_complete',{source:'ai',count:d.gifts.length});
     }catch{
-      setResults(gfb(occ?.id,bud?.id,tags,rel?.id));
+      setResults(gfb(occ?.id,bud?.id,tags,rel?.id,dep));
       ga('recommend_complete',{source:'fallback',count:3});
     }
     setLoading(false);
+  };
+
+  // "다시 추천받기" — 캐시 무시하고 새 결과
+  const reroll=async()=>{
+    const ck=cacheKey(rel?.id,dep,occ?.id,bud?.id,tags);
+    try{localStorage.removeItem(ck);}catch{}
+    await analyze();
   };
 
   const restart=()=>{setRel(null);setDep("");setOcc(null);setBud(null);setIntent("");setTags([]);setResults([]);setLoading(false);go(0);};
@@ -683,9 +718,12 @@ export default function App(){
               <div style={{fontSize:11,color:"#a09585",lineHeight:1.7}}>📢 위 상품 링크는 <strong>쿠팡 파트너스</strong> 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
             </div>
 
-            <div style={{marginTop:22,display:"flex",gap:10}}>
-              <Btn onClick={restart} style={{flex:1,background:"rgba(255,255,255,.75)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:13,fontSize:13,color:"#5a4a3a",fontWeight:600,cursor:"pointer"}}>처음부터 다시</Btn>
-              <Btn onClick={()=>{setResults([]);setIntent("");go(5)}} style={{flex:1,background:`linear-gradient(135deg,${P},${P2})`,border:"none",borderRadius:12,padding:13,fontSize:13,color:"#fff",fontWeight:600,cursor:"pointer"}}>마음을 바꿔서 다시</Btn>
+            <div style={{marginTop:22,display:"flex",flexDirection:"column",gap:10}}>
+              <Btn onClick={reroll} style={{width:"100%",background:`linear-gradient(135deg,${P},${P2})`,border:"none",borderRadius:12,padding:14,fontSize:14,color:"#fff",fontWeight:600,cursor:"pointer",boxShadow:`0 4px 16px ${P}28`}}>🔄 다른 선물 추천받기</Btn>
+              <div style={{display:"flex",gap:10}}>
+                <Btn onClick={restart} style={{flex:1,background:"rgba(255,255,255,.75)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:13,fontSize:13,color:"#5a4a3a",fontWeight:600,cursor:"pointer"}}>처음부터 다시</Btn>
+                <Btn onClick={()=>{setResults([]);setIntent("");go(5)}} style={{flex:1,background:"rgba(255,255,255,.75)",border:"1.5px solid #ebe4dc",borderRadius:12,padding:13,fontSize:13,color:"#5a4a3a",fontWeight:600,cursor:"pointer"}}>마음 바꿔서 다시</Btn>
+              </div>
             </div>
 
             <div style={{textAlign:"center",marginTop:28,paddingBottom:16}}>

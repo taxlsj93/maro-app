@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-04-11
+- **[gift-data]** 변경 파일: `maro-app.jsx`, `api/recommend.js` — 추천 알고리즘 긴급 수정: 캐시 TTL 1시간, AI 다양성 지시+랜덤시드, 관계깊이별 풀 분리, 태그 강제 매칭, 다시 추천받기 버튼
 - **[marketing]** 변경 파일: `content/marketing/reels-copy-4.md` — 인스타 릴스 카피 4종 (시연형/비교형/공감밈/리스트형) + 해시태그/게시 일정
 - **[marketing]** 변경 파일: `content/marketing/card-news-copy-4.md` — 카드뉴스 카피 4종 (여친TOP5/부모님금기/1년vs5년/AI메시지) + 슬라이드별 구성
 - **[content-seo]** 변경 파일: `content/blog/*.md` — 네이버 블로그 포스팅 3개 (여친생일3만원/아버지생신/어버이날TOP10)
