@@ -12,6 +12,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 MARO (마로 — "마음을 새기는 선물") is a Korean-language gift recommendation web app. Users select a relationship type, occasion, budget, and interests to receive curated gift suggestions. Built with React 18 + Vite 4, deployed as static files on Vercel.
 
+- **포지셔닝 (절충)**: 감성 브랜드 + 실용 가치. "마음을 새기는 선물"(슬로건 유지) + "3분 만에 딱 맞는 선물 찾기"(실용 훅). 감성으로 끌어들이고, 실용으로 전환시킨다.
+  - 대외 카피: 감성 우선 ("마음을 새기는 선물", "어떤 마음을 전할지부터")
+  - 기능 설명: 실용 강조 ("3분 AI 추천", "관계×상황×예산 = Top 3", "바로 구매 가능")
+  - 콘텐츠 밸런스: 감성 60% + 실용 40%
 - **타겟**: 20대 여성 (1차) → 사회생활을 하는 모든 사람 (확장)
 - **수익 모델**: 쿠팡 파트너스 제휴 (PARTNER_ID: AF3339921)
 
