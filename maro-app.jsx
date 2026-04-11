@@ -532,13 +532,6 @@ export default function App(){
   // ══════════════════════════════════════
   // ── IMPROVED AI Analysis ──
   // ══════════════════════════════════════
-  // ── localStorage 캐시 헬퍼 (같은 조합이라도 1시간 지나면 새 결과) ──
-  const CACHE_PREFIX="maro_rec_";
-  const CACHE_TTL=1000*60*60; // 1시간 (같은 조합 재요청 시 다양한 결과 보장)
-  function cacheKey(r,d,o,b,t){return CACHE_PREFIX+[r,d,o,b,...[...t].sort()].join("|");}
-  function getCache(key){try{const c=JSON.parse(localStorage.getItem(key));if(c&&Date.now()-c.ts<CACHE_TTL)return c.data;localStorage.removeItem(key);}catch{}return null;}
-  function setCache(key,data){try{localStorage.setItem(key,JSON.stringify({ts:Date.now(),data}));}catch{}}
-
   // ── GA4 이벤트 헬퍼 ──
   const ga=(event,params={})=>{try{window.gtag?.('event',event,params)}catch{}};
 
@@ -546,11 +539,6 @@ export default function App(){
   const analyze=async()=>{
     ga('recommend_start',{relation:rel?.label,occasion:occ?.label,budget:bud?.label,tags:tags.join(',')});
     setLoading(true);go(6);
-
-    // 캐시 확인 (1시간 이내 동일 조합만 캐시 사용)
-    const ck=cacheKey(rel?.id,dep,occ?.id,bud?.id,tags);
-    const cached=getCache(ck);
-    if(cached){setResults(cached);setLoading(false);return;}
 
     const season=["봄","봄","여름","여름","가을","가을","겨울","겨울","봄","봄","겨울","겨울"][new Date().getMonth()];
 
@@ -560,7 +548,6 @@ export default function App(){
       const d=await r.json();
       if(!d.gifts?.length)throw 0;
       setResults(d.gifts);
-      setCache(ck,d.gifts);
       ga('recommend_complete',{source:'ai',count:d.gifts.length});
     }catch{
       setResults(gfb(occ?.id,bud?.id,tags,rel?.id,dep));
@@ -569,12 +556,8 @@ export default function App(){
     setLoading(false);
   };
 
-  // "다시 추천받기" — 캐시 무시하고 새 결과
-  const reroll=async()=>{
-    const ck=cacheKey(rel?.id,dep,occ?.id,bud?.id,tags);
-    try{localStorage.removeItem(ck);}catch{}
-    await analyze();
-  };
+  // "다시 추천받기" — 항상 새로운 API 호출
+  const reroll=()=>analyze();
 
   const restart=()=>{setRel(null);setDep("");setOcc(null);setBud(null);setIntent("");setTags([]);setResults([]);setLoading(false);go(0);};
   const prog=Math.min(step,5);

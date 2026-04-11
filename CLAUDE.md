@@ -81,8 +81,9 @@ All styles are inline CSS objects within React components. Design uses a warm cr
 - 요약: 작업 내용 한 줄 설명
 ```
 
-8. 모든 에이전트는 커밋 완료 후 Notion 마로 대시보드(`page_id: 33edf765-9901-81d1-b54c-d4b1e640c1ed`)의 변경 이력 섹션에 날짜, 에이전트명, 변경 파일, 작업 요약을 추가한다.
-9. `@deploy-test`는 배포 후 Vercel MCP를 통해 배포 상태를 확인하고, 실패 시 자동으로 롤백한다.
+8. 작업 진행 시 Notion 마로 대시보드(`page_id: 33edf765-9901-81d1-b54c-d4b1e640c1ed`)를 자동으로 업데이트한다.
+9. Notion 업데이트 실패 시 CHANGELOG.md와 SYNC.md에 반드시 기록한다. 선재가 claude.ai에서 수동 반영한다.
+10. `@deploy-test`는 배포 후 Vercel MCP를 통해 배포 상태를 확인하고, 실패 시 자동으로 롤백한다.
 
 ## 에이전트 역할 경계
 
