@@ -1,14 +1,70 @@
 export const config = { runtime: 'edge', maxDuration: 25 };
 
-// fetch with timeout (Edge Function 안전 마진 확보)
-function fetchWithTimeout(url, opts, ms = 15000) {
+function fetchWithTimeout(url, opts, ms = 12000) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), ms);
   return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(timer));
 }
 
+// ── JSON 파싱 3단계 ──
+function extractGifts(text) {
+  if (!text) return null;
+  // 0단계: ```json ... ``` 마크다운 블록 제거
+  const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+
+  // 1단계: JSON.parse 직접 시도
+  try {
+    const d = JSON.parse(cleaned);
+    if (validateGifts(d.gifts)) return d.gifts;
+    if (Array.isArray(d) && validateGifts(d)) return d;
+  } catch {}
+
+  // 2단계: {"gifts":[...]} 패턴 추출
+  try {
+    const m = cleaned.match(/\{\s*"gifts"\s*:\s*\[[\s\S]*?\]\s*\}/);
+    if (m) { const d = JSON.parse(m[0]); if (validateGifts(d.gifts)) return d.gifts; }
+  } catch {}
+
+  // 3단계: 가장 바깥 {...} 또는 [...] 추출
+  try {
+    const m = cleaned.match(/\{[\s\S]*\}/);
+    if (m) { const d = JSON.parse(m[0]); if (validateGifts(d.gifts)) return d.gifts; }
+  } catch {}
+  try {
+    const m = cleaned.match(/\[[\s\S]*\]/);
+    if (m) { const arr = JSON.parse(m[0]); if (validateGifts(arr)) return arr; }
+  } catch {}
+
+  return null;
+}
+
+// ── 응답 검증: 각 gift에 필수 필드 확인 ──
+function validateGifts(gifts) {
+  if (!Array.isArray(gifts) || gifts.length === 0) return false;
+  return gifts.every(g => g.name && g.price && g.reason && g.searchKeyword);
+}
+
+// ── Claude API 1회 호출 ──
+async function callClaude(apiKey, model, prompt, temperature) {
+  const res = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model,
+      max_tokens: 500,
+      temperature,
+      system: '반드시 JSON만 출력하세요. 다른 텍스트를 절대 포함하지 마세요. ```json 마크다운 블록도 금지. 순수 JSON 객체만 출력.',
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+  return { res, status: res.status };
+}
+
 export default async function handler(req) {
-  // CORS
   const origin = req.headers.get('origin') || '';
   const allowedOrigins = ['https://maro.ai.kr', 'http://localhost:5173', 'http://localhost:3000'];
   const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
@@ -21,144 +77,93 @@ export default async function handler(req) {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
   if (req.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: corsHeaders });
 
-  // API key check
   const apiKey = (process.env.ANTHROPIC_API_KEY || '').trim();
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'API 설정 오류', detail: 'ANTHROPIC_API_KEY 환경변수가 설정되지 않았습니다' }), {
+    return new Response(JSON.stringify({ error: 'API 설정 오류', detail: 'ANTHROPIC_API_KEY 미설정' }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 
   try {
     const { relation, depth, occasion, budget, intent, tags, season } = await req.json();
-
-    // 입력 검증
     if (!relation || !occasion || !budget) {
       return new Response(JSON.stringify({ error: '필수 파라미터 누락' }), {
         status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
 
-    // 길이 제한 (injection 방지)
     const safe = (s, max = 50) => String(s || '').slice(0, max);
     const tl = Array.isArray(tags) && tags.length > 0 ? ` 취향:${tags.slice(0, 5).map(t => safe(t, 20)).join(',')}` : '';
     const fm = Array.isArray(tags) && tags.includes('funny');
 
-    const prompt = `현재 시간: ${new Date().toISOString()}
-선물추천 JSON만 출력. 관계:${safe(relation)}(${safe(depth) || '일반'}) 상황:${safe(occasion)} 예산:${safe(budget)} 마음:"${safe(intent, 100) || '없음'}"${tl} 계절:${safe(season, 10)}
-규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용${fm ? ' B급감성 웃긴선물' : ''}
-다양성:반드시 이전과 다른 새로운 상품을 추천해줘. 같은 상품을 반복하지 마. 다양한 카테고리에서 골라줘. 흔한추천(양말/머그컵/기프티콘) 지양,구체적 브랜드/상품명 제시
-추가규칙:①수혜자관점 실용성가중(받는사람이 실제쓸지 판단)②관계깊이전략:먼관계(아는사이/다른팀/기타인척)→무난안전한선물,가까운관계(절친/3년이상/시부모)→대담특별한선물③김영란법:직장관계중 공직자/교사일때 식품5만원/선물5만원/경조사10만원 한도엄수,초과시 반드시 한도내 대안제시④세대별가중:20대Z세대→경험형/디지털/구독서비스선호,50대이상시니어→건강식품/실용품/전통선물선호
-{"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},...(3개)]}`;
+    const prompt = `현재 시간:${new Date().toISOString()} 관계:${safe(relation)}(${safe(depth)||'일반'}) 상황:${safe(occasion)} 예산:${safe(budget)} 마음:"${safe(intent,100)||'없음'}"${tl} 계절:${safe(season,10)}
+규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용${fm?' B급감성 웃긴선물':''}
+다양성:이전과 다른 새로운 상품 추천,같은 상품 반복 금지,다양한 카테고리에서 선택,흔한추천(양말/머그컵/기프티콘) 지양
+추가:①수혜자관점 실용성②관계깊이전략(먼→안전,가까운→대담)③김영란법(직장 공직자 식품5만/선물5만/경조사10만)④세대별(Z세대→경험/디지털,시니어→건강/실용)
+JSON:
+{"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"}]}`;
 
-    // 모델 fallback: haiku(빠름) → sonnet 순서로 시도
-    const models = ['claude-haiku-4-5-20251001', 'claude-sonnet-4-5-20250514'];
-    let data = null;
-    let lastStatus = 0;
+    const HAIKU = 'claude-haiku-4-5-20251001';
+    const SONNET = 'claude-sonnet-4-5-20250514';
+
+    // ── 3단계 재시도 전략 ──
+    // 1차: haiku temp 0.7
+    // 2차 (파싱 실패): haiku temp 0.5
+    // 3차 (파싱 실패): sonnet temp 0.5
+    const attempts = [
+      { model: HAIKU, temp: 0.7 },
+      { model: HAIKU, temp: 0.5 },
+      { model: SONNET, temp: 0.5 },
+    ];
+
     let lastError = '';
 
-    for (const model of models) {
+    for (const { model, temp } of attempts) {
       try {
-        const res = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-          },
-          body: JSON.stringify({
-            model,
-            max_tokens: 500,
-            temperature: 0.9,
-            messages: [{ role: 'user', content: prompt }],
-          }),
-        });
+        const { res, status } = await callClaude(apiKey, model, prompt, temp);
 
-        lastStatus = res.status;
-
-        if (res.ok) {
-          data = await res.json();
-          break;
+        // 인증 에러 → 즉시 중단
+        if (status === 401 || status === 403) {
+          const err = await res.json().catch(() => ({}));
+          return new Response(JSON.stringify({ error: '인증 실패', detail: err.error?.message }), {
+            status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
         }
 
-        // 401/403 = 키 문제, 어떤 모델이든 실패하므로 바로 중단
-        if (res.status === 401 || res.status === 403) {
-          const errBody = await res.json().catch(() => ({}));
-          lastError = errBody.error?.message || `인증 실패 (${res.status})`;
-          break;
+        // API 에러 → 다음 시도
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          lastError = `${model} HTTP ${status}: ${err.error?.message || ''}`;
+          continue;
         }
 
-        // 404/429/529/5xx = 재시도 가능, 다음 모델 시도
-        const errBody = await res.json().catch(() => ({}));
-        lastError = errBody.error?.message || `API 오류 (${res.status})`;
+        const data = await res.json();
+        const text = data.content?.[0]?.text || '';
+        const gifts = extractGifts(text);
+
+        if (gifts) {
+          return new Response(JSON.stringify({ gifts }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'no-store, no-cache, must-revalidate' }
+          });
+        }
+
+        // 파싱 실패 → 다음 시도
+        lastError = `${model} t=${temp} 파싱 실패`;
         continue;
-      } catch (fetchErr) {
-        // 타임아웃 또는 네트워크 에러 → 다음 모델 시도
-        lastError = fetchErr.name === 'AbortError' ? `모델 ${model} 타임아웃` : `네트워크 오류: ${fetchErr.message}`;
+
+      } catch (e) {
+        lastError = e.name === 'AbortError' ? `${model} 타임아웃` : e.message;
         continue;
       }
     }
 
-    if (!data) {
-      return new Response(JSON.stringify({ error: '추천 생성 실패', status: lastStatus, detail: lastError }), {
-        status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
-    // JSON 파싱 (강건한 추출)
-    function extractGifts(apiData) {
-      const text = apiData.content?.[0]?.text || '';
-      // 1차: {"gifts":[...]} 패턴 매칭
-      const m1 = text.match(/\{"gifts"\s*:\s*\[[\s\S]*?\]\s*\}/);
-      if (m1) {
-        const p = JSON.parse(m1[0]);
-        if (p.gifts?.length) return p.gifts;
-      }
-      // 2차: 가장 바깥 {...} 매칭
-      const m2 = text.match(/\{[\s\S]*\}/);
-      if (m2) {
-        const p = JSON.parse(m2[0]);
-        if (p.gifts?.length) return p.gifts;
-      }
-      // 3차: [...] 배열만 있는 경우
-      const m3 = text.match(/\[[\s\S]*\]/);
-      if (m3) {
-        const arr = JSON.parse(m3[0]);
-        if (Array.isArray(arr) && arr.length && arr[0].name) return arr;
-      }
-      return null;
-    }
-
-    let gifts = extractGifts(data);
-
-    // 파싱 실패 시 1회 재시도 (temperature가 높아서 간헐적 실패 가능)
-    if (!gifts) {
-      const retryModel = models[0]; // 가장 빠른 모델로 재시도
-      try {
-        const retryRes = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-          body: JSON.stringify({ model: retryModel, max_tokens: 500, temperature: 0.7, messages: [{ role: 'user', content: prompt }] }),
-        });
-        if (retryRes.ok) {
-          const retryData = await retryRes.json();
-          gifts = extractGifts(retryData);
-        }
-      } catch {}
-    }
-
-    if (!gifts) {
-      return new Response(JSON.stringify({ error: '추천 생성 실패', detail: 'JSON 파싱 실패 (재시도 포함)' }), {
-        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
-    return new Response(JSON.stringify({ gifts }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'no-store, no-cache, must-revalidate' }
+    // 3회 모두 실패
+    return new Response(JSON.stringify({ error: '추천 생성 실패', detail: lastError }), {
+      status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 
   } catch (e) {
-    return new Response(JSON.stringify({ error: '추천을 생성하지 못했어요. 다시 시도해주세요.', detail: e.message }), {
+    return new Response(JSON.stringify({ error: '추천을 생성하지 못했어요.', detail: e.message }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
