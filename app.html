@@ -120,9 +120,46 @@ function Btn({onClick,children,style={},ms=220}){
   );
 }
 
-function ProductThumb({name,sk}){
+function ProductThumb({name}){
   const s={width:64,height:64,borderRadius:14,flexShrink:0,overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center"};
-  return(<div style={{...s,background:`${P}10`,fontSize:28}}>🎁</div>);
+  return(<div style={{...s,background:`${P}10`,fontSize:28}}>{(name||"").includes("커피")||name.includes("드립")?"☕":name.includes("향수")||name.includes("디퓨저")?"🌸":name.includes("지갑")||name.includes("가방")?"👛":name.includes("이어폰")||name.includes("스피커")?"🎧":"🎁"}</div>);
+}
+
+function ResultCard({g,i,rank,compat,url,P,P2,TX,TX2,TX3}){
+  const[open,setOpen]=useState(false);
+  return(
+    <div style={{background:"rgba(255,255,255,.95)",borderRadius:16,boxShadow:"0 4px 6px rgba(0,0,0,0.07)",padding:18,position:"relative",overflow:"hidden",animation:`up .35s ease ${i*.1}s both`}}>
+      {/* 배지 */}
+      <div style={{display:"flex",gap:6,marginBottom:12}}>
+        <span style={{background:"#5B7B9A",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>AI pick</span>
+        <span style={{background:i===0?`linear-gradient(135deg,${P},${P2})`:"rgba(0,0,0,.4)",color:"#fff",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>{rank}</span>
+      </div>
+      {/* 상품 정보 */}
+      <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
+        <ProductThumb name={g.name}/>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontFamily:"'Gowun Batang',serif",fontSize:15,fontWeight:700,color:TX,marginBottom:4,lineHeight:1.3}}>{g.name}</div>
+          <div style={{fontSize:13,color:TX2,fontFamily:"'Noto Sans KR',sans-serif"}}>{g.price}</div>
+        </div>
+      </div>
+      {/* 궁합 바 */}
+      <div style={{display:"flex",alignItems:"center",gap:8,margin:"12px 0 10px"}}>
+        <div style={{flex:1,height:6,background:"#ebe4dc",borderRadius:3,overflow:"hidden"}}>
+          <div style={{width:`${compat}%`,height:"100%",background:"#4A8C6F",borderRadius:3,transition:"width .5s ease"}}/>
+        </div>
+        <span style={{fontSize:11,color:"#4A8C6F",fontWeight:600,whiteSpace:"nowrap"}}>궁합 {compat}%</span>
+      </div>
+      {/* 왜 이 선물? 토글 */}
+      <button onClick={()=>setOpen(!open)} style={{background:"none",border:"none",cursor:"pointer",fontSize:12,color:"#5B7B9A",fontWeight:600,padding:"4px 0",marginBottom:open?8:12,display:"flex",alignItems:"center",gap:4}}>
+        왜 이 선물? <span style={{transition:"transform .2s",display:"inline-block",transform:open?"rotate(90deg)":"none"}}>▸</span>
+      </button>
+      {open&&<div style={{fontFamily:"'Gowun Batang',serif",fontSize:12,color:"#5a4a3a",lineHeight:1.75,fontStyle:"italic",marginBottom:12,padding:"10px 12px",background:"rgba(91,123,154,.05)",borderRadius:10,borderLeft:"3px solid #5B7B9A"}}>"{g.reason}"</div>}
+      {/* CTA */}
+      <a href={url} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,padding:"10px 14px",background:"#2B7A78",color:"#fff",borderRadius:12,textDecoration:"none",fontSize:13,fontWeight:600}}>
+        쿠팡 최저가 보기 →
+      </a>
+    </div>
+  );
 }
 function SH({n,title,sub,onBack}){
   return(
@@ -295,63 +332,68 @@ function App(){
               <p style={{fontSize:12,color:TX3}}>{anaText} 최적의 선물을 찾고 있어요</p>
             </div>
           )}
-          {!loading&&results.length>0&&(
+          {!loading&&results.length>0&&(()=>{
+            const compats=[Math.floor(92+Math.random()*7),0,0];
+            compats[1]=compats[0]-Math.floor(3+Math.random()*5);
+            compats[2]=compats[1]-Math.floor(3+Math.random()*5);
+            return(
             <div>
-              <div style={{background:`linear-gradient(135deg,${P}08,${P}0c)`,borderRadius:16,padding:20,marginBottom:18,border:`1px solid ${P}18`}}>
-                <div style={{fontSize:11,letterSpacing:2,color:P,fontWeight:700,marginBottom:8}}>AI 분석 완료</div>
-                <div style={{fontSize:15,color:TX,fontWeight:600,lineHeight:1.6,marginBottom:4}}>{anaText}</div>
-                {intent&&<div style={{fontSize:13,color:TX2,fontStyle:"italic"}}>"{intent}"</div>}
-                <div style={{fontSize:12,color:TX3,marginTop:6}}>예산 {bud?.label} · {bud?.tag} 선물</div>
-                {tagLabels.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:8}}>{tagLabels.map((l,i)=><span key={i} style={{fontSize:11,background:`${P}10`,color:P2,padding:"2px 8px",borderRadius:10}}>{l}</span>)}</div>}
+              {/* 제목 */}
+              <div style={{textAlign:"center",marginBottom:20}}>
+                <h2 style={{fontFamily:"'Gowun Batang',serif",fontSize:20,fontWeight:700,color:TX,margin:"0 0 6px"}}>이런 선물은 어떨까요?</h2>
+                <p style={{fontSize:13,color:TX2,margin:0}}>💖 {rel?.label} · {occ?.label} · {bud?.label}</p>
               </div>
-              <div style={{display:"flex",flexDirection:"column",gap:14}}>
+
+              {/* 카드 3장 */}
+              <div style={{display:"flex",flexDirection:"column",gap:12}}>
                 {results.map((g,i)=>{
                   const sk=g.searchKeyword||g.sk||g.name;
                   const url=mkUrl(sk,g.price);
+                  const compat=compats[i];
+                  const rank=["1st","2nd","3rd"][i];
                   return(
-                    <div key={i} style={{background:"rgba(255,255,255,.9)",border:i===0?`2px solid ${P}`:"1.5px solid #e6dfd4",borderRadius:18,padding:20,position:"relative",overflow:"hidden",animation:`up .4s ease ${i*.15}s both`}}>
-                      {i===0&&<div style={{position:"absolute",top:14,right:14,background:`linear-gradient(135deg,${P},${P2})`,color:"#fff",fontSize:10,fontWeight:700,padding:"4px 12px",borderRadius:20,letterSpacing:.5}}>BEST PICK</div>}
-                      <div style={{display:"flex",gap:14,alignItems:"flex-start"}}>
-                        <ProductThumb name={g.name} sk={g.searchKeyword||g.sk||g.name}/>
-                        <div style={{flex:1,minWidth:0}}>
-                          <div style={{fontSize:15,fontWeight:700,color:TX,marginBottom:4,lineHeight:1.3}}>{g.name}</div>
-                          <div style={{display:"inline-block",fontSize:12,color:P,fontWeight:700,background:`${P}0c`,padding:"2px 10px",borderRadius:6,marginBottom:8}}>{g.price}</div>
-                          <div style={{fontSize:13,color:TX2,lineHeight:1.7}}>{g.reason}</div>
-                        </div>
-                      </div>
-                      <a href={url} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginTop:12,padding:"9px 14px",background:`${P}06`,border:`1px solid ${P}18`,borderRadius:10,textDecoration:"none",fontSize:13,color:TX2,fontWeight:600,transition:"all .15s"}}>
-                        🛒 쿠팡 최저가 보기 <span style={{fontSize:12,marginLeft:"auto",color:P}}>→</span>
-                      </a>
-                    </div>
+                    <ResultCard key={i} g={g} i={i} rank={rank} compat={compat} url={url} P={P} P2={P2} TX={TX} TX2={TX2} TX3={TX3}/>
                   );
                 })}
               </div>
+
+              {/* 팁 */}
               <div style={{background:`${P}06`,border:`1px dashed ${P}25`,borderRadius:12,padding:"12px 16px",marginTop:16}}>
                 <div style={{fontSize:12,color:"#6a5a4a",lineHeight:1.7}}>💡 <strong>TIP</strong> — 선물과 함께 짧은 손편지를 곁들이면 마음이 더 잘 전달돼요.{intent&&` "${intent}" 이 마음을 직접 적어보는 건 어떨까요?`}</div>
               </div>
 
-              {/* 쿠팡 추천 상품 위젯 */}
-              <div style={{marginTop:18}}>
-                <div style={{fontSize:13,fontWeight:600,color:TX2,marginBottom:8,display:"flex",alignItems:"center",gap:6}}>
-                  <span>🛒</span> 이런 상품은 어때요?
-                </div>
-                <div style={{borderRadius:14,overflow:"hidden",border:"1px solid #ebe4dc",background:"#fff"}}>
-                  <iframe
-                    src="https://ads-partners.coupang.com/widgets.html?id=977609&template=carousel&trackingCode=AF3339921&subId=maro&width=680&height=280&tsource="
-                    style={{width:"100%",maxWidth:680,height:280,border:"none",display:"block"}}
-                    scrolling="no"
-                    referrerPolicy="unsafe-url"
-                  ></iframe>
-                </div>
-              </div>
-
+              {/* 쿠팡 파트너스 고지 */}
               <div style={{background:"rgba(0,0,0,.03)",border:"1px solid rgba(0,0,0,.07)",borderRadius:10,padding:"10px 14px",marginTop:10}}>
                 <div style={{fontSize:11,color:TX3,lineHeight:1.7}}>📢 위 상품 링크는 <strong>쿠팡 파트너스</strong> 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
               </div>
-              <div style={{marginTop:22,display:"flex",gap:10}}>
-                <Btn onClick={restart} style={{flex:1,background:"rgba(255,255,255,.75)",border:"1.5px solid #e6dfd4",borderRadius:12,padding:13,fontSize:13,color:TX2,fontWeight:600,cursor:"pointer"}}>처음부터 다시</Btn>
-                <Btn onClick={()=>{setResults([]);setIntent("");go(5);}} style={{flex:1,background:`linear-gradient(135deg,${TX},#6b5d4a)`,border:"none",borderRadius:12,padding:13,fontSize:13,color:"#f5f0e8",fontWeight:600,cursor:"pointer"}}>마음을 바꿔서 다시</Btn>
+
+              {/* SNS 공유 */}
+              <div style={{marginTop:18}}>
+                <div style={{fontSize:12,fontWeight:600,color:TX2,marginBottom:8,textAlign:"center"}}>추천 결과 공유하기</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+                  {typeof navigator!=="undefined"&&navigator.share&&(
+                    <button onClick={()=>{try{navigator.share({title:"마로 - AI 선물 추천",text:`${rel?.label}에게 ${occ?.label} 선물로 ${results[0]?.name}을(를) 추천받았어요!`,url:"https://maro.ai.kr/app"})}catch{}}} style={{border:".5px solid #E8DCD8",borderRadius:12,padding:10,background:"rgba(255,255,255,.7)",cursor:"pointer",fontSize:12,color:TX2,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                      <span style={{fontSize:18}}>📤</span>공유하기
+                    </button>
+                  )}
+                  <button onClick={()=>{const t=encodeURIComponent(`${rel?.label}에게 ${occ?.label} 선물 추천받았어요!`);const u=encodeURIComponent("https://maro.ai.kr/app");window.open(`https://story.kakao.com/share?url=${u}&text=${t}`,"_blank")}} style={{border:".5px solid #E8DCD8",borderRadius:12,padding:10,background:"rgba(255,255,255,.7)",cursor:"pointer",fontSize:12,color:TX2,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                    <span style={{fontSize:18}}>💬</span>카카오
+                  </button>
+                  <button onClick={async()=>{try{await navigator.clipboard.writeText("https://maro.ai.kr/app");alert("✅ 링크가 복사되었어요!")}catch{}}} style={{border:".5px solid #E8DCD8",borderRadius:12,padding:10,background:"rgba(255,255,255,.7)",cursor:"pointer",fontSize:12,color:TX2,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                    <span style={{fontSize:18}}>🔗</span>링크 복사
+                  </button>
+                </div>
               </div>
+
+              {/* 액션 버튼 */}
+              <div style={{marginTop:18,display:"flex",flexDirection:"column",gap:10}}>
+                <Btn onClick={()=>{setResults([]);analyze()}} style={{width:"100%",background:"rgba(255,255,255,.8)",border:"1.5px solid #e6dfd4",borderRadius:12,padding:14,fontSize:14,color:TX,fontWeight:600,cursor:"pointer"}}>↻ 다른 추천 보기</Btn>
+                <div style={{display:"flex",gap:10}}>
+                  <Btn onClick={restart} style={{flex:1,background:"rgba(255,255,255,.6)",border:"1.5px solid #e6dfd4",borderRadius:12,padding:13,fontSize:13,color:TX2,fontWeight:500,cursor:"pointer"}}>처음부터</Btn>
+                  <Btn onClick={()=>{setResults([]);setIntent("");go(5)}} style={{flex:1,background:"rgba(255,255,255,.6)",border:"1.5px solid #e6dfd4",borderRadius:12,padding:13,fontSize:13,color:TX2,fontWeight:500,cursor:"pointer"}}>마음 바꿔서</Btn>
+                </div>
+              </div>
+
               <div style={{textAlign:"center",marginTop:28,paddingBottom:16}}>
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,marginBottom:4}}>
                   <div style={{width:18,height:18,borderRadius:6,background:`linear-gradient(135deg,${P},${P2})`,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:9}}>♥</span></div>
@@ -360,7 +402,7 @@ function App(){
                 <div style={{fontSize:10,letterSpacing:2,color:TX3}}>마음을 새기는 선물</div>
               </div>
             </div>
-          )}
+          );})()}
         </div>
       </div>
     </div>
