@@ -101,9 +101,9 @@ export default async function handler(req) {
 
     const prompt = `현재 시간:${new Date().toISOString()} 관계:${safe(relation)}(${safe(depth)||'일반'}) 상황:${safe(occasion)} 예산:${safe(budget)} 마음:"${safe(intent,100)||'없음'}"${tl} 계절:${safe(season,10)}
 규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용${fm?' B급감성 웃긴선물':''}
-다양성:이전과 다른 새로운 상품 추천,같은 상품 반복 금지,다양한 카테고리에서 선택,흔한추천(양말/머그컵/기프티콘) 지양
+다양성:3개는 반드시 서로 다른 카테고리(식품/뷰티/패션/홈리빙/경험체험/테크/문구/건강/취미/맞춤제작). 같은 카테고리 2개 이상 금지. 1개는 안전한 선택(safe),1개는 의외의 발견(surprise),1개는 새로운 시도(wildcard)
 추가:①수혜자관점 실용성②관계깊이전략(먼→안전,가까운→대담)③김영란법(직장 공직자 식품5만/선물5만/경조사10만)④세대별(Z세대→경험/디지털,시니어→건강/실용)
-형식:{"gifts":[{"name":"구체적상품명","price":"N만원","reason":"1문장","emoji":"1개","searchKeyword":"쿠팡검색어"}]} 3개`;
+형식:{"gifts":[{"name":"구체적상품명","price":"N만원","reason":"1문장","emoji":"1개","searchKeyword":"쿠팡검색어","category":"카테고리"}]} 3개`;
 
     const HAIKU = 'claude-haiku-4-5-20251001';
 
