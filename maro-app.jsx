@@ -419,65 +419,117 @@ const TAG_KEYWORDS = {
   practical:["실용","청소기","수건","타올","정리","세제","양말"],
 };
 
-// ── 관계 깊이 → 가벼운/특별한 분류 ──
-const LIGHT_DEPTHS = ["썸 단계","3개월 미만","아는 사이","가끔 만나는 친구","다른 팀","졸업 후 인연","사촌","기타 인척","시누이·처남"];
-const DEEP_DEPTHS = ["3년 이상","10년 이상","절친","시부모·장인장모","함께 사는","3~10년차"];
+// ══════════════════════════════════════
+// ── 스코어링 기반 추천 엔진 (총 100점) ──
+// ══════════════════════════════════════
 
-// ── Get fallback: tag-aware shuffle & pick 3 (관계깊이 반영) ──
+// 관계 깊이 분류
+const LIGHT_DEPTHS = new Set(["썸 단계","3개월 미만","아는 사이","가끔 만나는 친구","다른 팀","졸업 후 인연","사촌","기타 인척","시누이·처남"]);
+const DEEP_DEPTHS = new Set(["3년 이상","10년 이상","절친","시부모·장인장모","함께 사는","3~10년차"]);
+
+// 계절-카테고리 매칭
+const SEASON_KW = {
+  봄:["꽃","화분","디퓨저","피크닉","자외선","선크림","봄"],
+  여름:["냉감","선풍기","텀블러","아이스","쿨","물놀이","여름","선글라스"],
+  가을:["캔들","차","스카프","머플러","가을","담요","디퓨저"],
+  겨울:["온열","핫팩","담요","니트","장갑","히터","겨울","이불","파자마"],
+};
+
+// 실용성 높은 카테고리 (수혜자 관점 가산)
+const PRACTICAL_KW = ["청소기","수건","텀블러","충전","배터리","비타민","건강","혈압","안마","세제","칫솔","면도","이불","침구","식기","냄비"];
+
+// 세션 히스토리 (같은 세션에서 중복 방지)
+const _recHistory = new Set();
+
 function gfb(o, b, userTags, relId, depth) {
-  // 관계별 전용 풀 우선 → 일반 풀 → 예산 기본 풀
+  // 1. 풀 선택
   let pool = (relId === 'inlaw' && FB[`${o}|${b}|inlaw`]) || FB[`${o}|${b}`] || FD[b] || FD.b2;
-  pool = [...pool]; // 원본 보호용 복사
+  pool = [...pool];
 
-  // 관계 깊이에 따라 가격 필터링으로 풀 조정
-  const isLight = LIGHT_DEPTHS.includes(depth);
-  const isDeep = DEEP_DEPTHS.includes(depth);
-  if (isLight && pool.length > 4) {
-    // 가벼운 관계: 가격이 낮은 쪽 우선 (price 문자열에서 첫 숫자 기준)
-    pool.sort((a,b) => {
-      const pa = parseInt((a.price||"").match(/\d+/)?.[0]||"50");
-      const pb = parseInt((b.price||"").match(/\d+/)?.[0]||"50");
-      return pa - pb;
+  // 김영란법 필터: 직장동료/스승 관계 시 예산 5만원 초과 상품 제외
+  if ((relId === 'colleague' || relId === 'mentor') && (b === 'b3' || b === 'b4' || b === 'b5')) {
+    pool = pool.filter(item => {
+      const p = parseInt((item.price || "").match(/\d+/)?.[0] || "0");
+      return p <= 5; // 5만원 이하만
     });
-    pool = pool.slice(0, Math.max(4, Math.ceil(pool.length * 0.6)));
-  } else if (isDeep && pool.length > 4) {
-    // 깊은 관계: 가격이 높은 쪽(특별한 선물) 우선
-    pool.sort((a,b) => {
-      const pa = parseInt((a.price||"").match(/\d+/)?.[0]||"50");
-      const pb = parseInt((b.price||"").match(/\d+/)?.[0]||"50");
-      return pb - pa;
-    });
-    pool = pool.slice(0, Math.max(4, Math.ceil(pool.length * 0.6)));
+    if (pool.length === 0) pool = [...(FD.b2 || [])]; // 빈 풀 방지
   }
 
-  // 태그 없으면 셔플 후 3개
-  if (!userTags || userTags.length === 0) return shuffle(pool).slice(0, 3);
+  // 2. 현재 계절
+  const season = ["봄","봄","여름","여름","가을","가을","겨울","겨울","봄","봄","겨울","겨울"][new Date().getMonth()];
+  const seasonKw = SEASON_KW[season] || [];
 
-  // Build keyword set from user tags
-  const kwSet = userTags.flatMap(t => TAG_KEYWORDS[t] || []);
+  // 3. 태그 키워드 세트
+  const kwSet = (userTags || []).flatMap(t => TAG_KEYWORDS[t] || []);
 
-  // Score each item: how many tag keywords appear in name or sk
+  // 4. 관계 깊이 분류
+  const isLight = LIGHT_DEPTHS.has(depth);
+  const isDeep = DEEP_DEPTHS.has(depth);
+
+  // 5. 각 아이템 스코어링 (총 100점)
   const scored = pool.map(item => {
     const text = `${item.name} ${item.sk || ""}`.toLowerCase();
-    const score = kwSet.filter(kw => text.includes(kw.toLowerCase())).length;
+    let score = 0;
+
+    // ① 태그 매칭 (40점) — 매칭 키워드 수에 비례, 최대 40
+    const tagHits = kwSet.filter(kw => text.includes(kw.toLowerCase())).length;
+    score += Math.min(tagHits * 13, 40);
+
+    // ② 관계 깊이 적합성 (25점)
+    const isPractical = PRACTICAL_KW.some(kw => text.includes(kw));
+    const isExperience = ["호텔","스파","레스토랑","식사권","여행","공연","클래스"].some(kw => text.includes(kw));
+    if (isLight && isPractical) score += 25;        // 먼 관계 + 실용품 = 안전
+    else if (isDeep && isExperience) score += 25;   // 가까운 관계 + 경험/감성 = 대담
+    else if (isDeep && !isPractical) score += 18;   // 가까운 관계 + 비실용 = 적당
+    else if (isLight && !isExperience) score += 12; // 먼 관계 + 비경험 = 적당
+    else score += 8;
+
+    // ③ 계절 적합성 (15점)
+    const seasonHits = seasonKw.filter(kw => text.includes(kw)).length;
+    score += Math.min(seasonHits * 8, 15);
+
+    // ④ 증여자-수혜자 비대칭 보정 (10점) — 실용성 가산
+    if (isPractical) score += 10;
+    else if (isExperience) score += 6; // 경험도 수혜자에게 가치
+    else score += 3;
+
+    // 세션 히스토리 감점 (이미 추천된 상품)
+    if (_recHistory.has(item.name)) score -= 30;
+
+    // 랜덤 시드 (±8점) — 매번 다른 결과
+    score += Math.random() * 16 - 8;
+
     return { ...item, _score: score };
   });
 
-  const matched = shuffle(scored.filter(x => x._score > 0));
-  const unmatched = shuffle(scored.filter(x => x._score === 0));
+  // 6. 점수 내림차순 정렬
+  scored.sort((a, b) => b._score - a._score);
 
-  // 태그 매칭 강제: 최소 1개는 반드시 태그 매칭 상품 포함
-  let picks;
-  if (matched.length >= 3) {
-    picks = matched.slice(0, 3);
-  } else if (matched.length >= 1) {
-    // 매칭 1~2개 확보 + 나머지는 unmatched에서 채움
-    picks = [...matched, ...unmatched].slice(0, 3);
-  } else {
-    // 매칭 0개: 셔플만
-    picks = shuffle(scored).slice(0, 3);
+  // 7. 카테고리 다양성 보장 (10점 보너스 로직) — 상위에서 서로 다른 카테고리 3개 선택
+  const picks = [];
+  const usedCategories = new Set();
+  for (const item of scored) {
+    if (picks.length >= 3) break;
+    // 카테고리 추출: VIS 키 매칭 또는 이름 첫 단어
+    const cat = Object.keys(VIS).find(k => item.name.includes(k)) || item.name.slice(0, 2);
+    if (picks.length < 2 || !usedCategories.has(cat)) {
+      // 3번째 픽은 반드시 다른 카테고리 (가능한 경우)
+      picks.push(item);
+      usedCategories.add(cat);
+    }
+  }
+  // 부족하면 나머지에서 채움
+  if (picks.length < 3) {
+    for (const item of scored) {
+      if (picks.length >= 3) break;
+      if (!picks.includes(item)) picks.push(item);
+    }
   }
 
+  // 8. 히스토리에 추가
+  picks.forEach(p => _recHistory.add(p.name));
+
+  console.log("[마로] fallback 스코어링", picks.map(p => `${p.name}(${Math.round(p._score)}점)`));
   return picks.map(({ _score, ...item }) => item);
 }
 
