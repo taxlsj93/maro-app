@@ -121,26 +121,7 @@ function Btn({onClick,children,style={},ms=220}){
 }
 
 function ProductThumb({name,sk}){
-  const[img,setImg]=useState(null);const[done,setDone]=useState(false);
-  useEffect(()=>{
-    let cancelled=false;
-    (async()=>{
-      try{
-        const kw=encodeURIComponent(sk||name);
-        const target=`https://www.coupang.com/np/search?q=${kw}&listSize=5`;
-        const proxy=`https://corsproxy.io/?${encodeURIComponent(target)}`;
-        const r=await fetch(proxy,{signal:AbortSignal.timeout(7000)});
-        const html=await r.text();
-        const m=html.match(/src="(https:\/\/thumbnail\d*\.coupangcdn\.com[^"]+\.(jpg|jpeg|png|webp|gif))"/i);
-        if(m&&!cancelled)setImg(m[1].replace(/\d+x\d+ex/,'200x200ex'));
-      }catch{}
-      if(!cancelled)setDone(true);
-    })();
-    return()=>{cancelled=true;};
-  },[sk,name]);
   const s={width:64,height:64,borderRadius:14,flexShrink:0,overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center"};
-  if(img)return(<div style={{...s,background:"#f5f0e8"}}><img src={img} alt={name} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={()=>setImg(null)}/></div>);
-  if(!done)return(<div style={{...s,background:"linear-gradient(135deg,#e8dfd4,#d8cfc4)",animation:"pulse 1.5s ease-in-out infinite"}}/>);
   return(<div style={{...s,background:`${P}10`,fontSize:28}}>🎁</div>);
 }
 function SH({n,title,sub,onBack}){
@@ -169,14 +150,18 @@ function App(){
 
   const analyze=async()=>{
     setLoading(true);go(6);
-    const tagLine=tagLabels.length>0?`\n이 사람 관심사/취향: ${tagLabels.join(", ")}`:"";
-    const prompt=`당신은 한국의 관계 문화를 깊이 이해하는 선물 추천 전문가입니다.\n관계: ${rel?.label}, 깊이: ${dep||"미지정"}, 상황: ${occ?.label}, 예산: ${bud?.label}\n전하고 싶은 마음: "${intent||"특별한 메시지 없음"}"${tagLine}\n규칙: 1)${occ?.label} 상황에 맞는 선물만 2)관계 깊이 고려 3)한국 문화 부적절 선물 제외 4)searchKeyword는 쿠팡 검색 키워드${tagLabels.length>0?" 5)관심사/취향을 적극 반영":""}\nJSON만 출력: {"gifts":[{"name":"상품명","price":"가격대","reason":"2문장 설명","emoji":"이모지","searchKeyword":"쿠팡키워드"},{"name":"...","price":"...","reason":"...","emoji":"...","searchKeyword":"..."},{"name":"...","price":"...","reason":"...","emoji":"...","searchKeyword":"..."}]}`;
+    const season=["봄","봄","여름","여름","가을","가을","겨울","겨울","봄","봄","겨울","겨울"][new Date().getMonth()];
+    console.log("[마로] Edge Function 호출 시작");
     try{
-      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-opus-4-5",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
-      if(!r.ok)throw 0;
-      const d=await r.json();const t=d.content?.[0]?.text||"";const m=t.match(/\{[\s\S]*\}/);
-      if(!m)throw 0;const p=JSON.parse(m[0]);if(!p.gifts?.length)throw 0;setResults(p.gifts);
-    }catch{setResults(gfb(occ?.id,bud?.id));}
+      const r=await fetch("/api/recommend",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({relation:rel?.label,depth:dep,occasion:occ?.label,budget:bud?.label,intent,tags,season})});
+      const d=await r.json();
+      if(!r.ok||!d.gifts?.length){console.warn("[마로] API 실패 - fallback",d);throw d;}
+      console.log("[마로] AI 응답 성공",d.gifts.map(g=>g.name));
+      setResults(d.gifts);
+    }catch{
+      console.warn("[마로] fallback DB 사용");
+      setResults(gfb(occ?.id,bud?.id));
+    }
     setLoading(false);
   };
 
