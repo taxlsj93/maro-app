@@ -1,7 +1,7 @@
 # 마로(Maro) @ui-brand UI/UX 디자인 원칙 가이드
 
 > 마로(maro.ai.kr)의 AI 에이전트가 모든 UI 판단에서 즉시 참조할 수 있도록 구성한 학술 논문 근거 + 구체적 수치 기반 디자인 원칙 문서.
-> 테라코타 `#c4756e` 브랜드 컬러, Gowun Batang 서체, 6단계 선물 추천 위저드, 모바일 우선 아키텍처 전제.
+> 테라코타 `#c4756e` 브랜드 컬러, Pretendard Variable 서체, 6단계 선물 추천 위저드, 모바일 우선 아키텍처 전제.
 
 ---
 
@@ -47,27 +47,22 @@
 
 ---
 
-## 2. 타이포그래피: Gowun Batang의 과학과 정밀 타입 스케일
+## 2. 타이포그래피: Pretendard Variable의 과학과 정밀 타입 스케일
 
-### 세리프 모바일 가독성
+### 산세리프 모바일 가독성 + 감성
 
-- 웹사이트 가독성에서 세리프/산세리프 특성이 읽기 속도와 사용자 선호에 차이가 없음 (Vecino et al., 2022)
-- 레티나 디스플레이 시대에 두 분류 모두 동등하게 유효 → **Gowun Batang은 모바일에서 가독성 패널티 없이 사용 가능**
-
-### 감성 타이포그래피
-
-- 서체 선택만으로 긍정적 소비자 반응이 **최대 13% 증가** (Monotype × Neurons, 2022)
-- 캘리그라피에 가까운 글자가 더 깊은 본능적 감정 반응을 유발
-- 동아시아 사용자들은 전통 붓질 느낌을 보존한 서체를 **가장 신뢰**한다고 평가 (Monotype, 2024)
-- Gowun Batang의 연필 필기 기반 디자인("고운" = 곱고 섬세한)은 이 연구 결과와 정확히 정렬됨
+- Pretendard는 Apple의 SF Pro, Google의 Inter 등에서 영감을 받은 한글 최적화 산세리프 서체
+- 한국어 자모의 특성을 고려한 가독성 최적화로 모바일 환경에서 탁월한 가독성
+- Variable Font 지원으로 weight 300~900까지 유연한 타이포그래피 구성 가능
+- 한글 subset으로 로딩 속도 최적화 (dynamic subset via jsDelivr CDN)
 
 ### 정밀 타입 스케일 (모바일 우선)
 
 ```
 에이전트용 타입 토큰:
 
---font-display:    'Gowun Batang', serif     (감성 콘텐츠)
---font-ui:         'Noto Sans KR', sans-serif (기능 UI)
+--font-display:    'Pretendard Variable', Pretendard, sans-serif  (감성 헤드라인)
+--font-ui:         'Pretendard Variable', Pretendard, sans-serif  (기능 UI)
 
 --text-4xl:  2rem     (32px) — Hero 헤드라인    weight: 700  line-height: 1.3
 --text-3xl:  1.75rem  (28px) — H1 페이지 제목    weight: 700  line-height: 1.3
@@ -85,8 +80,8 @@
 - 한글 본문 `line-height`는 **1.75** (CJK 권장 1.7 + 모바일 여유)
 - 헤드라인 `letter-spacing: -0.01em`, 본문 `letter-spacing: 0.01em`
 - 한글 본문 줄당 **25-35자** → `max-width: 38rem`
-- **Gowun Batang**: 브랜드명, 감성 헤드라인, 본문, 선물 설명, 추천 카드
-- **Noto Sans KR**: 내비게이션, 버튼, 레이블, 가격, 숫자, 메타데이터
+- **Pretendard Variable (weight 600-700)**: 브랜드명, 감성 헤드라인, 선물 설명, 추천 카드
+- **Pretendard Variable (weight 300-500)**: 내비게이션, 버튼, 레이블, 가격, 숫자, 메타데이터, 본문
 
 ---
 
@@ -192,8 +187,8 @@
 │  [라이프스타일 이미지]  60% 높이  │  ← 4:3 고정 비율
 │                                  │
 │──────────────────────────────────│
-│  선물 이름  (18px, Batang Bold)  │
-│  ₩49,000  (16px, Noto Sans)     │
+│  선물 이름  (18px, Pretendard 700)  │
+│  ₩49,000  (16px, Pretendard 400)   │
 │  ★ 궁합 92% · "따뜻함을 전하는"  │
 │  "왜 이 선물?" ▸ (접을 수 있음)  │  ← XAI 투명성
 │  [♡ 저장]         [선물하기 →]   │  ← 1차 CTA: #2B7A78
@@ -317,8 +312,8 @@ WCAG 2.1/2.2 AA와 한국 장애인차별금지법(2008) 산하 **KWCAG 2.1**(KS
   --color-info:            #5B7B9A;
 
   /* — 타이포그래피 — */
-  --font-display:          'Gowun Batang', serif;
-  --font-ui:               'Noto Sans KR', sans-serif;
+  --font-display:          'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-ui:               'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --text-4xl:  2rem;       --lh-4xl: 1.3;
   --text-3xl:  1.75rem;    --lh-3xl: 1.3;
   --text-2xl:  1.5rem;     --lh-2xl: 1.35;
@@ -406,4 +401,4 @@ WCAG 2.1/2.2 AA와 한국 장애인차별금지법(2008) 산하 **KWCAG 2.1**(KS
 7. **transform/opacity만 애니메이션**: 280ms ease-out. 레이아웃 속성 절대 금지 (60fps 보장)
 8. **AI 이유 필수 표시**: 모든 추천에 한 줄 근거. 신뢰 M=3.2→4.1, 구매율 49→68% (Rahman, 2025)
 9. **360px 기준 설계**: 삼성 80%+ 한국 시장. min-width 상향 확장
-10. **Gowun Batang = 감성, Noto Sans KR = 기능**: 서체로 감정과 정보를 분리. 캘리그라피 기반 서체가 감정 반응 13% 증가 (Monotype × Neurons, 2022)
+10. **Pretendard Variable**: 단일 서체 패밀리로 weight 변화(300-700)를 통해 감성과 기능을 구분. Variable Font의 유연성으로 일관된 브랜드 아이덴티티 유지
