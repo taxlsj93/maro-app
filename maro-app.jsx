@@ -542,14 +542,19 @@ export default function App(){
 
     const season=["봄","봄","여름","여름","가을","가을","겨울","겨울","봄","봄","겨울","겨울"][new Date().getMonth()];
 
+    console.log("[마로] AI API 호출 시작", {relation:rel?.label,depth:dep,occasion:occ?.label,budget:bud?.label});
     try{
-      const r=await fetch("/api/recommend",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({relation:rel?.label,depth:dep,occasion:occ?.label,budget:bud?.label,intent,tags,season})});
-      if(!r.ok)throw 0;
+      const r=await fetch("/api/recommend",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({relation:rel?.label,depth:dep,occasion:occ?.label,budget:bud?.label,intent,tags,season})});
       const d=await r.json();
-      if(!d.gifts?.length)throw 0;
+      if(!r.ok||!d.gifts?.length){
+        console.warn("[마로] AI API 실패 - fallback 사용",{status:r.status,body:d});
+        throw d;
+      }
+      console.log("[마로] AI API 응답 성공",d.gifts.map(g=>g.name));
       setResults(d.gifts);
       ga('recommend_complete',{source:'ai',count:d.gifts.length});
-    }catch{
+    }catch(err){
+      console.warn("[마로] fallback DB 사용",err);
       setResults(gfb(occ?.id,bud?.id,tags,rel?.id,dep));
       ga('recommend_complete',{source:'fallback',count:3});
     }

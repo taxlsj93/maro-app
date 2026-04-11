@@ -113,7 +113,7 @@ export default async function handler(req) {
     if (!parsed.gifts?.length) throw new Error('No gifts');
 
     return new Response(JSON.stringify({ gifts: parsed.gifts }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'private, max-age=3600' }
+      headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'no-store, no-cache, must-revalidate' }
     });
 
   } catch (e) {
