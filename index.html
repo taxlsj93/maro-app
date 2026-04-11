@@ -421,6 +421,8 @@ window.addEventListener('scroll',()=>{
   const el=document.getElementById("seasonText");
   if(h&&el) el.textContent=h.d===0?`${h.n} 당일 — 오늘의 추천 보기`:`${h.n} D-${h.d} — 오늘의 추천 보기`;
 })();
+
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{});}
 </script>
 </body>
 </html>

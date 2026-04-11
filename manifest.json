@@ -3,17 +3,46 @@
   "short_name": "마로",
   "description": "관계·상황·마음을 분석해 딱 맞는 선물 Top 3을 추천해드려요",
   "start_url": "/app",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#FFF8F5",
+  "background_color": "#faf6f1",
   "theme_color": "#c4756e",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "/og-image.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/og-image.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/og-image.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "lang": "ko",
-  "categories": ["lifestyle", "shopping"]
+  "dir": "ltr",
+  "categories": ["lifestyle", "shopping"],
+  "shortcuts": [
+    {
+      "name": "선물 추천받기",
+      "short_name": "추천",
+      "url": "/app",
+      "description": "AI 선물 추천 시작"
+    },
+    {
+      "name": "오늘의 추천",
+      "short_name": "오늘",
+      "url": "/today",
+      "description": "오늘의 선물 추천"
+    }
+  ]
 }
