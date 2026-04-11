@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MARO 순위형 카드뉴스</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #e0d8d0;
+  }
+
+  .card {
+    width: 1080px;
+    height: 1350px;
+    background: linear-gradient(170deg, #faf6ee 0%, #f5ede3 40%, #faf6ee 100%);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #2d2018;
+  }
+
+  /* Decorative background circles */
+  .card::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,117,110,0.08) 0%, transparent 70%);
+    top: -200px;
+    right: -150px;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,117,110,0.06) 0%, transparent 70%);
+    bottom: 100px;
+    left: -100px;
+  }
+
+  .header {
+    position: relative;
+    z-index: 1;
+    padding: 60px 70px 40px;
+    text-align: center;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    color: #fffdf9;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    padding: 10px 32px;
+    border-radius: 50px;
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+  }
+
+  .header h1 {
+    font-family: 'Gowun Batang', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: #2d2018;
+    line-height: 1.35;
+    letter-spacing: -1px;
+  }
+
+  .header h1 em {
+    font-style: normal;
+    color: #c4756e;
+  }
+
+  .header .subtitle {
+    font-size: 22px;
+    color: #9a8a7a;
+    margin-top: 12px;
+    font-weight: 400;
+  }
+
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #c4756e, #e8a09a);
+    margin: 0 auto;
+    border-radius: 2px;
+    margin-top: 28px;
+  }
+
+  .list {
+    position: relative;
+    z-index: 1;
+    padding: 20px 60px 0;
+  }
+
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 30px;
+    margin-bottom: 14px;
+    background: rgba(255, 253, 249, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(196, 117, 110, 0.12);
+    border-radius: 20px;
+    transition: transform 0.2s;
+  }
+
+  .list-item.top {
+    background: rgba(196, 117, 110, 0.08);
+    border: 1.5px solid rgba(196, 117, 110, 0.2);
+  }
+
+  .rank {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-family: 'Gowun Batang', serif;
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  .rank.gold {
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    color: #fffdf9;
+  }
+  .rank.silver {
+    background: linear-gradient(135deg, #e8a09a, #c4756e);
+    color: #fffdf9;
+  }
+  .rank.normal {
+    background: rgba(196, 117, 110, 0.1);
+    color: #c4756e;
+  }
+
+  .item-icon {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #faf6ee, #f5ede3);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border: 1px solid rgba(196, 117, 110, 0.08);
+  }
+
+  .item-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .item-name {
+    font-weight: 700;
+    font-size: 24px;
+    color: #2d2018;
+    margin-bottom: 4px;
+  }
+
+  .item-desc {
+    font-size: 18px;
+    color: #9a8a7a;
+    font-weight: 400;
+  }
+
+  .item-price {
+    flex-shrink: 0;
+    font-family: 'Gowun Batang', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #c4756e;
+    text-align: right;
+  }
+
+  .item-price span {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #9a8a7a;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding: 32px 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(0deg, rgba(250,246,238,1) 0%, rgba(250,246,238,0) 100%);
+    padding-top: 60px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-mark {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Gowun Batang', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #fffdf9;
+  }
+
+  .logo-text {
+    font-family: 'Gowun Batang', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2d2018;
+  }
+
+  .logo-text span {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #9a8a7a;
+  }
+
+  .cta {
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    color: #fffdf9;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 50px;
+    border: none;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <div class="header-badge">TOP 5 GIFTS</div>
+    <h1>여자친구가 <em>진짜</em><br>좋아하는 선물</h1>
+    <p class="subtitle">2026년 기념일 선물 인기 순위</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="list">
+    <div class="list-item top">
+      <div class="rank gold">1</div>
+      <div class="item-icon">💍</div>
+      <div class="item-info">
+        <div class="item-name">데일리 실버 반지</div>
+        <div class="item-desc">매일 착용하는 미니멀 디자인</div>
+      </div>
+      <div class="item-price">5만원대<span>가장 많이 선택</span></div>
+    </div>
+
+    <div class="list-item top">
+      <div class="rank silver">2</div>
+      <div class="item-icon">🕯️</div>
+      <div class="item-info">
+        <div class="item-name">디퓨저 + 캔들 세트</div>
+        <div class="item-desc">공간을 채우는 향기 선물</div>
+      </div>
+      <div class="item-price">3만원대<span>분위기 최고</span></div>
+    </div>
+
+    <div class="list-item">
+      <div class="rank normal">3</div>
+      <div class="item-icon">👛</div>
+      <div class="item-info">
+        <div class="item-name">미니 카드지갑</div>
+        <div class="item-desc">실용적이면서 센스있는</div>
+      </div>
+      <div class="item-price">4만원대<span>실용도 1위</span></div>
+    </div>
+
+    <div class="list-item">
+      <div class="rank normal">4</div>
+      <div class="item-icon">🧴</div>
+      <div class="item-info">
+        <div class="item-name">핸드크림 기프트세트</div>
+        <div class="item-desc">고급스러운 패키지가 포인트</div>
+      </div>
+      <div class="item-price">2만원대<span>가성비 갑</span></div>
+    </div>
+
+    <div class="list-item">
+      <div class="rank normal">5</div>
+      <div class="item-icon">📷</div>
+      <div class="item-info">
+        <div class="item-name">포토 앨범 북</div>
+        <div class="item-desc">추억을 담은 세상에 하나뿐인</div>
+      </div>
+      <div class="item-price">3만원대<span>감동 보장</span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="logo-area">
+      <div class="logo-mark">마</div>
+      <div class="logo-text">
+        MARO
+        <span>마음을 새기는 선물</span>
+      </div>
+    </div>
+    <div class="cta">마로에서 AI 추천받기 →</div>
+  </div>
+</div>
+
+</body>
+</html>

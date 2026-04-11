@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MARO 팁/정보형 카드뉴스</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #e0d8d0;
+  }
+
+  .card {
+    width: 1080px;
+    height: 1350px;
+    background: linear-gradient(170deg, #faf6ee 0%, #f5ede3 60%, #faf6ee 100%);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #2d2018;
+  }
+
+  /* Background decorative elements */
+  .bg-circle-1 {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(196, 117, 110, 0.06);
+    top: -150px;
+    left: -150px;
+  }
+  .bg-circle-2 {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    border: 1px solid rgba(196, 117, 110, 0.06);
+    top: -80px;
+    left: -80px;
+  }
+  .bg-circle-3 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(196, 117, 110, 0.05);
+    bottom: 120px;
+    right: -100px;
+  }
+
+  /* Subtle dot pattern */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(196,117,110,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 60px 70px 20px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(196,117,110,0.1), rgba(196,117,110,0.05));
+    border: 1px solid rgba(196, 117, 110, 0.15);
+    color: #c4756e;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 10px 28px;
+    border-radius: 50px;
+    margin-bottom: 24px;
+  }
+
+  .header-badge .dot {
+    width: 8px;
+    height: 8px;
+    background: #c4756e;
+    border-radius: 50%;
+  }
+
+  .header h1 {
+    font-family: 'Gowun Batang', serif;
+    font-size: 50px;
+    font-weight: 700;
+    color: #2d2018;
+    line-height: 1.35;
+  }
+
+  .header h1 em {
+    font-style: normal;
+    color: #c4756e;
+  }
+
+  .header .subtitle {
+    font-size: 21px;
+    color: #9a8a7a;
+    margin-top: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .tips {
+    position: relative;
+    z-index: 1;
+    padding: 36px 60px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .tip-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+    padding: 36px 36px;
+    background: rgba(255, 253, 249, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(196, 117, 110, 0.1);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tip-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, #c4756e, #e8a09a);
+    border-radius: 3px;
+  }
+
+  .tip-number {
+    flex-shrink: 0;
+    font-family: 'Gowun Batang', serif;
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, #c4756e, #e8a09a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.8;
+    width: 100px;
+    text-align: center;
+  }
+
+  .tip-content {
+    flex: 1;
+    padding-top: 4px;
+  }
+
+  .tip-icon-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .tip-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(196,117,110,0.12), rgba(196,117,110,0.05));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  .tip-title {
+    font-family: 'Gowun Batang', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2d2018;
+    line-height: 1.3;
+  }
+
+  .tip-title .highlight {
+    color: #c4756e;
+  }
+
+  .tip-desc {
+    font-size: 19px;
+    color: #5a4a3a;
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+
+  .tip-desc strong {
+    color: #c4756e;
+    font-weight: 600;
+  }
+
+  .bonus-bar {
+    position: relative;
+    z-index: 1;
+    margin: 28px 60px 0;
+    padding: 20px 32px;
+    background: linear-gradient(135deg, rgba(196,117,110,0.08), rgba(196,117,110,0.03));
+    border: 1px solid rgba(196, 117, 110, 0.12);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 18px;
+    color: #5a4a3a;
+  }
+
+  .bonus-bar .icon {
+    font-size: 24px;
+  }
+
+  .bonus-bar strong {
+    color: #c4756e;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 32px 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(0deg, rgba(250,246,238,1) 0%, rgba(250,246,238,0) 100%);
+    padding-top: 60px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-mark {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Gowun Batang', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #fffdf9;
+  }
+
+  .logo-text {
+    font-family: 'Gowun Batang', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2d2018;
+  }
+
+  .logo-text span {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #9a8a7a;
+  }
+
+  .cta {
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    color: #fffdf9;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 50px;
+    border: none;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="bg-circle-1"></div>
+  <div class="bg-circle-2"></div>
+  <div class="bg-circle-3"></div>
+
+  <div class="header">
+    <div class="header-badge"><span class="dot"></span> 선물 꿀팁</div>
+    <h1>선물할 때<br><em>절대 하면 안 되는</em> 3가지</h1>
+    <p class="subtitle">이것만 피해도 센스있는 사람이 됩니다</p>
+  </div>
+
+  <div class="tips">
+    <div class="tip-card">
+      <div class="tip-number">01</div>
+      <div class="tip-content">
+        <div class="tip-icon-row">
+          <div class="tip-icon">🏷️</div>
+          <div class="tip-title">가격표 <span class="highlight">안 떼기</span></div>
+        </div>
+        <p class="tip-desc">
+          의외로 많은 분들이 놓치는 부분!<br>
+          <strong>가격이 보이는 순간</strong> 감동이 반으로 줄어듭니다.
+          영수증도 꼭 빼주세요.
+        </p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-number">02</div>
+      <div class="tip-content">
+        <div class="tip-icon-row">
+          <div class="tip-icon">📦</div>
+          <div class="tip-title"><span class="highlight">포장 없이</span> 그냥 주기</div>
+        </div>
+        <p class="tip-desc">
+          같은 선물도 포장에 따라 가치가 달라져요.<br>
+          <strong>리본 하나</strong>만 묶어도 정성이 느껴집니다.
+          쇼핑백 그대로는 절대 금지!
+        </p>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-number">03</div>
+      <div class="tip-content">
+        <div class="tip-icon-row">
+          <div class="tip-icon">💬</div>
+          <div class="tip-title"><span class="highlight">한마디도 없이</span> 건네기</div>
+        </div>
+        <p class="tip-desc">
+          "그냥 이거..." 는 최악의 멘트!<br>
+          짧더라도 <strong>진심 담긴 한마디</strong>가
+          선물의 가치를 10배로 만듭니다.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bonus-bar">
+    <span class="icon">💡</span>
+    <span><strong>TIP</strong> — 마로에서 선물 추천받으면 상황별 메시지 문구도 함께 알려드려요!</span>
+  </div>
+
+  <div class="footer">
+    <div class="logo-area">
+      <div class="logo-mark">마</div>
+      <div class="logo-text">
+        MARO
+        <span>마음을 새기는 선물</span>
+      </div>
+    </div>
+    <div class="cta">마로에서 AI 추천받기 →</div>
+  </div>
+</div>
+
+</body>
+</html>

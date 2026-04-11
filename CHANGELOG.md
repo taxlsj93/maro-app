@@ -1,6 +1,11 @@
 # Changelog
 
 ## 2026-04-11
+- **[marketing]** 변경 파일: `content/marketing/reels-copy-4.md` — 인스타 릴스 카피 4종 (시연형/비교형/공감밈/리스트형) + 해시태그/게시 일정
+- **[marketing]** 변경 파일: `content/marketing/card-news-copy-4.md` — 카드뉴스 카피 4종 (여친TOP5/부모님금기/1년vs5년/AI메시지) + 슬라이드별 구성
+- **[content-seo]** 변경 파일: `content/blog/*.md` — 네이버 블로그 포스팅 3개 (여친생일3만원/아버지생신/어버이날TOP10)
+- **[content-seo]** 변경 파일: `content/keywords-100.md` — 롱테일 키워드 리서치 100개 (7개 카테고리, 검색의도/경쟁도/우선순위)
+- **[ui-brand]** 변경 파일: `content/templates/*.html` — 인스타 카드뉴스 HTML 템플릿 3종 (순위형/비교형/팁형, 1080x1350px)
 - **[backend-api]** 변경 파일: `api/recommend.js` — 502 에러 수정: fetchWithTimeout(15s) 추가, 모델 fallback 개선(429/529/5xx 재시도), 구식 모델명 교체
 - **[ui-brand]** 변경 파일: `index.html` — 랜딩페이지 above the fold 개선: 핵심 메시지 "관계에 맞는 AI 선물 추천" + "3분이면 완벽한 선물 찾기" + CTA 확대
 - **[gift-data]** 변경 파일: `api/recommend.js` — AI 프롬프트 가이드라인 강화: 수혜자 실용성, 관계 깊이 전략, 김영란법 필터, 세대별 가중치

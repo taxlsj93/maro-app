@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MARO 비교형 카드뉴스</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #e0d8d0;
+  }
+
+  .card {
+    width: 1080px;
+    height: 1350px;
+    background: linear-gradient(170deg, #faf6ee 0%, #f5ede3 50%, #faf6ee 100%);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #2d2018;
+  }
+
+  /* Subtle pattern */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(196,117,110,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(196,117,110,0.05) 0%, transparent 50%);
+  }
+
+  .header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 60px 70px 36px;
+  }
+
+  .header-tag {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 500;
+    color: #c4756e;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    font-family: 'Gowun Batang', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #2d2018;
+    line-height: 1.35;
+  }
+
+  .header h1 em {
+    font-style: normal;
+    color: #c4756e;
+  }
+
+  .header .subtitle {
+    font-size: 20px;
+    color: #9a8a7a;
+    margin-top: 12px;
+  }
+
+  .comparison {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 0;
+    padding: 30px 50px;
+    height: 820px;
+  }
+
+  .side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 36px 32px;
+  }
+
+  .side-left {
+    background: rgba(154, 138, 122, 0.06);
+    border-radius: 28px 0 0 28px;
+    border: 1px solid rgba(154, 138, 122, 0.1);
+    border-right: none;
+  }
+
+  .side-right {
+    background: rgba(196, 117, 110, 0.06);
+    border-radius: 0 28px 28px 0;
+    border: 1px solid rgba(196, 117, 110, 0.12);
+    border-left: none;
+  }
+
+  .side-label {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .side-label .emoji {
+    font-size: 40px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .side-label h2 {
+    font-family: 'Gowun Batang', serif;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .side-left .side-label h2 { color: #9a8a7a; }
+  .side-right .side-label h2 { color: #c4756e; }
+
+  .side-label .tag {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-top: 8px;
+  }
+
+  .side-left .tag {
+    background: rgba(154, 138, 122, 0.1);
+    color: #9a8a7a;
+  }
+  .side-right .tag {
+    background: rgba(196, 117, 110, 0.12);
+    color: #c4756e;
+  }
+
+  .bullet-list {
+    list-style: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 10px;
+  }
+
+  .bullet-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 20px;
+    background: rgba(255, 253, 249, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 253, 249, 0.6);
+  }
+
+  .bullet-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+
+  .side-left .bullet-icon {
+    background: rgba(154, 138, 122, 0.08);
+  }
+  .side-right .bullet-icon {
+    background: rgba(196, 117, 110, 0.1);
+  }
+
+  .bullet-text {
+    flex: 1;
+  }
+
+  .bullet-text strong {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .side-left .bullet-text strong { color: #5a4a3a; }
+  .side-right .bullet-text strong { color: #2d2018; }
+
+  .bullet-text p {
+    font-size: 16px;
+    color: #9a8a7a;
+    line-height: 1.4;
+  }
+
+  /* VS Divider */
+  .vs-divider {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(196, 117, 110, 0.3);
+  }
+
+  .vs-divider span {
+    font-family: 'Gowun Batang', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #fffdf9;
+    letter-spacing: 1px;
+  }
+
+  .vs-line {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, rgba(196,117,110,0.15) 30%, rgba(196,117,110,0.15) 70%, transparent);
+    transform: translateX(-50%);
+    z-index: 5;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 32px 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(0deg, rgba(250,246,238,1) 0%, rgba(250,246,238,0) 100%);
+    padding-top: 60px;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-mark {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Gowun Batang', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #fffdf9;
+  }
+
+  .logo-text {
+    font-family: 'Gowun Batang', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2d2018;
+  }
+
+  .logo-text span {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #9a8a7a;
+  }
+
+  .cta {
+    background: linear-gradient(135deg, #c4756e, #a85e58);
+    color: #fffdf9;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 50px;
+    border: none;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <div class="header-tag">BEFORE &amp; AFTER</div>
+    <h1>선물 고르기,<br><em>마로 전 vs 후</em></h1>
+    <p class="subtitle">AI가 바꿔주는 선물 경험의 차이</p>
+  </div>
+
+  <div class="comparison">
+    <div class="vs-line"></div>
+    <div class="vs-divider"><span>VS</span></div>
+
+    <div class="side side-left">
+      <div class="side-label">
+        <span class="emoji">😰</span>
+        <h2>마로 쓰기 전</h2>
+        <span class="tag">매번 고민만 2시간</span>
+      </div>
+      <ul class="bullet-list">
+        <li class="bullet-item">
+          <div class="bullet-icon">🔍</div>
+          <div class="bullet-text">
+            <strong>"뭘 줘야 하지..."</strong>
+            <p>검색만 2시간, 결국 상품권</p>
+          </div>
+        </li>
+        <li class="bullet-item">
+          <div class="bullet-icon">💸</div>
+          <div class="bullet-text">
+            <strong>예산 초과</strong>
+            <p>좋아 보이는 건 다 비싸고</p>
+          </div>
+        </li>
+        <li class="bullet-item">
+          <div class="bullet-icon">😐</div>
+          <div class="bullet-text">
+            <strong>반응이 미지근</strong>
+            <p>"아 고마워..." 어색한 미소</p>
+          </div>
+        </li>
+        <li class="bullet-item">
+          <div class="bullet-icon">🔄</div>
+          <div class="bullet-text">
+            <strong>매번 같은 패턴</strong>
+            <p>꽃+케이크 무한 반복</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="side side-right">
+      <div class="side-label">
+        <span class="emoji">🥰</span>
+        <h2>마로 쓴 후</h2>
+        <span class="tag">3분 만에 완벽 추천</span>
+      </div>
+      <ul class="bullet-list">
+        <li class="bullet-item">
+          <div class="bullet-icon">✨</div>
+          <div class="bullet-text">
+            <strong>AI가 딱 맞는 추천</strong>
+            <p>관계, 취향, 예산 맞춤 분석</p>
+          </div>
+        </li>
+        <li class="bullet-item">
+          <div class="bullet-icon">💰</div>
+          <div class="bullet-text">
+            <strong>예산 안에서 최고</strong>
+            <p>가격대별 최적 선물 제안</p>
+          </div>
+        </li>
+        <li class="bullet-item">
+          <div class="bullet-icon">😍</div>
+          <div class="bullet-text">
+            <strong>"어떻게 알았어?!"</strong>
+            <p>취향 저격으로 감동 보장</p>
+          </div>
+        </li>
+        <li class="bullet-item">
+          <div class="bullet-icon">🎁</div>
+          <div class="bullet-text">
+            <strong>매번 새로운 아이디어</strong>
+            <p>트렌드 반영 + 개인 맞춤</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="logo-area">
+      <div class="logo-mark">마</div>
+      <div class="logo-text">
+        MARO
+        <span>마음을 새기는 선물</span>
+      </div>
+    </div>
+    <div class="cta">마로에서 AI 추천받기 →</div>
+  </div>
+</div>
+
+</body>
+</html>
