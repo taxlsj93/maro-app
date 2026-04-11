@@ -57,8 +57,11 @@ async function callClaude(apiKey, model, prompt, temperature) {
       model,
       max_tokens: 500,
       temperature,
-      system: '반드시 JSON만 출력하세요. 다른 텍스트를 절대 포함하지 마세요. ```json 마크다운 블록도 금지. 순수 JSON 객체만 출력.',
-      messages: [{ role: 'user', content: prompt }],
+      system: 'JSON 객체만 출력. 설명/마크다운/```json 절대 금지. {"gifts":[...]} 형식만 반환.',
+      messages: [
+        { role: 'user', content: prompt },
+        { role: 'assistant', content: '{"gifts":[' }
+      ],
     }),
   });
   return { res, status: res.status };
@@ -100,8 +103,7 @@ export default async function handler(req) {
 규칙:상황+관계깊이 적합,한국문화 부적절선물 제외,3개 서로 다른 카테고리,구체적 상품명,searchKeyword는 쿠팡검색용${fm?' B급감성 웃긴선물':''}
 다양성:이전과 다른 새로운 상품 추천,같은 상품 반복 금지,다양한 카테고리에서 선택,흔한추천(양말/머그컵/기프티콘) 지양
 추가:①수혜자관점 실용성②관계깊이전략(먼→안전,가까운→대담)③김영란법(직장 공직자 식품5만/선물5만/경조사10만)④세대별(Z세대→경험/디지털,시니어→건강/실용)
-JSON:
-{"gifts":[{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"},{"name":"상품명","price":"가격","reason":"추천이유1문장","emoji":"이모지","searchKeyword":"쿠팡키워드"}]}`;
+형식:{"gifts":[{"name":"구체적상품명","price":"N만원","reason":"1문장","emoji":"1개","searchKeyword":"쿠팡검색어"}]} 3개`;
 
     const HAIKU = 'claude-haiku-4-5-20251001';
 
@@ -137,7 +139,9 @@ JSON:
         }
 
         const data = await res.json();
-        const text = data.content?.[0]?.text || '';
+        // prefill '{"gifts":[' 이 stop_reason으로 빠지므로 응답 앞에 붙여서 완전한 JSON 복원
+        const raw = data.content?.[0]?.text || '';
+        const text = '{"gifts":[' + raw;
         const gifts = extractGifts(text);
 
         if (gifts) {
