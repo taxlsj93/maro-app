@@ -1,6 +1,10 @@
 # Changelog
 
 ## 2026-04-11
+- **[backend-api]** 변경 파일: `api/recommend.js` — 502 에러 수정: fetchWithTimeout(15s) 추가, 모델 fallback 개선(429/529/5xx 재시도), 구식 모델명 교체
+- **[ui-brand]** 변경 파일: `index.html` — 랜딩페이지 above the fold 개선: 핵심 메시지 "관계에 맞는 AI 선물 추천" + "3분이면 완벽한 선물 찾기" + CTA 확대
+- **[gift-data]** 변경 파일: `api/recommend.js` — AI 프롬프트 가이드라인 강화: 수혜자 실용성, 관계 깊이 전략, 김영란법 필터, 세대별 가중치
+- **[gift-data]** 변경 파일: `maro-app.jsx` — 시부모/장인장모 5~10만원 프리미엄 선물 DB 20개 추가 (5개 상황별 4개씩)
 - **[backend-api]** 변경 파일: `api/recommend.js`, `maro-app.jsx` — Edge Function 프록시 구축, API 키 서버 보관, rate limiting, CORS, 프론트엔드 연동
 - **[analytics]** 변경 파일: `maro-app.jsx`, `message.html`, `vote.html`, `today-pick.html` — GA4 커스텀 이벤트 추가 (recommend_start/complete, coupang_click, card_save/share, vote_create/submit)
 - **[planner]** 변경 파일: `CLAUDE.md` — 에이전트 역할 경계 명확화 (@ui-brand vs @marketing)

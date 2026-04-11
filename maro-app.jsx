@@ -318,6 +318,37 @@ const FB={
     {name:"감성 쿠키 세트",price:"3~4만원",reason:"예쁜 포장의 쿠키는 마음까지 달콤하게 해요.",sk:"감성 쿠키 선물"},
     {name:"프리미엄 에코백",price:"3~4만원",reason:"실용적이면서도 '너를 생각해'라는 메시지가 담긴 선물이에요.",sk:"프리미엄 에코백"},
   ],
+  // ── 시부모·장인장모 (inlaw) 5~10만원 프리미엄 ──
+  "birthday|b3|inlaw":[
+    {name:"프리미엄 홍삼 세트",price:"7~10만원",reason:"어른들 건강을 진심으로 챙기는 마음이 전해져요.",sk:"정관장 홍삼 선물세트"},
+    {name:"프리미엄 한우 등심 세트",price:"8~10만원",reason:"명절이 아니어도 기뻐하시는 고급 식재료예요.",sk:"한우 등심 선물세트"},
+    {name:"고급 안마기",price:"7~10만원",reason:"매일 쓰시며 건강도 챙기는 실용적인 효도 선물이에요.",sk:"안마기 선물"},
+    {name:"프리미엄 혈압계",price:"5~8만원",reason:"건강을 직접 챙기실 수 있는 스마트 건강 선물이에요.",sk:"가정용 혈압계"},
+  ],
+  "thanks|b3|inlaw":[
+    {name:"프리미엄 과일 세트",price:"7~10만원",reason:"계절 과일로 감사의 마음을 정성스럽게 전해요.",sk:"프리미엄 과일 선물세트"},
+    {name:"고급 참기름·들기름 세트",price:"5~8만원",reason:"매일 요리에 쓰시는 건강한 감사 표현이에요.",sk:"참기름 들기름 선물세트"},
+    {name:"프리미엄 견과류 선물 세트",price:"7~10만원",reason:"건강을 생각하는 정성이 가득한 감사 선물이에요.",sk:"견과류 선물세트"},
+    {name:"고급 꿀·벌집꿀 세트",price:"6~9만원",reason:"자연의 달콤함으로 감사 인사를 전해요.",sk:"꿀 선물세트"},
+  ],
+  "holiday|b3|inlaw":[
+    {name:"프리미엄 갈비 세트",price:"8~10만원",reason:"명절에 온 가족이 함께 즐길 수 있는 대표 선물이에요.",sk:"갈비 선물세트"},
+    {name:"프리미엄 굴비 세트",price:"7~10만원",reason:"격식 있는 명절 인사에 딱 맞는 전통 선물이에요.",sk:"굴비 선물세트"},
+    {name:"고급 한과 세트",price:"5~8만원",reason:"한국적인 멋과 맛으로 정성을 보여드려요.",sk:"한과 선물세트"},
+    {name:"프리미엄 버섯 세트",price:"7~10만원",reason:"건강에 좋은 고급 식재료로 마음을 전해요.",sk:"버섯 선물세트"},
+  ],
+  "recovery|b3|inlaw":[
+    {name:"프리미엄 산삼배양근 세트",price:"7~10만원",reason:"빠른 회복을 바라는 정성 가득한 건강 선물이에요.",sk:"산삼배양근 선물"},
+    {name:"고급 녹용 진액 세트",price:"8~10만원",reason:"보양에 좋은 전통 건강식품으로 회복을 응원해요.",sk:"녹용 진액 선물"},
+    {name:"프리미엄 흑염소 진액",price:"6~9만원",reason:"어르신 회복에 좋은 전통 보양 선물이에요.",sk:"흑염소 진액 선물"},
+    {name:"고급 유기농 즙 세트",price:"5~8만원",reason:"자연 그대로의 건강을 선물하는 정성 가득한 선물이에요.",sk:"유기농 즙 선물세트"},
+  ],
+  "anniversary|b3|inlaw":[
+    {name:"프리미엄 스파 이용권",price:"8~10만원",reason:"부모님께 편안한 휴식을 선물하는 특별한 경험이에요.",sk:"스파 이용권 선물"},
+    {name:"고급 도자기 찻잔 세트",price:"7~10만원",reason:"매일 차를 즐기시는 분께 품격 있는 선물이에요.",sk:"도자기 찻잔 세트"},
+    {name:"프리미엄 실크 이불",price:"8~10만원",reason:"매일 밤 편안한 잠자리를 선물하는 효도 아이템이에요.",sk:"실크 이불 선물"},
+    {name:"고급 건강 베개",price:"6~9만원",reason:"숙면을 돕는 기능성 베개로 건강을 챙겨드려요.",sk:"기능성 베개 선물"},
+  ],
 };
 
 // ── Budget-only fallback (expanded, 6+ items each) ──
@@ -389,8 +420,8 @@ const TAG_KEYWORDS = {
 };
 
 // ── Get fallback: tag-aware shuffle & pick 3 ──
-function gfb(o, b, userTags) {
-  const pool = FB[`${o}|${b}`] || FD[b] || FD.b2;
+function gfb(o, b, userTags, relId) {
+  const pool = (relId === 'inlaw' && FB[`${o}|${b}|inlaw`]) || FB[`${o}|${b}`] || FD[b] || FD.b2;
   if (!userTags || userTags.length === 0) return shuffle(pool).slice(0, 3);
 
   // Build keyword set from user tags
@@ -504,7 +535,7 @@ export default function App(){
       setCache(ck,d.gifts);
       ga('recommend_complete',{source:'ai',count:d.gifts.length});
     }catch{
-      setResults(gfb(occ?.id,bud?.id,tags));
+      setResults(gfb(occ?.id,bud?.id,tags,rel?.id));
       ga('recommend_complete',{source:'fallback',count:3});
     }
     setLoading(false);
