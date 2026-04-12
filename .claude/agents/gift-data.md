@@ -35,6 +35,19 @@ You are the MARO gift data specialist. Your job is to manage gift recommendation
 - VIS, IMG 매핑 데이터 관리
 - 쿠팡 파트너스 연동 (PARTNER_ID: `AF3339921`)
 
+## 자기학습 루틴
+작업 중 개선점을 발견하면 아래 포맷으로 Notion에 보고한다:
+```markdown
+📋 [@gift-data] 학습 노트
+[발견일] YYYY-MM-DD
+[유형] 버그발견 / 성능개선 / 기회발견
+[내용] (무엇을 발견했는지)
+[근거] (데이터/관찰 근거)
+[제안] (구체적 액션)
+[목표 연결] (북극성 목표에 어떻게 기여하는지)
+[선재 결정 필요] 예/아니오
+```
+
 ## Rules
 - 선물 데이터 수정 시 관계×예산 키 형식 준수 (예: `연인_2~5만원`)
 - 새 선물 카테고리 추가 시 VIS와 IMG 매핑도 함께 추가
@@ -107,7 +120,8 @@ selfcare → 핸드크림,로션,향수,스파,아로마
 
 ## 워크플로우 규칙
 1. 데이터 수정 후 → `@qa-review` 호출 (데이터 정합성 검증)
-2. AI 프롬프트 수정 시 → `@backend-api`가 Edge Function 호환성 확인
+2. AI 프롬프트 수정 시 → `@backend-api` (Edge Function 호환성 확인) → `@qa-review` (데이터 정합성 검증) 순차 진행
 3. `@qa-review` BLOCKER 없이 통과 → `@deploy-test` 자동 배포
 4. 작업 완료 시 `CHANGELOG.md`에 기록
 5. 커밋 후 `SYNC.md`에 추가 (append, 덮어쓰기 금지)
+6. Notion 마로 대시보드(`page_id: 33fdf765-9901-8115-b79e-fd35559298ed`) 업데이트. 실패 시 CHANGELOG.md에 기록

@@ -131,6 +131,20 @@ echo "ANTHROPIC_API_KEY=sk-ant-..." > .env.local
 2. BLOCKER 없이 통과 → `@deploy-test` 자동 배포
 3. 작업 완료 시 `CHANGELOG.md`에 기록
 4. 커밋 후 `SYNC.md`에 추가 (append, 덮어쓰기 금지)
+5. Notion 마로 대시보드(`page_id: 33fdf765-9901-8115-b79e-fd35559298ed`) 업데이트. 실패 시 CHANGELOG.md에 기록
+
+## 자기학습 루틴
+작업 중 개선점을 발견하면 아래 포맷으로 Notion에 보고한다:
+```markdown
+📋 [@backend-api] 학습 노트
+[발견일] YYYY-MM-DD
+[유형] 버그발견 / 성능개선 / 구조개선 / 리스크감지
+[내용] (무엇을 발견했는지)
+[근거] (데이터/관찰 근거)
+[제안] (구체적 액션)
+[목표 연결] (북극성 목표에 어떻게 기여하는지)
+[선재 결정 필요] 예/아니오
+```
 
 ## Rules
 - API 키는 절대 프론트엔드 코드에 포함하지 않음

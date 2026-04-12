@@ -39,7 +39,10 @@ No test framework or linter is configured.
 - `/today` → `today-pick.html` (daily featured pick)
 - `/message` → `message.html` (shareable message card creator)
 - `/calc` → `calc.html` (gift cost split calculator)
-- `/vote` → `vote.html` (community voting — 준비 중)
+- `/vote` → `vote.html` (community voting)
+- `/blog` → `blog.html` (블로그)
+- `/privacy` → `privacy.html` (개인정보처리방침)
+- `/terms` → `terms.html` (이용약관)
 
 **중요: `/app` 라우트의 실제 프로덕션 코드는 `app.html` 내부 인라인 `<script type="text/babel">`입니다.** `maro-app.jsx`는 Vite 빌드용이지만 프로덕션에서 사용되지 않습니다. **앱 기능 수정 시 반드시 `app.html`을 수정하세요.** maro-app.jsx는 참조/백업용입니다.
 

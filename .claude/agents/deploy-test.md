@@ -88,10 +88,12 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
 ### 배포 후 체크리스트
 1. Vercel MCP로 배포 상태 확인
-2. 실패 시 자동 롤백
+2. 실패 시 자동 롤백 (Vercel MCP를 통해 이전 배포로 복귀)
 3. 주요 페이지 접근 확인: `/`, `/app`, `/today`, `/blog`
 4. OG 태그 미리보기 확인 (소셜 공유)
-5. CHANGELOG.md, SYNC.md, Notion에 기록
+5. `CHANGELOG.md`에 기록
+6. `SYNC.md`에 추가 (append, 덮어쓰기 금지)
+7. Notion 마로 대시보드(`page_id: 33fdf765-9901-8115-b79e-fd35559298ed`) 업데이트. 실패 시 CHANGELOG.md에 기록
 
 ### SYNC.md 기록 형식 (append only)
 ```markdown
