@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#e0e0e0}
+.card{
+  width:1080px;height:1080px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#faf6ee 0%,#f5ede3 50%,#faf6f1 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+}
+.deco1{position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(196,117,110,.05);top:-150px;right:-100px}
+.deco2{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(196,117,110,.04);bottom:-120px;left:-80px}
+.logo{
+  position:absolute;top:60px;
+  font-size:22px;font-weight:700;color:#c4756e;letter-spacing:8px;text-transform:uppercase;
+}
+.vs-wrap{
+  display:flex;align-items:center;gap:40px;margin-bottom:48px;position:relative;
+}
+.vs-box{
+  width:320px;padding:48px 0;border-radius:32px;
+  background:rgba(255,255,255,.6);backdrop-filter:blur(10px);
+  border:2px solid rgba(255,255,255,.5);
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  box-shadow:0 4px 24px rgba(164,94,88,.08);
+}
+.vs-box .emoji{font-size:72px}
+.vs-box .label{font-size:28px;font-weight:600;color:#2d2018}
+.vs-box .desc{font-size:20px;font-weight:400;color:#8a7a73}
+.vs-text{
+  font-size:72px;font-weight:700;color:#c4756e;
+  text-shadow:0 4px 16px rgba(196,117,110,.2);
+}
+.headline{
+  font-size:56px;font-weight:700;color:#2d2018;
+  text-align:center;line-height:1.45;margin-bottom:20px;position:relative;
+}
+.headline em{font-style:normal;color:#c4756e}
+.sub{
+  font-size:26px;font-weight:400;color:#5a4a3a;
+  text-align:center;line-height:1.6;position:relative;margin-bottom:48px;
+}
+.vote-row{
+  display:flex;gap:16px;position:relative;
+}
+.vote-btn{
+  background:rgba(196,117,110,.1);border:2px solid rgba(196,117,110,.2);
+  padding:16px 36px;border-radius:16px;
+  font-size:22px;font-weight:600;color:#c4756e;
+}
+.domain{
+  position:absolute;bottom:56px;
+  font-size:18px;color:#8a7a73;letter-spacing:3px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="deco1"></div>
+  <div class="deco2"></div>
+  <div class="logo">MARO</div>
+  <div class="vs-wrap">
+    <div class="vs-box">
+      <span class="emoji">🌹</span>
+      <span class="label">어버이날</span>
+      <span class="desc">"그런 거 왜 사니"</span>
+    </div>
+    <span class="vs-text">VS</span>
+    <div class="vs-box">
+      <span class="emoji">👶</span>
+      <span class="label">어린이날</span>
+      <span class="desc">"이거 아닌데"</span>
+    </div>
+  </div>
+  <div class="headline"><em>뭐</em>가 더 고민돼요?</div>
+  <div class="sub">댓글로 알려주세요!</div>
+  <div class="vote-row">
+    <span class="vote-btn">1 어버이날</span>
+    <span class="vote-btn">2 어린이날</span>
+    <span class="vote-btn">3 둘 다</span>
+  </div>
+  <div class="domain">maro.ai.kr</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#e0e0e0}
+.card{
+  width:1080px;height:1080px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#2d2018 0%,#3d3028 40%,#2d2018 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+}
+.deco1{position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(196,117,110,.06);top:-150px;right:-100px}
+.deco2{position:absolute;width:350px;height:350px;border-radius:50%;background:rgba(196,117,110,.04);bottom:-80px;left:-60px}
+.logo{
+  position:absolute;top:60px;
+  font-size:22px;font-weight:700;color:rgba(196,117,110,.6);letter-spacing:8px;text-transform:uppercase;
+}
+.percent-wrap{
+  position:relative;margin-bottom:40px;text-align:center;
+}
+.percent-num{
+  font-size:180px;font-weight:700;color:#c4756e;line-height:1;
+  text-shadow:0 6px 40px rgba(196,117,110,.3);
+}
+.percent-unit{
+  font-size:60px;font-weight:700;color:rgba(196,117,110,.7);
+  vertical-align:super;margin-left:4px;
+}
+.percent-label{
+  font-size:24px;font-weight:500;color:rgba(255,255,255,.4);
+  letter-spacing:6px;margin-top:8px;
+}
+.headline{
+  font-size:52px;font-weight:700;color:#fff;
+  text-align:center;line-height:1.5;margin-bottom:24px;position:relative;
+}
+.headline em{font-style:normal;color:#c4756e}
+.line{
+  width:60px;height:3px;background:#c4756e;border-radius:2px;
+  margin-bottom:28px;position:relative;opacity:.5;
+}
+.sub{
+  font-size:28px;font-weight:400;color:rgba(255,255,255,.5);
+  text-align:center;line-height:1.7;position:relative;
+  max-width:700px;
+}
+.domain{
+  position:absolute;bottom:56px;
+  font-size:18px;color:rgba(255,255,255,.3);letter-spacing:3px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="deco1"></div>
+  <div class="deco2"></div>
+  <div class="logo">MARO</div>
+  <div class="percent-wrap">
+    <span class="percent-num">80</span><span class="percent-unit">%</span>
+    <div class="percent-label">가 하는 실수</div>
+  </div>
+  <div class="headline">선물 고를 때<br><em>"내 취향"</em>을 사주는 것</div>
+  <div class="line"></div>
+  <div class="sub">진짜 좋은 선물의 시작은<br>"이 사람은 뭘 좋아하지?"예요</div>
+  <div class="domain">maro.ai.kr</div>
+</div>
+</body>
+</html>

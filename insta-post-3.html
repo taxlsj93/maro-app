@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#e0e0e0}
+.card{
+  width:1080px;height:1080px;position:relative;overflow:hidden;
+  background:linear-gradient(170deg,#c4756e 0%,#a85e58 40%,#c4756e 70%,#d48a84 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+/* 배경 데코 */
+.deco1{position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(255,255,255,.04);top:-150px;right:-100px}
+.deco2{position:absolute;width:350px;height:350px;border-radius:50%;background:rgba(255,255,255,.03);bottom:-80px;left:-60px}
+.logo{
+  position:absolute;top:60px;
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:22px;font-weight:700;
+  color:rgba(255,255,255,.7);letter-spacing:8px;text-transform:uppercase;
+}
+/* 카네이션 */
+.carnation{
+  font-size:140px;margin-bottom:20px;position:relative;
+  filter:drop-shadow(0 8px 24px rgba(0,0,0,.15));
+}
+/* D-day */
+.dday-wrap{
+  position:relative;margin-bottom:40px;text-align:center;
+}
+.dday-label{
+  font-family:'Noto Sans KR',sans-serif;font-size:22px;font-weight:500;
+  color:rgba(255,255,255,.65);letter-spacing:4px;margin-bottom:12px;
+}
+.dday-num{
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:140px;font-weight:700;
+  color:#fff;line-height:1;text-shadow:0 6px 32px rgba(0,0,0,.15);
+}
+.dday-unit{
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:48px;font-weight:700;
+  color:rgba(255,255,255,.8);vertical-align:super;margin-left:4px;
+}
+/* 하단 텍스트 */
+.headline{
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:46px;font-weight:700;
+  color:#fff;text-align:center;line-height:1.5;margin-bottom:16px;
+  position:relative;
+}
+.sub{
+  font-family:'Noto Sans KR',sans-serif;font-size:22px;
+  color:rgba(255,255,255,.7);text-align:center;position:relative;
+}
+.domain{
+  position:absolute;bottom:56px;
+  font-family:'Noto Sans KR',sans-serif;font-size:18px;
+  color:rgba(255,255,255,.5);letter-spacing:3px;
+}
+/* 작은 꽃잎 장식 */
+.petal{position:absolute;font-size:28px;opacity:.15}
+.p1{top:18%;left:12%;transform:rotate(-20deg)}
+.p2{top:30%;right:15%;transform:rotate(15deg)}
+.p3{bottom:25%;left:18%;transform:rotate(-10deg)}
+.p4{bottom:15%;right:12%;transform:rotate(25deg)}
+.p5{top:50%;left:8%;transform:rotate(5deg)}
+.p6{top:15%;right:30%;transform:rotate(-30deg)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="deco1"></div>
+  <div class="deco2"></div>
+  <span class="petal p1">🌸</span>
+  <span class="petal p2">🌸</span>
+  <span class="petal p3">🌸</span>
+  <span class="petal p4">🌸</span>
+  <span class="petal p5">🌷</span>
+  <span class="petal p6">🌷</span>
+  <div class="logo">MARO</div>
+  <div class="carnation">🌷</div>
+  <div class="dday-wrap">
+    <div class="dday-label">어 버 이 날</div>
+    <div class="dday-num" id="dday">D-27</div>
+  </div>
+  <div class="headline">미리 준비하는 사람이<br>센스 있는 사람</div>
+  <div class="sub">마로에서 부모님 선물 찾아보세요</div>
+  <div class="domain">maro.ai.kr</div>
+</div>
+<script>
+// 어버이날(5/8) D-day 자동 계산
+const target = new Date(new Date().getFullYear(), 4, 8);
+const today = new Date(); today.setHours(0,0,0,0);
+if (today > target) target.setFullYear(target.getFullYear() + 1);
+const diff = Math.ceil((target - today) / 86400000);
+document.getElementById('dday').textContent = `D-${diff}`;
+</script>
+</body>
+</html>

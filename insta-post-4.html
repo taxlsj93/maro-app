@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#e0e0e0}
+.card{
+  width:1080px;height:1080px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#faf6ee 0%,#f5ede3 40%,#faf6f1 70%,#ede0d0 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+}
+.deco1{position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(43,122,120,.06);top:-120px;left:-80px}
+.deco2{position:absolute;width:350px;height:350px;border-radius:50%;background:rgba(196,117,110,.05);bottom:-100px;right:-60px}
+.deco3{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(43,122,120,.04);top:60%;right:15%}
+.logo{
+  position:absolute;top:60px;
+  font-size:22px;font-weight:700;color:#c4756e;letter-spacing:8px;text-transform:uppercase;
+}
+.logo-sub{
+  position:absolute;top:92px;
+  font-size:13px;color:#8a7a73;letter-spacing:4px;
+}
+.badge{
+  position:relative;
+  background:rgba(43,122,120,.1);color:#2B7A78;
+  padding:12px 32px;border-radius:40px;
+  font-size:20px;font-weight:600;letter-spacing:2px;
+  margin-bottom:40px;
+}
+.emoji-big{
+  font-size:80px;margin-bottom:32px;position:relative;
+  filter:drop-shadow(0 4px 16px rgba(0,0,0,.1));
+}
+.headline{
+  font-size:64px;font-weight:700;color:#2d2018;
+  text-align:center;line-height:1.45;margin-bottom:20px;position:relative;
+}
+.headline em{font-style:normal;color:#c4756e}
+.sub{
+  font-size:26px;font-weight:400;color:#5a4a3a;
+  text-align:center;line-height:1.7;position:relative;margin-bottom:40px;
+}
+.tag-row{
+  display:flex;gap:12px;position:relative;
+}
+.tag{
+  background:rgba(255,255,255,.7);border:1.5px solid rgba(196,117,110,.2);
+  padding:10px 24px;border-radius:30px;
+  font-size:18px;font-weight:500;color:#8a7a73;
+}
+.domain{
+  position:absolute;bottom:56px;
+  font-size:18px;color:#8a7a73;letter-spacing:3px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="deco1"></div>
+  <div class="deco2"></div>
+  <div class="deco3"></div>
+  <div class="logo">MARO</div>
+  <div class="logo-sub">마음을 새기는 선물</div>
+  <div class="badge">BUILDING LOG</div>
+  <div class="emoji-big">👨‍💻</div>
+  <div class="headline"><em>문과생</em>이 AI로<br>선물 추천 서비스<br>만들고 있습니다</div>
+  <div class="sub">"선물 고르는 거 왜 이렇게 어렵지?"<br>이 질문 하나에서 시작했어요</div>
+  <div class="tag-row">
+    <span class="tag">#빌딩로그</span>
+    <span class="tag">#1인개발</span>
+    <span class="tag">#사이드프로젝트</span>
+  </div>
+  <div class="domain">maro.ai.kr</div>
+</div>
+</body>
+</html>
