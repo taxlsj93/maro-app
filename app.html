@@ -2499,7 +2499,7 @@ function App() {
     setLoading(false);
     go(0);
   };
-  const prog = Math.min(step, 6);
+  const prog = step === 0 ? 0 : step >= 7 ? 3 : step - 1;
   return /*#__PURE__*/React.createElement("div", {
     style: {
       minHeight: "100vh",
@@ -2618,7 +2618,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       height: "100%",
-      width: `${Math.max(prog / 6 * 100, 8)}%`,
+      width: `${Math.max(prog / 3 * 100, 8)}%`,
       background: `linear-gradient(90deg,${P},${P2})`,
       borderRadius: 3,
       transition: "width .5s cubic-bezier(.4,0,.2,1)"
@@ -2679,8 +2679,8 @@ function App() {
     }
   }, "\uC57D 30\uCD08\uBA74 \uC644\uB8CC\uB3FC\uC694")), step === 1 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
     n: "01",
-    title: "\uB204\uAD6C\uC5D0\uAC8C \uC120\uBB3C\uD558\uB098\uC694?",
-    sub: "\uAD00\uACC4\uC5D0 \uB530\uB77C \uC801\uC808\uD55C \uC120\uBB3C\uC774 \uB2EC\uB77C\uC838\uC694",
+    title: "\uB204\uAD6C\uC5D0\uAC8C, \uC5B4\uB5A4 \uC0C1\uD669\uC778\uAC00\uC694?",
+    sub: "\uAD00\uACC4\uC640 \uC0C1\uD669\uC744 \uBAA8\uB450 \uC120\uD0DD\uD574\uC8FC\uC138\uC694",
     onBack: () => go(0)
   }), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -2691,12 +2691,15 @@ function App() {
   }, RELATIONS.map(r => /*#__PURE__*/React.createElement(Btn, {
     key: r.id,
     onClick: () => {
+      const midDep = r.depth[Math.floor(r.depth.length / 2)] || "";
       setRel(r);
-      go(2);
+      setDep(midDep);
+      setGender("neutral");
     },
     style: {
       ...card,
-      padding: "16px 12px"
+      padding: "16px 12px",
+      border: rel?.id === r.id ? `2px solid ${P}` : "1px solid #e6dfd4"
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
@@ -2715,87 +2718,20 @@ function App() {
       color: TX3,
       marginTop: 2
     }
-  }, r.desc))))), step === 2 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
-    n: "02",
-    title: "\uC120\uBB3C \uBC1B\uC73C\uC2E4 \uBD84\uC740?",
-    sub: "\uC131\uBCC4\uC5D0 \uB530\uB77C \uB354 \uC801\uD569\uD55C \uC120\uBB3C\uC744 \uCD94\uCC9C\uD574\uB4DC\uB824\uC694",
-    onBack: () => go(1)
-  }), /*#__PURE__*/React.createElement("div", {
+  }, r.desc)))), rel && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr 1fr",
-      gap: 10
+      borderTop: "1px solid #ede0d0",
+      margin: "20px 0 14px",
+      paddingTop: 16
     }
-  }, [{
-    id: "female",
-    icon: "👩",
-    label: "여성"
-  }, {
-    id: "male",
-    icon: "👨",
-    label: "남성"
-  }, {
-    id: "neutral",
-    icon: "🎁",
-    label: "상관없음"
-  }].map(g => /*#__PURE__*/React.createElement(Btn, {
-    key: g.id,
-    onClick: () => {
-      setGender(g.id);
-      go(3);
-    },
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
-      ...card,
-      padding: "18px 10px",
-      textAlign: "center"
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 28
-    }
-  }, g.icon), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: 600,
-      color: TX,
-      marginTop: 8
+      color: TX2,
+      marginBottom: 12
     }
-  }, g.label))))), step === 3 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
-    n: "03",
-    title: `${rel?.icon} ${rel?.label}과의 관계 깊이는?`,
-    sub: "\uAD00\uACC4\uC758 \uAE4A\uC774\uC5D0 \uB530\uB77C \uC120\uBB3C\uC758 \uBB34\uAC8C\uAC10\uC774 \uB2EC\uB77C\uC838\uC694",
-    onBack: () => go(2)
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      flexDirection: "column",
-      gap: 8
-    }
-  }, (rel?.depth || []).map((d, i) => /*#__PURE__*/React.createElement(Btn, {
-    key: i,
-    onClick: () => {
-      setDep(d);
-      go(4);
-    },
-    style: {
-      ...card,
-      padding: "14px 18px",
-      fontSize: 14,
-      color: TX,
-      fontWeight: 500
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      marginRight: 10,
-      opacity: .4,
-      fontWeight: 700
-    }
-  }, i + 1), d)))), step === 4 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
-    n: "04",
-    title: "\uC5B4\uB5A4 \uC0C1\uD669\uC778\uAC00\uC694?",
-    sub: "\uC0C1\uD669\uC5D0 \uB530\uB77C \uC120\uBB3C\uC758 \uC758\uBBF8\uAC00 \uC644\uC804\uD788 \uB2EC\uB77C\uC838\uC694",
-    onBack: () => go(3)
-  }), /*#__PURE__*/React.createElement("div", {
+  }, "어떤 상황인가요?")), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
@@ -2805,7 +2741,7 @@ function App() {
     key: o.id,
     onClick: () => {
       setOcc(o);
-      go(5);
+      go(2);
     },
     style: {
       ...card,
@@ -2823,11 +2759,11 @@ function App() {
       color: TX,
       marginTop: 5
     }
-  }, o.label))))), step === 5 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
-    n: "05",
+  }, o.label)))))), step === 2 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
+    n: "02",
     title: "\uC608\uC0B0\uC740 \uC5BC\uB9C8 \uC815\uB3C4 \uC0DD\uAC01\uD558\uC138\uC694?",
     sub: "\uC608\uC0B0\uC5D0 \uB9DE\uB294 \uCD5C\uC801\uC758 \uC120\uBB3C\uC744 \uCC3E\uC544\uB4DC\uB9B4\uAC8C\uC694",
-    onBack: () => go(4)
+    onBack: () => go(1)
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -2838,7 +2774,7 @@ function App() {
     key: b.id,
     onClick: () => {
       setBud(b);
-      go(6);
+      go(3);
     },
     style: {
       ...card,
@@ -2862,11 +2798,11 @@ function App() {
       borderRadius: 20,
       fontWeight: 500
     }
-  }, b.tag))))), step === 6 && !loading && results.length === 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
-    n: "06",
+  }, b.tag))))), step === 3 && !loading && results.length === 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SH, {
+    n: "03",
     title: "\uC5B4\uB5A4 \uB9C8\uC74C\uC744 \uC804\uD558\uACE0 \uC2F6\uC73C\uC138\uC694?",
     sub: "\uC774 \uD55C\uB9C8\uB514\uAC00 \uC120\uBB3C\uC758 \uBC29\uD5A5\uC744 \uACB0\uC815\uD574\uC694 (\uC120\uD0DD)",
-    onBack: () => go(5)
+    onBack: () => go(2)
   }), /*#__PURE__*/React.createElement("textarea", {
     value: intent,
     onChange: e => setIntent(e.target.value),
@@ -2977,7 +2913,7 @@ function App() {
       color: TX2,
       lineHeight: 1.7
     }
-  }, rel?.icon, " ", rel?.label, " (", dep, ") \xB7 ", occ?.icon, " ", occ?.label, " \xB7 ", bud?.label)), /*#__PURE__*/React.createElement(Btn, {
+  }, rel?.icon, " ", rel?.label, " \xB7 ", occ?.icon, " ", occ?.label, " \xB7 ", bud?.label)), /*#__PURE__*/React.createElement(Btn, {
     onClick: analyze,
     ms: 300,
     style: {
@@ -3058,7 +2994,7 @@ function App() {
         color: TX2,
         margin: 0
       }
-    }, "\uD83D\uDC96 ", rel?.label, dep ? ` (${dep})` : "", " \xB7 ", genderLabel, " \xB7 ", occ?.label, " \xB7 ", bud?.label)), /*#__PURE__*/React.createElement("div", {
+    }, "\uD83D\uDC96 ", rel?.label, " \xB7 ", occ?.label, " \xB7 ", bud?.label)), /*#__PURE__*/React.createElement("div", {
       style: {
         display: "flex",
         flexDirection: "column",
@@ -3247,7 +3183,7 @@ function App() {
       onClick: () => {
         setResults([]);
         setIntent("");
-        go(6);
+        go(3);
       },
       style: {
         flex: 1,

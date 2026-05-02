@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-04-27
+- **[content-growth]** 변경 파일: `content/marketing/2026-04-27-어린이날-threads-3종.md`, `content/blog/2026-04-27-어린이날-선물-연령별-추천.md`, `blog.html` — 주간 콘텐츠 자동 생성: 어린이날(5/5, D-8) Threads 3종 + 블로그 1편(연령별 가이드, id 12 추가)
+
 ## 2026-04-11
 - **[gift-data]** 변경 파일: `maro-app.jsx`, `api/recommend.js` — 추천 알고리즘 긴급 수정: 캐시 TTL 1시간, AI 다양성 지시+랜덤시드, 관계깊이별 풀 분리, 태그 강제 매칭, 다시 추천받기 버튼
 - **[marketing]** 변경 파일: `content/marketing/reels-copy-4.md` — 인스타 릴스 카피 4종 (시연형/비교형/공감밈/리스트형) + 해시태그/게시 일정

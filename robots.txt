@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /ops
+Disallow: /dashboard.html
 Sitemap: https://maro.ai.kr/sitemap.xml
