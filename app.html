@@ -30,7 +30,7 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,'Helvetica Neue','Segoe UI','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;background:linear-gradient(160deg,#faf8f4 0%,#f5f0e8 40%,#faf6ef 70%,#f0ebe0 100%);min-height:100vh;color:#3d3428}
+body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,'Helvetica Neue','Segoe UI','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;background:#F7F8FA;min-height:100vh;color:#3d3428}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
@@ -51,9 +51,9 @@ a:focus-visible,button:focus-visible{outline:2px solid #c4756e;outline-offset:2p
 } = React;
 const P = "#c4756e",
   P2 = "#a85e58",
-  TX = "#2d2420",
-  TX2 = "#5a4a3a",
-  TX3 = "#9a8a7a";
+  TX = "#191F28",
+  TX2 = "#4E5968",
+  TX3 = "#8B95A1";
 const PARTNER_ID = "AF3339921";
 const RELATIONS = [{
   id: "lover",
@@ -2113,12 +2113,11 @@ function mkUrl(kw, pr) {
   return p ? `${b}&minPrice=${p.min}&maxPrice=${p.max}` : b;
 }
 const card = {
-  background: "rgba(255,255,255,.78)",
-  border: "1.5px solid #e8dfd4",
-  borderRadius: 14,
+  background: "#FFFFFF",
+  border: "1px solid #F0F0F0",
+  borderRadius: 16,
   cursor: "pointer",
   textAlign: "left",
-  backdropFilter: "blur(8px)",
   position: "relative",
   overflow: "hidden"
 };
@@ -2331,7 +2330,7 @@ function ResultCard({
     style: {
       fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
       fontSize: 12,
-      color: "#5a4a3a",
+      color: "#4E5968",
       lineHeight: 1.75,
       fontStyle: "italic",
       marginBottom: 12,
@@ -2503,7 +2502,7 @@ function App() {
   return /*#__PURE__*/React.createElement("div", {
     style: {
       minHeight: "100vh",
-      background: "linear-gradient(160deg,#faf8f4 0%,#f5f0e8 30%,#faf6ef 60%,#f0ebe0 100%)",
+      background: "#F7F8FA",
       fontFamily: "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif",
       color: TX
     }
@@ -2512,9 +2511,9 @@ function App() {
       position: "sticky",
       top: 0,
       zIndex: 50,
-      background: "rgba(250,248,244,.92)",
+      background: "rgba(255,255,255,.96)",
       backdropFilter: "blur(12px)",
-      borderBottom: "1px solid rgba(232,223,212,.5)",
+      borderBottom: "1px solid #F0F0F0",
       padding: "12px 20px",
       display: "flex",
       alignItems: "center",
@@ -2611,7 +2610,7 @@ function App() {
   }, l))), /*#__PURE__*/React.createElement("div", {
     style: {
       height: 4,
-      background: "#E8DCD8",
+      background: "#F0F0F0",
       borderRadius: 3,
       overflow: "hidden"
     }
@@ -2699,7 +2698,7 @@ function App() {
     style: {
       ...card,
       padding: "16px 12px",
-      border: rel?.id === r.id ? `2px solid ${P}` : "1px solid #e6dfd4"
+      border: rel?.id === r.id ? `2px solid ${P}` : "1px solid #E8E8E8"
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
@@ -2811,7 +2810,7 @@ function App() {
       width: "100%",
       minHeight: 80,
       background: "rgba(255,255,255,.8)",
-      border: "1.5px solid #e6dfd4",
+      border: "1px solid #E8E8E8",
       borderRadius: 12,
       padding: "14px 16px",
       fontSize: 14,
@@ -2824,7 +2823,7 @@ function App() {
       transition: "border-color .2s"
     },
     onFocus: e => e.target.style.borderColor = P,
-    onBlur: e => e.target.style.borderColor = "#e6dfd4"
+    onBlur: e => e.target.style.borderColor = "#E8E8E8"
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -2837,7 +2836,7 @@ function App() {
     onClick: () => setIntent(s),
     style: {
       background: intent === s ? `${P}20` : "rgba(255,255,255,.6)",
-      border: `1px solid ${intent === s ? P : "#e2dbd0"}`,
+      border: `1px solid ${intent === s ? P : "#E8E8E8"}`,
       borderRadius: 20,
       padding: "5px 13px",
       fontSize: 12,
@@ -2875,7 +2874,7 @@ function App() {
       onClick: () => toggleTag(t.id),
       style: {
         background: on ? `${P}14` : "rgba(255,255,255,.6)",
-        border: `1px solid ${on ? P : "#e2dbd0"}`,
+        border: `1px solid ${on ? P : "#E8E8E8"}`,
         borderRadius: 20,
         padding: "4px 11px",
         fontSize: 11,
@@ -2893,8 +2892,8 @@ function App() {
     }
   }, tags.length, "\uAC1C \uC120\uD0DD\uB428")), /*#__PURE__*/React.createElement("div", {
     style: {
-      background: "rgba(255,255,255,.6)",
-      border: "1px solid #e6dfd4",
+      background: "#FFFFFF",
+      border: "1px solid #F0F0F0",
       borderRadius: 12,
       padding: "12px 16px",
       marginBottom: 18
@@ -2954,7 +2953,7 @@ function App() {
       width: 56,
       height: 56,
       margin: "0 auto 24px",
-      border: "3px solid #e6dfd4",
+      border: "3px solid #F0F0F0",
       borderTop: `3px solid ${P}`,
       borderRadius: "50%",
       animation: "spin 1s linear infinite"
@@ -3075,7 +3074,7 @@ function App() {
         } catch {}
       },
       style: {
-        border: ".5px solid #E8DCD8",
+        border: ".5px solid #F0F0F0",
         borderRadius: 12,
         padding: 10,
         background: "rgba(255,255,255,.7)",
@@ -3098,7 +3097,7 @@ function App() {
         window.open(`https://story.kakao.com/share?url=${u}&text=${t}`, "_blank");
       },
       style: {
-        border: ".5px solid #E8DCD8",
+        border: ".5px solid #F0F0F0",
         borderRadius: 12,
         padding: 10,
         background: "rgba(255,255,255,.7)",
@@ -3122,7 +3121,7 @@ function App() {
         } catch {}
       },
       style: {
-        border: ".5px solid #E8DCD8",
+        border: ".5px solid #F0F0F0",
         borderRadius: 12,
         padding: 10,
         background: "rgba(255,255,255,.7)",
@@ -3153,7 +3152,7 @@ function App() {
       style: {
         width: "100%",
         background: "rgba(255,255,255,.8)",
-        border: "1.5px solid #e6dfd4",
+        border: "1px solid #E8E8E8",
         borderRadius: 12,
         padding: 14,
         fontSize: 14,
@@ -3171,7 +3170,7 @@ function App() {
       style: {
         flex: 1,
         background: "rgba(255,255,255,.6)",
-        border: "1.5px solid #e6dfd4",
+        border: "1px solid #E8E8E8",
         borderRadius: 12,
         padding: 13,
         fontSize: 13,
@@ -3188,7 +3187,7 @@ function App() {
       style: {
         flex: 1,
         background: "rgba(255,255,255,.6)",
-        border: "1.5px solid #e6dfd4",
+        border: "1px solid #E8E8E8",
         borderRadius: 12,
         padding: 13,
         fontSize: 13,
