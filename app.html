@@ -17,7 +17,7 @@
 <meta name="twitter:description" content="관계, 상황, 예산에 딱 맞는 선물을 마로가 추천해드려요.">
 <meta name="twitter:image" content="https://maro.ai.kr/og-image.png">
 <link rel="canonical" href="https://maro.ai.kr/app">
-<meta name="theme-color" content="#c4756e">
+<meta name="theme-color" content="#3B82F6">
 <meta name="naver-site-verification" content="512743715781180ed71c3547ce74195b3dca12ed">
 <link rel="manifest" href="/manifest.json">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Y94YY9WP"></script>
@@ -35,8 +35,8 @@ body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFo
 @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
-.maro-btn:focus-visible{outline:2px solid #c4756e;outline-offset:2px}
-a:focus-visible,button:focus-visible{outline:2px solid #c4756e;outline-offset:2px}
+.maro-btn:focus-visible{outline:2px solid #3B82F6;outline-offset:2px}
+a:focus-visible,button:focus-visible{outline:2px solid #3B82F6;outline-offset:2px}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"마로 선물 추천","url":"https://maro.ai.kr/app","description":"관계, 상황, 예산에 딱 맞는 선물을 AI가 추천해드려요.","applicationCategory":"LifestyleApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"inLanguage":"ko"}
@@ -49,8 +49,8 @@ a:focus-visible,button:focus-visible{outline:2px solid #c4756e;outline-offset:2p
   useEffect,
   useRef
 } = React;
-const P = "#c4756e",
-  P2 = "#a85e58",
+const P = "#3B82F6",
+  P2 = "#2563EB",
   TX = "#191F28",
   TX2 = "#4E5968",
   TX3 = "#8B95A1";
@@ -2152,7 +2152,7 @@ function Btn({
       overflow: "hidden",
       ...(ok ? {
         borderColor: P,
-        background: `${P}10`,
+        background: `${P}18`,
         boxShadow: `0 0 0 3px ${P}18`
       } : {})
     },
@@ -2195,7 +2195,7 @@ function ProductThumb({
   return /*#__PURE__*/React.createElement("div", {
     style: {
       ...s,
-      background: `${P}10`,
+      background: `${P}18`,
       fontSize: 28
     }
   }, (name || "").includes("커피") || name.includes("드립") ? "☕" : name.includes("향수") || name.includes("디퓨저") ? "🌸" : name.includes("지갑") || name.includes("가방") ? "👛" : name.includes("이어폰") || name.includes("스피커") ? "🎧" : "🎁");
@@ -2349,7 +2349,7 @@ function ResultCard({
       justifyContent: "center",
       gap: 6,
       padding: "10px 14px",
-      background: "#2B7A78",
+      background: "#2563EB",
       color: "#fff",
       borderRadius: 12,
       textDecoration: "none",
@@ -2657,7 +2657,7 @@ function App() {
     onClick: () => go(1),
     ms: 280,
     style: {
-      background: "#2B7A78",
+      background: "#2563EB",
       color: "#fff",
       border: "none",
       borderRadius: 14,
@@ -2665,7 +2665,7 @@ function App() {
       fontSize: 15,
       fontWeight: 600,
       cursor: "pointer",
-      boxShadow: "0 4px 20px rgba(43,122,120,.25)",
+      boxShadow: "0 4px 20px rgba(59,130,246,.25)",
       minHeight: 52,
       width: "100%",
       maxWidth: 320
@@ -2792,7 +2792,7 @@ function App() {
     style: {
       fontSize: 11,
       color: P,
-      background: `${P}10`,
+      background: `${P}18`,
       padding: "3px 10px",
       borderRadius: 20,
       fontWeight: 500
@@ -2835,7 +2835,7 @@ function App() {
     key: i,
     onClick: () => setIntent(s),
     style: {
-      background: intent === s ? `${P}20` : "rgba(255,255,255,.6)",
+      background: intent === s ? `${P}28` : "rgba(255,255,255,.6)",
       border: `1px solid ${intent === s ? P : "#E8E8E8"}`,
       borderRadius: 20,
       padding: "5px 13px",
@@ -2873,7 +2873,7 @@ function App() {
       key: t.id,
       onClick: () => toggleTag(t.id),
       style: {
-        background: on ? `${P}14` : "rgba(255,255,255,.6)",
+        background: on ? `${P}22` : "rgba(255,255,255,.6)",
         border: `1px solid ${on ? P : "#E8E8E8"}`,
         borderRadius: 20,
         padding: "4px 11px",
@@ -2917,7 +2917,7 @@ function App() {
     ms: 300,
     style: {
       width: "100%",
-      background: "#2B7A78",
+      background: "#2563EB",
       color: "#fff",
       border: "none",
       borderRadius: 14,
@@ -2925,7 +2925,7 @@ function App() {
       fontSize: 15,
       fontWeight: 600,
       cursor: "pointer",
-      boxShadow: "0 4px 20px rgba(43,122,120,.25)",
+      boxShadow: "0 4px 20px rgba(59,130,246,.25)",
       minHeight: 52
     }
   }, "AI \uBD84\uC11D \uC2DC\uC791\uD558\uAE30 \u2728"), /*#__PURE__*/React.createElement("button", {
