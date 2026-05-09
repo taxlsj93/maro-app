@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-04
+- **[content-growth]** 변경 파일: `content/marketing/2026-05-04-가정의달-막주-threads-3종.md`, `content/blog/2026-05-04-스승의날-김영란법-선물.md`, `blog.html` — 주간 콘텐츠 자동 생성: 어버이날 D-4 + 스승의날(5/15, D-11) Threads 3종 + 블로그 1편(스승의날 김영란법 5만원 이하 가이드, id 13 추가)
+
 ## 2026-04-27
 - **[content-growth]** 변경 파일: `content/marketing/2026-04-27-어린이날-threads-3종.md`, `content/blog/2026-04-27-어린이날-선물-연령별-추천.md`, `blog.html` — 주간 콘텐츠 자동 생성: 어린이날(5/5, D-8) Threads 3종 + 블로그 1편(연령별 가이드, id 12 추가)
 

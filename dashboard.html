@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마로 대시보드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #2B7A78;
+  --teal-light: #3AAFA9;
+  --teal-pale: #EEF7F7;
+  --terra: #C4756E;
+  --terra-pale: #FDF1F0;
+  --gold: #D4A017;
+  --gold-pale: #FDF8EC;
+  --green: #48A77F;
+  --green-pale: #EEF8F3;
+  --red: #E05050;
+  --text: #1A1A1A;
+  --text-sub: #555;
+  --text-muted: #999;
+  --border: #EDEDED;
+  --bg: #F5F5F5;
+  --white: #FFFFFF;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --radius: 14px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans KR', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background: var(--teal);
+  position: fixed;
+  left: 0; top: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+.sidebar-logo {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.sidebar-logo h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.5px;
+}
+.sidebar-logo p {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 3px;
+}
+.sidebar-nav {
+  padding: 16px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.65);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.18s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-item.active { background: rgba(255,255,255,0.18); color: white; font-weight: 600; }
+.nav-icon { font-size: 16px; width: 20px; text-align: center; }
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+}
+.live-dot {
+  width: 8px; height: 8px;
+  background: #4CD964;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Main */
+.main {
+  margin-left: 220px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* Page header */
+.page-header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-title { font-size: 22px; font-weight: 700; }
+.page-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.page-date { font-size: 12px; color: var(--text-muted); text-align: right; }
+
+/* Content area */
+.page { display: none; padding: 36px 40px; }
+.page.active { display: block; }
+
+/* Cards */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+.card-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.card-num {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+}
+.card-num-unit { font-size: 18px; color: var(--text-muted); font-weight: 400; }
+.card-desc { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+
+/* Grid */
+.g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.gap { margin-bottom: 28px; }
+
+/* Section title */
+.sec { margin-bottom: 20px; }
+.sec h2 { font-size: 16px; font-weight: 700; color: var(--text); }
+.sec p { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+
+/* Tag */
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.tag-teal { background: var(--teal-pale); color: var(--teal); }
+.tag-terra { background: var(--terra-pale); color: var(--terra); }
+.tag-gold { background: var(--gold-pale); color: var(--gold); }
+.tag-green { background: var(--green-pale); color: var(--green); }
+.tag-red { background: #FEF0F0; color: var(--red); }
+
+/* ── Overview ── */
+.north-star {
+  background: linear-gradient(135deg, var(--teal) 0%, #1d5c5a 100%);
+  border-radius: var(--radius);
+  padding: 32px 36px;
+  color: white;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.north-star .ns-icon { font-size: 52px; flex-shrink: 0; }
+.north-star h2 { font-size: 13px; font-weight: 600; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.north-star p { font-size: 18px; font-weight: 700; line-height: 1.5; }
+.north-star small { display: block; font-size: 13px; opacity: 0.75; margin-top: 6px; font-weight: 400; }
+
+.kpi-accent { color: var(--teal); }
+.kpi-red { color: var(--terra); }
+
+/* ── Revenue ── */
+.rev-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.rev-bar-row:last-child { border-bottom: none; }
+.rev-visitors { font-size: 13px; font-weight: 600; width: 70px; color: var(--text-sub); }
+.rev-bar-wrap { flex: 1; height: 28px; background: var(--teal-pale); border-radius: 8px; overflow: hidden; }
+.rev-bar {
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--teal-light), var(--teal));
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  transition: width 0.6s ease;
+}
+.rev-bar span { font-size: 11px; color: white; font-weight: 700; white-space: nowrap; }
+.rev-amount { width: 72px; text-align: right; font-size: 14px; font-weight: 700; color: var(--teal); }
+
+.rev-table { width: 100%; border-collapse: collapse; }
+.rev-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border);
+}
+.rev-table td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--border); }
+.rev-table tr:last-child td { border-bottom: none; }
+.rev-table td:first-child { color: var(--text-sub); font-weight: 500; }
+.rev-table td:last-child { font-weight: 600; color: var(--text); }
+
+/* ── Season ── */
+.season-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.season-card {
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  border: 1.5px solid transparent;
+}
+.season-card.urgent { background: var(--terra-pale); border-color: #F0C0BC; }
+.season-card.soon { background: var(--gold-pale); border-color: #F0DDA0; }
+.season-card.future { background: var(--teal-pale); border-color: #C0DED8; }
+.season-card.always { background: var(--green-pale); border-color: #B8DFC8; }
+.season-card.past { background: #F8F8F8; border-color: var(--border); opacity: 0.55; }
+.sc-emoji { font-size: 28px; margin-bottom: 10px; }
+.sc-date { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+.season-card.urgent .sc-date { color: var(--terra); }
+.season-card.soon .sc-date { color: var(--gold); }
+.season-card.future .sc-date { color: var(--teal); }
+.season-card.always .sc-date { color: var(--green); }
+.sc-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.sc-d { font-size: 12px; font-weight: 700; }
+.season-card.urgent .sc-d { color: var(--terra); }
+.season-card.soon .sc-d { color: var(--gold); }
+.sc-note { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+/* ── Marketing ── */
+.track-box {
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.track-a { background: linear-gradient(135deg, #FFF6F5, #FDE8E6); border: 1.5px solid #F4C0BC; }
+.track-b { background: linear-gradient(135deg, var(--teal-pale), #D8EFEE); border: 1.5px solid #B4D8D6; }
+.track-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+.track-a .track-label { color: var(--terra); }
+.track-b .track-label { color: var(--teal); }
+.track-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+.track-desc { font-size: 13px; color: var(--text-sub); line-height: 1.7; margin-bottom: 16px; }
+.kpi-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.kpi-chip {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.track-a .kpi-chip { background: rgba(196,117,110,0.12); color: var(--terra); }
+.track-b .kpi-chip { background: rgba(43,122,120,0.12); color: var(--teal); }
+
+/* ── Funnel ── */
+.funnel-step {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  background: white;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  position: relative;
+}
+.funnel-step + .funnel-step { margin-top: 10px; }
+.funnel-step::after {
+  content: '↓';
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: var(--text-muted);
+  z-index: 1;
+}
+.funnel-step:last-child::after { display: none; }
+.fs-icon { font-size: 28px; width: 44px; text-align: center; flex-shrink: 0; }
+.fs-info { flex: 1; }
+.fs-name { font-size: 15px; font-weight: 600; }
+.fs-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.fs-right { text-align: right; flex-shrink: 0; }
+.fs-pct { font-size: 22px; font-weight: 700; color: var(--teal); }
+.fs-bar-wrap { width: 140px; height: 6px; background: var(--teal-pale); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+.fs-bar { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--teal-light), var(--teal)); }
+
+/* ── Checklist ── */
+.cl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cl-item:last-child { border-bottom: none; }
+.cl-status {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+.cl-done { background: var(--green); color: white; }
+.cl-urgent { background: var(--terra); color: white; }
+.cl-todo { background: #E8E8E8; color: #AAA; }
+.cl-body { flex: 1; }
+.cl-title { font-size: 14px; font-weight: 600; }
+.cl-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+.cl-tag { margin-left: 6px; }
+
+/* ── Timeline ── */
+.tl { padding-left: 32px; position: relative; }
+.tl::before { content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+.tl-item { position: relative; padding-bottom: 32px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-dot {
+  position: absolute; left: -28px; top: 4px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+.tl-dot.done { background: var(--green); box-shadow: 0 0 0 2px var(--green); }
+.tl-dot.now { background: var(--terra); box-shadow: 0 0 0 2px var(--terra); }
+.tl-dot.next { background: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+.tl-dot.future { background: white; box-shadow: 0 0 0 2px var(--border); }
+.tl-date { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+.tl-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.tl-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>🎁 마로</h1>
+    <p>사업 대시보드</p>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-page="overview"><span class="nav-icon">🏠</span> 개요</button>
+    <button class="nav-item" data-page="revenue"><span class="nav-icon">💰</span> 수익 시뮬레이션</button>
+    <button class="nav-item" data-page="season"><span class="nav-icon">📅</span> 시즌 캘린더</button>
+    <button class="nav-item" data-page="marketing"><span class="nav-icon">📣</span> 마케팅 전략</button>
+    <button class="nav-item" data-page="funnel"><span class="nav-icon">🔽</span> 사이트 퍼널</button>
+    <button class="nav-item" data-page="checklist"><span class="nav-icon">✅</span> 액션 체크리스트</button>
+    <button class="nav-item" data-page="timeline"><span class="nav-icon">📆</span> 타임라인</button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      <span>maro.ai.kr 라이브</span>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <div class="page-title" id="pageTitle">개요</div>
+      <div class="page-sub" id="pageSub">마로 사업 현황 한눈에 보기</div>
+    </div>
+    <div class="page-date" id="currentDate"></div>
+  </div>
+
+  <!-- ① 개요 -->
+  <div class="page active" id="page-overview">
+    <div class="north-star">
+      <div class="ns-icon">⭐</div>
+      <div>
+        <h2>북극성 목표</h2>
+        <p>사람들에게 적합한 선물을 추천하고, 쿠팡 파트너스 수익을 얻는다</p>
+        <small>감성으로 끌어들이고, 실용으로 전환시킨다 — 감성 60% + 실용 40%</small>
+      </div>
+    </div>
+
+    <div class="g4 gap">
+      <div class="card">
+        <div class="card-label">서비스 상태</div>
+        <div style="font-size:32px;margin:8px 0">🟢</div>
+        <div style="font-size:16px;font-weight:700">라이브 운영 중</div>
+        <div class="card-desc">Vercel 정적 배포</div>
+      </div>
+      <div class="card">
+        <div class="card-label">블로그 포스팅</div>
+        <div class="card-num">11 <span class="card-num-unit">편</span></div>
+        <div class="card-desc">SEO 콘텐츠 누적</div>
+        <div style="margin-top:10px"><span class="tag tag-teal">+6 오늘 추가</span></div>
+      </div>
+      <div class="card">
+        <div class="card-label">다음 시즌</div>
+        <div class="card-num kpi-red" id="dDayNum" style="font-size:36px">D-13</div>
+        <div class="card-desc">어버이날 5월 8일</div>
+        <div style="margin-top:10px"><span class="tag tag-terra">🔴 지금 집중</span></div>
+      </div>
+      <div class="card">
+        <div class="card-label">수익 모델</div>
+        <div style="font-size:24px;font-weight:700;margin:8px 0;color:var(--teal)">쿠팡<br>파트너스</div>
+        <div class="card-desc">커미션 약 3%, 24시간 쿠키</div>
+        <div style="margin-top:10px"><span class="tag tag-gold">AF3339921</span></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="sec"><h2>자동화 현황</h2><p>설정 완료된 자동 워크플로우</p></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--green-pale);border-radius:10px">
+            <div style="font-size:24px">🤖</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">매주 월요일 09:00</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px">시즌 Threads 3종 + 블로그 1편 자동 생성</div>
+            </div>
+            <span class="tag tag-green" style="margin-left:auto">활성</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--green-pale);border-radius:10px">
+            <div style="font-size:24px">🔍</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">매주 토요일 10:00</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px">전체 페이지 점검 + 시즌 배너 확인</div>
+            </div>
+            <span class="tag tag-green" style="margin-left:auto">활성</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sec"><h2>지금 당장 할 일</h2><p>선재님이 직접 해야 하는 것</p></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--terra-pale);border-radius:10px;border:1px solid #F4C0BC">
+            <div style="font-size:18px">📱</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">Threads 첫 글 발행</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:1px">어버이날 원고 이미 준비됨</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--terra-pale);border-radius:10px;border:1px solid #F4C0BC">
+            <div style="font-size:18px">⚙️</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">Vercel 환경변수 확인</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:1px">ANTHROPIC_API_KEY 설정 여부</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--terra-pale);border-radius:10px;border:1px solid #F4C0BC">
+            <div style="font-size:18px">🛒</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">쿠팡 파트너스 승인 확인</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:1px">maro.ai.kr 채널 등록 여부</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② 수익 시뮬레이션 -->
+  <div class="page" id="page-revenue">
+    <div class="g2 gap">
+      <div class="card">
+        <div class="sec"><h2>일 방문자별 월 수익</h2><p>클릭률 30% · 구매전환 10% · 평균 구매 5만원 기준</p></div>
+        <div>
+          <div class="rev-bar-row">
+            <div class="rev-visitors">50명</div>
+            <div class="rev-bar-wrap"><div class="rev-bar" style="width:5%"><span>~7만원</span></div></div>
+            <div class="rev-amount">7만원</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-visitors">100명</div>
+            <div class="rev-bar-wrap"><div class="rev-bar" style="width:11%"><span>~14만원</span></div></div>
+            <div class="rev-amount">14만원</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-visitors">200명</div>
+            <div class="rev-bar-wrap"><div class="rev-bar" style="width:22%"><span>~27만원</span></div></div>
+            <div class="rev-amount">27만원</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-visitors">500명</div>
+            <div class="rev-bar-wrap"><div class="rev-bar" style="width:50%"><span>~68만원</span></div></div>
+            <div class="rev-amount">68만원</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-visitors">1,000명</div>
+            <div class="rev-bar-wrap"><div class="rev-bar" style="width:100%"><span>~135만원</span></div></div>
+            <div class="rev-amount">135만원</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;padding:14px 16px;background:var(--gold-pale);border-radius:10px;font-size:13px;color:#a07010;border:1px solid #F0DDA0">
+          💡 <strong>월 50만원+</strong>을 내려면 일 방문자 <strong>500명 이상</strong> 필요
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sec"><h2>수익 구조 상세</h2><p>쿠팡 파트너스 기본 조건</p></div>
+        <table class="rev-table">
+          <thead><tr><th>항목</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td>파트너 ID</td><td>AF3339921</td></tr>
+            <tr><td>커미션율</td><td>약 3% (카테고리별 변동)</td></tr>
+            <tr><td>쿠키 유효기간</td><td>클릭 후 24시간</td></tr>
+            <tr><td>목표 클릭률</td><td>방문자의 30%</td></tr>
+            <tr><td>목표 구매전환</td><td>클릭의 10%</td></tr>
+            <tr><td>평균 구매금액</td><td>약 5만원</td></tr>
+            <tr><td>정산 주기</td><td>익익월 15일</td></tr>
+            <tr><td>최소 지급액</td><td>1만원 이상</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec"><h2>수익 다각화 로드맵</h2><p>중장기 검토 항목</p></div>
+      <div class="g4">
+        <div style="padding:18px;background:var(--teal-pale);border-radius:12px;border:1px solid #C0DED8">
+          <div style="font-size:20px;margin-bottom:8px">🛍</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">카카오 선물하기</div>
+          <div style="font-size:12px;color:var(--text-muted)">직접 구매 연동으로 전환율 향상</div>
+          <div style="margin-top:10px"><span class="tag tag-teal">검토 중</span></div>
+        </div>
+        <div style="padding:18px;background:var(--teal-pale);border-radius:12px;border:1px solid #C0DED8">
+          <div style="font-size:20px;margin-bottom:8px">🏬</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">29CM · 오늘의집</div>
+          <div style="font-size:12px;color:var(--text-muted)">MZ 취향 플랫폼 파트너스</div>
+          <div style="margin-top:10px"><span class="tag tag-teal">검토 중</span></div>
+        </div>
+        <div style="padding:18px;background:var(--gold-pale);border-radius:12px;border:1px solid #F0DDA0">
+          <div style="font-size:20px;margin-bottom:8px">⭐</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">프리미엄 구독</div>
+          <div style="font-size:12px;color:var(--text-muted)">월 2,900원 고급 AI 추천</div>
+          <div style="margin-top:10px"><span class="tag tag-gold">중기 목표</span></div>
+        </div>
+        <div style="padding:18px;background:var(--gold-pale);border-radius:12px;border:1px solid #F0DDA0">
+          <div style="font-size:20px;margin-bottom:8px">🏢</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">B2B 기업 선물</div>
+          <div style="font-size:12px;color:var(--text-muted)">기업 대상 선물 컨설팅</div>
+          <div style="margin-top:10px"><span class="tag tag-gold">장기 목표</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 시즌 캘린더 -->
+  <div class="page" id="page-season">
+    <div class="season-grid gap">
+      <div class="season-card past">
+        <div class="sc-emoji">💔</div>
+        <div class="sc-date">4월 14일</div>
+        <div class="sc-name">블랙데이</div>
+        <div class="sc-d" style="color:#aaa">지남</div>
+      </div>
+      <div class="season-card urgent">
+        <div class="sc-emoji">🧒</div>
+        <div class="sc-date">5월 5일</div>
+        <div class="sc-name">어린이날</div>
+        <div class="sc-d" id="s1"></div>
+        <div class="sc-note">지금 콘텐츠 집중</div>
+      </div>
+      <div class="season-card urgent">
+        <div class="sc-emoji">🌷</div>
+        <div class="sc-date">5월 8일</div>
+        <div class="sc-name">어버이날</div>
+        <div class="sc-d" id="s2"></div>
+        <div class="sc-note">🔴 핵심 시즌</div>
+      </div>
+      <div class="season-card urgent">
+        <div class="sc-emoji">📚</div>
+        <div class="sc-date">5월 15일</div>
+        <div class="sc-name">스승의날</div>
+        <div class="sc-d" id="s3"></div>
+        <div class="sc-note">어버이날 후 바로 준비</div>
+      </div>
+      <div class="season-card soon">
+        <div class="sc-emoji">🎓</div>
+        <div class="sc-date">6~7월</div>
+        <div class="sc-name">졸업 · 여름</div>
+        <div class="sc-note">4주 전부터 콘텐츠</div>
+      </div>
+      <div class="season-card future">
+        <div class="sc-emoji">🌕</div>
+        <div class="sc-date">9월</div>
+        <div class="sc-name">추석</div>
+        <div class="sc-note">3주 전부터 콘텐츠</div>
+      </div>
+      <div class="season-card future">
+        <div class="sc-emoji">🍫</div>
+        <div class="sc-date">11월 11일</div>
+        <div class="sc-name">빼빼로데이</div>
+        <div class="sc-note">2주 전부터 콘텐츠</div>
+      </div>
+      <div class="season-card future">
+        <div class="sc-emoji">🎄</div>
+        <div class="sc-date">12월 25일</div>
+        <div class="sc-name">크리스마스</div>
+        <div class="sc-note">4주 전부터 콘텐츠</div>
+      </div>
+      <div class="season-card future">
+        <div class="sc-emoji">🍫</div>
+        <div class="sc-date">2월 14일</div>
+        <div class="sc-name">발렌타인</div>
+        <div class="sc-note">3주 전부터 콘텐츠</div>
+      </div>
+      <div class="season-card future">
+        <div class="sc-emoji">🍬</div>
+        <div class="sc-date">3월 14일</div>
+        <div class="sc-name">화이트데이</div>
+        <div class="sc-note">2주 전부터 콘텐츠</div>
+      </div>
+      <div class="season-card always">
+        <div class="sc-emoji">🎂</div>
+        <div class="sc-date">연중 상시</div>
+        <div class="sc-name">생일 · 기념일</div>
+        <div class="sc-note">항상 수요 있음</div>
+      </div>
+      <div class="season-card always">
+        <div class="sc-emoji">💼</div>
+        <div class="sc-date">3~4월 · 7월</div>
+        <div class="sc-name">이직 · 직장</div>
+        <div class="sc-note">계절성 수요</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--text-muted)">
+      <span>🔴 지금 집중</span>
+      <span>🟡 준비 시작</span>
+      <span>🔵 장기 계획</span>
+      <span>🟢 연중 상시</span>
+    </div>
+  </div>
+
+  <!-- ④ 마케팅 전략 -->
+  <div class="page" id="page-marketing">
+    <div class="g2 gap">
+      <div class="track-box track-a">
+        <div class="track-label">Track A</div>
+        <div class="track-title">🔥 시즌 단기 — 즉시 매출</div>
+        <div class="track-desc">시즌 검색 트래픽을 쿠팡 구매로 전환.<br>시즌 3주 전부터 콘텐츠 집중 발행, 배너 교체, 블로그 SEO.</div>
+        <div class="kpi-list">
+          <span class="kpi-chip">쿠팡 클릭수</span>
+          <span class="kpi-chip">구매 전환율</span>
+          <span class="kpi-chip">파트너스 수익</span>
+          <span class="kpi-chip">시즌 트래픽</span>
+        </div>
+      </div>
+      <div class="track-box track-b">
+        <div class="track-label">Track B</div>
+        <div class="track-title">🌱 20대 여성 브랜딩 — 중기</div>
+        <div class="track-desc">"선물 고민 = 마로" 인식 확보.<br>Threads · 인스타 빌딩로그 + 감성 콘텐츠로 자연 유입 기반 구축.</div>
+        <div class="kpi-list">
+          <span class="kpi-chip">팔로워 수</span>
+          <span class="kpi-chip">프로필 방문</span>
+          <span class="kpi-chip">저장 · 공유</span>
+          <span class="kpi-chip">브랜드 인지도</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="sec"><h2>콘텐츠 규칙</h2><p>Threads · 인스타 작성 가이드</p></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">📏</span><div><strong>길이</strong><br><span style="color:var(--text-muted);font-size:12px">Threads 150~300자 / 블로그 1,500~2,000자</span></div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">🪝</span><div><strong>첫 줄은 훅(Hook)</strong><br><span style="color:var(--text-muted);font-size:12px">궁금증 유발 또는 강한 공감으로 시작</span></div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">😊</span><div><strong>이모지 1~3개</strong><br><span style="color:var(--text-muted);font-size:12px">과하지 않게, 감성 포인트에만</span></div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">#️⃣</span><div><strong>해시태그</strong><br><span style="color:var(--text-muted);font-size:12px">#마로 #선물추천 #AI선물 #마음을새기는선물 + 시즌 태그 5개</span></div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:18px">🚫</span><div><strong>광고 느낌 금지</strong><br><span style="color:var(--text-muted);font-size:12px">자연스러운 SNS 말투, 브랜드 소리 최소화</span></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sec"><h2>광고 예산</h2><p>월 3만원 시즌 집중 운영</p></div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:13px;color:var(--text-muted);margin-bottom:4px">월 총 예산</div>
+            <div style="font-size:28px;font-weight:700;color:var(--teal)">30,000원</div>
+          </div>
+          <div style="height:1px;background:var(--border)"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">시즌 집중 운영</span><strong>일 2,500원 × 6일</strong></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">부스트 대상</span><strong>저장/공유 높은 게시물 1개</strong></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">타겟</span><strong>25~35세, 선물/기념일</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ 사이트 퍼널 -->
+  <div class="page" id="page-funnel">
+    <div class="g2">
+      <div>
+        <div class="sec"><h2>전환 퍼널</h2><p>방문에서 수익까지의 흐름</p></div>
+        <div class="funnel-step">
+          <div class="fs-icon">🌐</div>
+          <div class="fs-info">
+            <div class="fs-name">방문자 (랜딩페이지)</div>
+            <div class="fs-desc">SEO · SNS · 직접 유입</div>
+          </div>
+          <div class="fs-right">
+            <div class="fs-pct">100%</div>
+            <div class="fs-bar-wrap"><div class="fs-bar" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="funnel-step">
+          <div class="fs-icon">🎯</div>
+          <div class="fs-info">
+            <div class="fs-name">앱 진입 (/app)</div>
+            <div class="fs-desc">CTA 클릭 → 선물 추천 시작</div>
+          </div>
+          <div class="fs-right">
+            <div class="fs-pct">~60%</div>
+            <div class="fs-bar-wrap"><div class="fs-bar" style="width:60%"></div></div>
+          </div>
+        </div>
+        <div class="funnel-step">
+          <div class="fs-icon">✅</div>
+          <div class="fs-info">
+            <div class="fs-name">AI 추천 완료</div>
+            <div class="fs-desc">관계 · 상황 · 예산 · 취향 선택</div>
+          </div>
+          <div class="fs-right">
+            <div class="fs-pct">~45%</div>
+            <div class="fs-bar-wrap"><div class="fs-bar" style="width:45%"></div></div>
+          </div>
+        </div>
+        <div class="funnel-step">
+          <div class="fs-icon">🛒</div>
+          <div class="fs-info">
+            <div class="fs-name">쿠팡 링크 클릭</div>
+            <div class="fs-desc">추천 상품 → 쿠팡 이동</div>
+          </div>
+          <div class="fs-right">
+            <div class="fs-pct">~30%</div>
+            <div class="fs-bar-wrap"><div class="fs-bar" style="width:30%"></div></div>
+          </div>
+        </div>
+        <div class="funnel-step" style="background:var(--green-pale);border-color:var(--border)">
+          <div class="fs-icon">💸</div>
+          <div class="fs-info">
+            <div class="fs-name">구매 완료 (수익)</div>
+            <div class="fs-desc">24시간 내 구매 → 커미션 발생</div>
+          </div>
+          <div class="fs-right">
+            <div class="fs-pct" style="color:var(--green)">~10%</div>
+            <div class="fs-bar-wrap"><div class="fs-bar" style="width:10%;background:linear-gradient(90deg,#7FCFA0,var(--green))"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec"><h2>서비스 구조</h2><p>각 페이지 역할</p></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="padding:18px 20px;background:white;border-radius:12px;border:1px solid var(--border);border-left:4px solid var(--teal)">
+            <div style="font-size:12px;color:var(--teal);font-weight:700;margin-bottom:4px">/ 랜딩페이지</div>
+            <div style="font-size:14px;font-weight:600">브랜드 소개 · CTA · 시즌 배너</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px">첫 인상 결정, 앱 진입 유도</div>
+          </div>
+          <div style="padding:18px 20px;background:var(--terra-pale);border-radius:12px;border:1px solid #F4C0BC;border-left:4px solid var(--terra)">
+            <div style="font-size:12px;color:var(--terra);font-weight:700;margin-bottom:4px">/app — 핵심</div>
+            <div style="font-size:14px;font-weight:600">AI 선물 추천 위자드</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px">관계×상황×예산×취향 → Top 3 추천</div>
+          </div>
+          <div style="padding:18px 20px;background:white;border-radius:12px;border:1px solid var(--border);border-left:4px solid var(--gold)">
+            <div style="font-size:12px;color:var(--gold);font-weight:700;margin-bottom:4px">/blog</div>
+            <div style="font-size:14px;font-weight:600">SEO 블로그 (11편)</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px">검색 유입 → 앱으로 연결</div>
+          </div>
+          <div style="padding:18px 20px;background:white;border-radius:12px;border:1px solid var(--border);border-left:4px solid var(--green)">
+            <div style="font-size:12px;color:var(--green);font-weight:700;margin-bottom:4px">부가 기능</div>
+            <div style="font-size:14px;font-weight:600">/today · /message · /calc · /vote</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px">체류 시간 증가, 재방문 유도</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑥ 액션 체크리스트 -->
+  <div class="page" id="page-checklist">
+    <div class="g2">
+      <div class="card">
+        <div style="font-size:15px;font-weight:700;color:var(--terra);margin-bottom:20px">🔴 지금 당장</div>
+        <div class="cl-item">
+          <div class="cl-status cl-done">✓</div>
+          <div class="cl-body">
+            <div class="cl-title">사이트 라이브 확인 <span class="tag tag-green cl-tag">완료</span></div>
+            <div class="cl-sub">maro.ai.kr 정상 접속 및 AI 추천 동작 확인</div>
+          </div>
+        </div>
+        <div class="cl-item">
+          <div class="cl-status cl-done">✓</div>
+          <div class="cl-body">
+            <div class="cl-title">블로그 11편 발행 <span class="tag tag-green cl-tag">완료</span></div>
+            <div class="cl-sub">어버이날 시즌 4편 포함 오늘 추가 완료</div>
+          </div>
+        </div>
+        <div class="cl-item">
+          <div class="cl-status cl-done">✓</div>
+          <div class="cl-body">
+            <div class="cl-title">주간 자동화 설정 <span class="tag tag-green cl-tag">완료</span></div>
+            <div class="cl-sub">매주 월요일 콘텐츠 생성 + 토요일 사이트 점검</div>
+          </div>
+        </div>
+        <div class="cl-item">
+          <div class="cl-status cl-urgent">!</div>
+          <div class="cl-body">
+            <div class="cl-title">Threads 첫 글 발행 <span class="tag tag-terra cl-tag">오늘</span></div>
+            <div class="cl-sub">content/marketing/2026-04-어버이날-threads-5종.md → 복사 후 발행</div>
+          </div>
+        </div>
+        <div class="cl-item">
+          <div class="cl-status cl-urgent">!</div>
+          <div class="cl-body">
+            <div class="cl-title">Vercel 환경변수 확인 <span class="tag tag-terra cl-tag">오늘</span></div>
+            <div class="cl-sub">Vercel 대시보드 → Settings → ANTHROPIC_API_KEY</div>
+          </div>
+        </div>
+        <div class="cl-item">
+          <div class="cl-status cl-urgent">!</div>
+          <div class="cl-body">
+            <div class="cl-title">쿠팡 파트너스 승인 확인 <span class="tag tag-terra cl-tag">오늘</span></div>
+            <div class="cl-sub">파트너스 사이트 → 승인 상태 + maro.ai.kr 채널 등록 여부</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:20px">
+          <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:20px">🟡 이번 주 (D-13 어버이날)</div>
+          <div class="cl-item">
+            <div class="cl-status cl-todo">○</div>
+            <div class="cl-body">
+              <div class="cl-title">Threads 5종 순차 발행</div>
+              <div class="cl-sub">4/25~4/30 하루 1편씩, 원고 준비 완료</div>
+            </div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-status cl-todo">○</div>
+            <div class="cl-body">
+              <div class="cl-title">인스타 카드뉴스 3종 게시</div>
+              <div class="cl-sub">content/marketing/2026-04-어버이날-카드뉴스-3종.md 참고</div>
+            </div>
+          </div>
+          <div class="cl-item">
+            <div class="cl-status cl-todo">○</div>
+            <div class="cl-body">
+              <div class="cl-title">인스타 비즈니스 계정 세팅</div>
+              <div class="cl-sub">프로필에 maro.ai.kr 링크 추가</div>
+            </div>
+          </div>
+          <div class="cl-item" style="border-bottom:none">
+            <div class="cl-status cl-todo">○</div>
+            <div class="cl-body">
+              <div class="cl-title">Analytics 확인</div>
+              <div class="cl-sub">GA4 (G-S3Y94YY9WP) 또는 Vercel Analytics</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-size:15px;font-weight:700;color:var(--teal);margin-bottom:16px">🟢 중장기</div>
+          <div class="cl-item">
+            <div class="cl-status cl-todo">○</div>
+            <div class="cl-body">
+              <div class="cl-title">지인 3명 피드백 수집</div>
+              <div class="cl-sub">"어디서 막히는지" 직접 사용 후 피드백</div>
+            </div>
+          </div>
+          <div class="cl-item" style="border-bottom:none">
+            <div class="cl-status cl-todo">○</div>
+            <div class="cl-body">
+              <div class="cl-title">수익 다각화 검토</div>
+              <div class="cl-sub">카카오 선물하기 / 29CM / 프리미엄 구독</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑦ 타임라인 -->
+  <div class="page" id="page-timeline">
+    <div class="card" style="max-width:640px">
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot done"></div>
+          <div class="tl-date">4월 25일 (오늘)</div>
+          <div class="tl-title">✅ 블로그 6편 추가 · 자동화 설정 완료</div>
+          <div class="tl-desc">blog.html 11편 업데이트, 주간 콘텐츠 자동화 (매주 월), 사이트 점검 자동화 (매주 토) 가동</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot now"></div>
+          <div class="tl-date">4월 25~27일</div>
+          <div class="tl-title">🔴 Threads 발행 시작 · 환경변수 확인</div>
+          <div class="tl-desc">어버이날 Threads 1~2편 발행 / Vercel ANTHROPIC_API_KEY 확인 / 쿠팡 파트너스 승인 확인</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot now"></div>
+          <div class="tl-date">4월 28~30일</div>
+          <div class="tl-title">인스타 카드뉴스 · Threads 지속</div>
+          <div class="tl-desc">카드뉴스 1~2장, Threads 3~4편, 인스타 비즈니스 계정 세팅</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot next"></div>
+          <div class="tl-date">5월 1~7일</div>
+          <div class="tl-title">어버이날 D-7 마지막 스퍼트</div>
+          <div class="tl-desc">남은 콘텐츠 발행 완료, 광고 집행 검토 (일 2,500원 × 6일)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot next"></div>
+          <div class="tl-date">5월 8일</div>
+          <div class="tl-title">🌷 어버이날 — 시즌 피크</div>
+          <div class="tl-desc">트래픽 최대 기간. 쿠팡 파트너스 클릭 · 전환 집중 모니터링</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot future"></div>
+          <div class="tl-date">5월 15일</div>
+          <div class="tl-title">스승의날 — 다음 시즌</div>
+          <div class="tl-desc">5/1부터 스승의날 콘텐츠 자동 생성 (월요일 자동화 가동)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot future"></div>
+          <div class="tl-date">7월 15일</div>
+          <div class="tl-title">💸 첫 수익 정산</div>
+          <div class="tl-desc">5월 쿠팡 파트너스 실적 → 7월 15일 정산 예정</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // 날짜
+  const now = new Date();
+  document.getElementById('currentDate').textContent =
+    now.getFullYear() + '년 ' + (now.getMonth()+1) + '월 ' + now.getDate() + '일';
+
+  // D-Day 계산
+  function dDay(m, d) {
+    const t = new Date(now.getFullYear(), m-1, d);
+    if (t < now) t.setFullYear(t.getFullYear()+1);
+    const diff = Math.ceil((t - now) / 86400000);
+    return diff === 0 ? 'D-Day 🎉' : 'D-' + diff;
+  }
+  const d2 = dDay(5,8);
+  document.getElementById('dDayNum').textContent = d2;
+  document.getElementById('s1').textContent = dDay(5,5);
+  document.getElementById('s2').textContent = d2;
+  document.getElementById('s3').textContent = dDay(5,15);
+
+  // 탭 네비게이션
+  const pageMeta = {
+    overview:   { title: '개요', sub: '마로 사업 현황 한눈에 보기' },
+    revenue:    { title: '수익 시뮬레이션', sub: '방문자별 예상 수익 및 구조' },
+    season:     { title: '시즌 캘린더', sub: '연간 마케팅 시즌 일정' },
+    marketing:  { title: '마케팅 전략', sub: '2트랙 전략 및 콘텐츠 가이드' },
+    funnel:     { title: '사이트 퍼널', sub: '방문에서 수익까지의 흐름' },
+    checklist:  { title: '액션 체크리스트', sub: '완료 · 긴급 · 예정 작업 현황' },
+    timeline:   { title: '타임라인', sub: '어버이날 D-' + (dDay(5,8).replace('D-','')) + ' 일정 계획' },
+  };
+
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.page;
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('page-' + id).classList.add('active');
+      const m = pageMeta[id];
+      document.getElementById('pageTitle').textContent = m.title;
+      document.getElementById('pageSub').textContent = m.sub;
+    });
+  });
+</script>
+</body>
+</html>
